@@ -1,8 +1,9 @@
 import os
-import re
+import time
 
 import ollama
 import streamlit as st
+from docx import Document
 from PyPDF2 import PdfReader
 
 # List of available models
@@ -10,6 +11,7 @@ models = {
     "llama3.1:8b": "42182419e950",
     "mistral:7b": "f974a74358d6",
     "qwen2.5-coder:7b": "2b0496514337",
+    "llama3.1:latest": "42182419e950",
 }
 
 
@@ -40,24 +42,18 @@ def get_api_response(message: str, pdf_content: str = "") -> str:
         conversation_history = "\n".join(
             [f"{msg['role']}: {msg['content']}" for msg in st.session_state.messages]
         )
-        if "Versat" in message:
-            print("PDF content was considered")
-            prompt = f"""
-                Contexto de la conversación:
-                {conversation_history}
-                \n\n
-                Texto del usuario: {pdf_content}
-                \n\n
-                Pregunta del usuario: {message}
-            """
-        else:
-            prompt = f"""
-                Contexto de la conversación:
-                {conversation_history}
-                
-                \n\n
-                Pregunta del usuario: {message}
-            """
+
+        prompt = f"""
+            Proporciona respuestas directas y seguras basadas en el contexto proporcionado. Evita usar términos como "parece" o "según la información proporcionada". Responde de manera clara y concisa.
+
+            Contexto de la conversación:
+            {conversation_history}
+
+            Texto del usuario: {pdf_content}
+            \n\n
+            Pregunta del usuario: {message}
+        """
+
         response = ollama.chat(
             model=st.session_state.selected_model,
             messages=[{"role": "user", "content": prompt}],
@@ -67,23 +63,97 @@ def get_api_response(message: str, pdf_content: str = "") -> str:
         return f"Error {str(e)}"
 
 
-def extract_text_from_pdfs(folder_path: str) -> str:
-    """Extract text from all PDFs in a folder
+def extract_text_from_file(file_path: str) -> str:
+    """Extract text from a file (PDF, DOCX, or TXT)
 
     Args:
-        folder_path (str): Path to the folder containing PDFs
+        file_path (str): Path to the file
 
     Returns:
-        str: Concatenated text from all PDFs
+        str: Extracted text from the file
     """
-    pdf_text = ""
+    if file_path.endswith(".pdf"):
+        pdf_reader = PdfReader(file_path)
+        text = ""
+        for page in pdf_reader.pages:
+            text += page.extract_text()
+        return text
+    elif file_path.endswith(".docx"):
+        doc = Document(file_path)
+        text = "\n".join([paragraph.text for paragraph in doc.paragraphs])
+        return text
+    elif file_path.endswith(".txt"):
+        with open(file_path, "r", encoding="utf-8") as file:
+            text = file.read()
+        return text
+    return ""
+
+
+def extract_text_from_folder(folder_path: str) -> str:
+    """Extract text from all files in a folder
+
+    Args:
+        folder_path (str): Path to the folder containing files
+
+    Returns:
+        str: Concatenated text from all files
+    """
+    combined_text = ""
     for filename in os.listdir(folder_path):
-        if filename.endswith(".pdf"):
-            file_path = os.path.join(folder_path, filename)
-            pdf_reader = PdfReader(file_path)
-            for page in pdf_reader.pages:
-                pdf_text += page.extract_text()
-    return pdf_text
+        file_path = os.path.join(folder_path, filename)
+        if filename.endswith((".pdf", ".docx", ".txt")):
+            combined_text += extract_text_from_file(file_path) + "\n"
+    return combined_text
+
+
+def save_context_to_file(file_path: str, content: str):
+    """Save the extracted content to a file
+
+    Args:
+        file_path (str): Path to the file to save the content
+        content (str): Content to be saved
+    """
+    print("guardando contexto", file_path)
+    with open(file_path, "w", encoding="utf-8") as file:
+        file.write(content)
+
+
+def get_folder_modification_time(folder_path: str) -> float:
+    """Get the latest modification time of files in a folder
+
+    Args:
+        folder_path (str): Path to the folder
+
+    Returns:
+        float: The latest modification time
+    """
+    modification_times = [
+        os.path.getmtime(os.path.join(folder_path, f)) for f in os.listdir(folder_path)
+    ]
+    return max(modification_times) if modification_times else 0
+
+
+def check_and_update_context(folder_path: str, context_file_path: str):
+    """Check for changes in the folder and update the context file if modified
+
+    Args:
+        folder_path (str): Path to the folder to monitor
+        context_file_path (str): Path to the context file to update
+    """
+    # Check if the context file exists
+    if not os.path.exists(context_file_path):
+        # Initial extraction and saving
+        combined_text = extract_text_from_folder(folder_path)
+        save_context_to_file(context_file_path, combined_text)
+
+    # Get the latest modification time
+    last_modification_time = get_folder_modification_time(folder_path)
+    context_modification_time = os.path.getmtime(context_file_path)
+
+    if last_modification_time > context_modification_time:
+        # Update the context file if the folder has been modified
+        combined_text = extract_text_from_folder(folder_path)
+        save_context_to_file(context_file_path, combined_text)
 
 
 def main():
@@ -142,8 +212,17 @@ def main():
 
         st.markdown("</div>", unsafe_allow_html=True)
 
-    # Extract text from PDFs in the 'documents' folder
-    pdf_content = extract_text_from_pdfs("documents")
+    # Paths
+    folder_path = "documents"
+    context_file_path = "context.txt"
+
+    # Check and update context
+    print("verificando archivos")
+    check_and_update_context(folder_path, context_file_path)
+
+    # Read context from file
+    with open(context_file_path, "r", encoding="utf-8") as file:
+        pdf_content = file.read()
 
     # Show chat history
     for message in st.session_state.messages:
@@ -169,7 +248,9 @@ def main():
             with st.chat_message("assistant"):
                 response = get_api_response(prompt, pdf_content)
                 print(response)
-                assistant_response = clean_response(response)
+                assistant_response = clean_response(response).replace(
+                    "Respuesta del modelo:", ""
+                )
                 st.write(assistant_response)
                 st.session_state.messages.append(
                     {"role": "assistant", "content": assistant_response}

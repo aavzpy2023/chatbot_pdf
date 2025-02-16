@@ -1,0 +1,108 @@
+Resumen del Módulo de Costos y Procesos
+1. Introducción
+El Módulo de Costos y Procesos del Sistema Económico Integrado VERSAT Sarasola es una herramienta diseñada para facilitar la gestión automatizada de costos en entidades empresariales, presupuestadas u otras organizaciones. Este módulo permite el registro, distribución y análisis de los gastos asociados a la producción, así como el cálculo de costos unitarios y ajustes necesarios para la contabilidad de costos.
+
+Propósito:
+Automatizar la distribución de gastos indirectos utilizando bases de distribución configurables.
+Facilitar el cálculo de costos de producción mediante sistemas de costeo por procesos o por órdenes de trabajo.
+Permitir el uso de costos predeterminados y estándares, con ajustes al costo real logrado.
+Proporcionar herramientas para el análisis detallado de gastos por elementos, subelementos y partidas.
+2. Instalación
+Requisitos previos
+Hardware recomendado:
+Procesador
+x64: AMD Opteron o Intel Xeon (1.4 GHz mínimo, 2.0 GHz recomendado)
+Memoria RAM
+1 GB (mínimo), 4 GB (recomendado)
+Espacio en disco
+6 GB (SQL Server), 80-100 GB (entorno cliente/servidor)
+Software recomendado:
+Gestor de bases de datos : Microsoft SQL Server 2019 Enterprise Edition.
+Sistema operativo : Windows Server 2019 (servidor), Windows 10 x64 (cliente).
+Pasos detallados para la instalación
+Ejecutar el instalador VersatInstalacion.exe y seleccionar los subsistemas a instalar, incluyendo Configuración , Contabilidad General y Costos y Procesos .
+Crear accesos directos en el menú de inicio para cada subsistema.
+Utilizar BDVersat.exe para crear o actualizar la base de datos, especificando el servidor y credenciales adecuadas.
+Verificar que todos los sistemas operativos estén actualizados y protegidos físicamente.
+Problemas comunes y soluciones
+Error al conectar a la base de datos : Verificar permisos del usuario y estado del servidor SQL.
+Fallo en la instalación : Asegurarse de cumplir con los requisitos mínimos de hardware y software.
+Licencias no registradas : Reiniciar contraseñas y verificar la conexión a Internet durante el proceso de registro.
+3. Configuración
+Archivos de configuración clave y su ubicación
+Base de datos : Centralizada en el servidor SQL.
+Clasificador de Centros de Costo : Almacenado en el subsistema de Costos y Procesos.
+Parámetros importantes
+Formato del Clasificador de Centros de Costo :
+Determina la estructura o división en niveles del clasificador.
+Permite aperturas independientes según las necesidades de la entidad.
+Asociación Cuenta – Centro de Costo :
+Esencial para registrar hechos económicos relacionados con gastos.
+Un Centro de Costo puede estar asociado a múltiples cuentas de gastos.
+Ejemplos de configuración recomendada
+Formato del Clasificador de Centros de Costo :
+plaintext
+Copiar
+1
+2
+3
+Nivel 1: Centro de Costo (Longitud: 5 caracteres)
+Nivel 2: Subcentro de Costo (Longitud: 3 caracteres)
+Separador: Punto (.)
+Política de seguridad :
+Longitud mínima de contraseña: 8 caracteres.
+Caracteres requeridos: Mayúsculas, números y símbolos.
+Tiempo de validez: 90 días.
+4. Funcionalidades principales
+Descripción de características
+Clasificador de Centros de Costo :
+Define y configura los centros de costo utilizados en la distribución de gastos.
+Asocia cuentas de gastos con centros de costo para un registro preciso.
+Traspasos :
+Distribuye gastos indirectos de producción utilizando bases de distribución configurables.
+Genera comprobantes automáticos como resultado de los traspasos realizados.
+Ajuste al Costo :
+Calcula el costo unitario de producción y realiza ajustes necesarios.
+Soporta sistemas de costeo por procesos y por órdenes de trabajo.
+Comandos clave y ejemplos
+Definir formato del Clasificador de Centros de Costo :
+plaintext
+Copiar
+1
+Menú Centro de Costo -> Formato -> Seleccionar formato
+Realizar traspasos de gastos indirectos :
+plaintext
+Copiar
+1
+Vista Traspasos -> Configurar secuencia -> Ejecutar traspaso
+Calcular ajuste al costo :
+plaintext
+Copiar
+1
+Vista Ajuste al Costo -> Calcular costo unitario -> Aplicar ajuste
+5. Casos de uso
+Ejemplo 1: Distribución de gastos indirectos
+Escenario : Una fábrica necesita distribuir los gastos indirectos de producción entre varios centros de costo.
+Solución :
+Configurar una secuencia de traspasos en la vista Traspasos .
+Ejecutar el traspaso para distribuir los gastos según las bases de distribución definidas.
+Generar comprobantes automáticos para registrar las operaciones.
+Ejemplo 2: Cálculo del costo unitario
+Escenario : Una empresa requiere calcular el costo unitario de un producto terminado.
+Solución :
+Registrar todos los gastos asociados al centro de costo correspondiente.
+Utilizar la vista Ajuste al Costo para calcular el costo unitario.
+Aplicar ajustes necesarios para reflejar el costo real logrado.
+6. Solución de problemas
+Preguntas frecuentes
+¿Qué hacer si un usuario no puede iniciar sesión?
+Verificar que el usuario esté activo y no haya superado el número de intentos fallidos.
+Restablecer la contraseña mediante el administrador.
+¿Cómo corregir errores en los traspasos?
+Modificar la secuencia de traspasos sin eliminarla si ya tiene operaciones asociadas.
+Exportar e importar traspasos para sincronizar datos.
+¿Qué significa "usuario huérfano"?
+Ocurre cuando un usuario existe en la base de datos pero no tiene asociado un inicio de sesión en el servidor. Usar la opción Corregir usuarios huérfanos.
+Logs y diagnóstico
+Acceder a la vista de Estado de Operaciones para revisar registros de actividad.
+Consultar el Editor de SQL para ejecutar scripts de corrección validados por el productor.

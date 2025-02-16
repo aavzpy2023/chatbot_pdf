@@ -1,0 +1,107 @@
+Resumen del Módulo de Finanzas, Caja y Banco
+Introducción
+El Módulo de Finanzas, Caja y Banco del Sistema Económico Integrado VERSAT Sarasola es una herramienta diseñada para automatizar y gestionar operaciones financieras en entidades empresariales, presupuestadas u otras organizaciones. Este módulo permite el registro, control y análisis de ingresos, egresos, cuentas bancarias, fondos de caja, anticipos, obligaciones y financiamientos, garantizando la contabilización automática y transparente de las operaciones.
+
+Propósito:
+Facilitar la gestión financiera mediante la automatización de procesos como cobros, pagos, liquidaciones y conciliaciones.
+Proveer herramientas para el control de medios técnicos, anticipos, financiamientos y operaciones anticipadas.
+Ofrecer un sistema robusto para el manejo de multimonedas y la valuación de activos y pasivos.
+Instalación
+Requisitos previos
+Hardware recomendado:
+Procesador
+x64: AMD Opteron o Intel Xeon (1.4 GHz mínimo, 2.0 GHz recomendado)
+Memoria RAM
+1 GB (mínimo), 4 GB (recomendado)
+Espacio en disco
+6 GB (SQL Server), 80-100 GB (entorno cliente/servidor)
+Software recomendado:
+Gestor de bases de datos : Microsoft SQL Server 2019 Enterprise Edition.
+Sistema operativo : Windows Server 2019 (servidor), Windows 10 x64 (cliente).
+Pasos detallados para la instalación
+Ejecutar el instalador VersatInstalacion.exe y seleccionar los subsistemas a instalar, incluyendo Configuración , Contabilidad General y Finanzas, Caja y Banco .
+Crear accesos directos en el menú de inicio para cada subsistema.
+Utilizar BDVersat.exe para crear o actualizar la base de datos, especificando el servidor y credenciales adecuadas.
+Verificar que todos los sistemas operativos estén actualizados y protegidos físicamente.
+Problemas comunes y soluciones
+Error al conectar a la base de datos : Verificar permisos del usuario y estado del servidor SQL.
+Fallo en la instalación : Asegurarse de cumplir con los requisitos mínimos de hardware y software.
+Licencias no registradas : Reiniciar contraseñas y verificar la conexión a Internet durante el proceso de registro.
+Configuración
+Archivos de configuración clave y su ubicación
+Base de datos : Centralizada en el servidor SQL.
+Contrapartidas y conceptos : Configurados en el subsistema de Finanzas.
+Parámetros importantes
+Formato de documentos primarios :
+Define la estructura de los documentos utilizados en el sistema.
+Permite aperturas independientes según las necesidades de la entidad.
+Asociación cuenta – centro de costo :
+Esencial para registrar hechos económicos relacionados con gastos.
+Un Centro de Costo puede estar asociado a múltiples cuentas de gastos.
+Ejemplos de configuración recomendada
+Formato de documentos primarios :
+plaintext
+Copiar
+1
+2
+3
+Tipo de documento: Pago
+Moneda: USD
+Contrapartida: Obligación contraída
+Política de seguridad :
+Longitud mínima de contraseña: 8 caracteres.
+Caracteres requeridos: Mayúsculas, números y símbolos.
+Tiempo de validez: 90 días.
+Funcionalidades principales
+Descripción de características
+Control de Medios Técnicos :
+Gestiona la disponibilidad y movimientos de medios técnicos como cheques, letras de cambio y otros instrumentos financieros.
+Permite registrar entradas y salidas de medios técnicos, con estados de edición y confirmación.
+Anticipos :
+Registra y controla anticipos otorgados a trabajadores o entidades.
+Facilita la liquidación de anticipos mediante modelos de liquidación.
+Financiamiento :
+Registra la entrada de efectivo destinado al financiamiento de la entidad.
+Controla el uso de recursos asignados para gastos corrientes o inversiones.
+Comandos clave y ejemplos
+Registrar un anticipo :
+plaintext
+Copiar
+1
+Menú Anticipos -> Nuevo -> Especificar receptor y moneda
+Liquidar un anticipo :
+plaintext
+Copiar
+1
+Vista Anticipos -> Seleccionar anticipo -> Liquidar
+Crear un movimiento de entrada de medios técnicos :
+plaintext
+Copiar
+1
+Vista Medios Técnicos -> Nueva Entrada -> Especificar tipo y cantidad
+Casos de uso
+Ejemplo 1: Registro de un pago anticipado
+Escenario : Una empresa necesita registrar un pago anticipado realizado a un proveedor.
+Solución :
+Crear un documento de pago en la vista Cobros y Pagos .
+Especificar un concepto de contrapartida del tipo "Operación anticipada".
+Registrar el pago y generar el asiento contable correspondiente.
+Ejemplo 2: Liquidación de un anticipo
+Escenario : Un trabajador devuelve un anticipo otorgado previamente.
+Solución :
+Acceder a la vista Anticipos y seleccionar el anticipo correspondiente.
+Generar un modelo de liquidación para registrar la devolución.
+Confirmar la liquidación y actualizar los registros contables.
+Solución de problemas
+Preguntas frecuentes
+¿Qué hacer si un documento queda bloqueado?
+Verificar si el documento está en edición en otra sesión y cerrarlo adecuadamente.
+Usar la opción Documentos Bloqueados para desbloquearlo.
+¿Cómo corregir errores en las contrapartidas?
+Modificar la contrapartida sin eliminarla si ya tiene operaciones asociadas.
+Exportar e importar contrapartidas para sincronizar datos.
+¿Qué significa "usuario huérfano"?
+Ocurre cuando un usuario existe en la base de datos pero no tiene asociado un inicio de sesión en el servidor. Usar la opción Corregir usuarios huérfanos.
+Logs y diagnóstico
+Acceder a la vista de Estado de Operaciones para revisar registros de actividad.
+Consultar el Editor de SQL para ejecutar scripts de corrección validados por el productor.
