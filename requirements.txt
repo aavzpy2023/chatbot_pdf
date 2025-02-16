@@ -2,3 +2,4 @@ streamlit
 PyPDF2
 transformers
 torch
+requests
