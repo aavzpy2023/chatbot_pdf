@@ -1,0 +1,77 @@
+Resumen del Manual del Módulo de Inventarios - Versat 2.10
+Introducción
+El módulo de Inventarios es uno de los subsistemas más importantes del software VERSAT Sarasola , diseñado para gestionar y controlar los recursos materiales (insumos, productos terminados, herramientas en uso) en cualquier tipo de entidad (estatal, privada u otro tipo de propiedad).
+Su propósito principal es procesar la documentación primaria inherente a la gestión de almacenes y custodios, garantizando el control de inventarios y minimizando fugas o pérdidas.
+Incluye funcionalidades específicas como el manejo de útiles y herramientas en uso, tratamiento por lotes y recodificación de productos.
+Instalación
+Requisitos previos
+Sistema operativo : Windows Server 2019 x64 (entorno servidor) o Windows 10 x64 (entorno cliente).
+Hardware recomendado :
+Procesador: 3.0 GHz (servidor), 2.0 GHz (cliente).
+RAM: 8 GB (servidor), 4 GB (cliente).
+Espacio en disco: 100 GB (servidor), 80 GB (cliente).
+Software requerido :
+Gestor de bases de datos: Microsoft SQL Server 2019 Enterprise Edition.
+Actualizaciones del sistema operativo y service packs instalados.
+Pasos detallados para la instalación
+Ejecutar el instalador VersatInstalacion.exe.
+Seleccionar la carpeta de instalación y los subsistemas a instalar (Inventarios es uno de ellos).
+Crear accesos directos en el menú de inicio para cada subsistema.
+Utilizar el instalador BDVersat.exe para crear o actualizar la base de datos, especificando el servidor y credenciales con permisos adecuados.
+Problemas comunes y soluciones
+Error de conexión a la base de datos : Verificar que el gestor de bases de datos esté instalado en un servidor protegido físicamente y que el acceso sea restringido.
+Fallo en la creación de documentos : Asegurarse de que el formato de productos y ubicaciones esté correctamente configurado en el subsistema de Configuración.
+Configuración
+Archivos de configuración clave
+Formato de productos : Define la estructura del codificador de productos (niveles de clasificación y surtidos).
+Ubicación de productos : Configuración de secciones para organizar productos en almacenes y custodios.
+Parámetros importantes
+Trabajo con lotes : Habilitar esta opción si se requiere controlar productos con características específicas (fecha de vencimiento, número de lote).
+Partida arancelaria : Opcional, puede activarse para incluir esta información en los productos.
+Ejemplos de configuración recomendada
+Formato de productos :
+Genérico: 3 caracteres.
+Subgenérico: 2 caracteres.
+Surtido: 5 caracteres.
+Formato de ubicación :
+Sección: 2 caracteres.
+Funcionalidades principales
+Descripción de las principales características
+Control de movimientos de inventario :
+Gestión de entradas, salidas y transferencias de productos.
+Generación automática de asientos contables.
+Clasificador de productos :
+Codificador jerárquico para clasificar productos por niveles (genérico, subgenérico, específico, surtido).
+Tratamiento por lotes :
+Control de productos con fechas de vencimiento o números de lote.
+Recodificación de productos :
+Cambio de códigos de productos existentes sin afectar el historial.
+Comandos clave y ejemplos de aplicación
+Exportar documentos :
+Acceso: Menú Archivo > Exportar.
+Uso: Guardar documentos confirmados en archivos de texto.
+Importar documentos :
+Acceso: Menú Archivo > Importar.
+Uso: Introducir documentos desde archivos de texto, validando su estructura.
+Cambiar códigos de productos :
+Acceso: Menú Clasificador de Productos > Recodificar.
+Uso: Asociar códigos antiguos con nuevos manteniendo el historial.
+Casos de uso
+Ejemplo práctico: Carga inicial de inventarios
+Definir el formato de productos y ubicaciones en el subsistema de Configuración.
+Capturar los productos iniciales en el Clasificador de Productos.
+Crear documentos de entrada para registrar las existencias iniciales.
+Confirmar los documentos para actualizar las existencias.
+Ejemplo práctico: Control de inventario físico
+Aplicar filtros en la vista de Almacenes y Custodios (porcentaje, existencia hasta una fecha).
+Generar el reporte de inventario físico del 10%.
+Registrar las diferencias detectadas en el sistema.
+Solución de problemas
+Preguntas frecuentes
+¿Qué hacer si no se pueden modificar documentos?
+Verificar el estado del documento (solo se pueden modificar documentos no confirmados) y los permisos del usuario.
+¿Cómo corregir errores en la confirmación de documentos?
+Revisar los mensajes de error emitidos por el sistema y corregir los datos inconsistentes.
+Logs y diagnóstico de problemas
+Registro de errores : Los logs del sistema se encuentran en la carpeta de instalación, en la subcarpeta Logs.
+Diagnóstico : Utilizar la opción Buscar en la lista de documentos para identificar inconsistencias.

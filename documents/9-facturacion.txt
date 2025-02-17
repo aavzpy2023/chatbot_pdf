@@ -1,0 +1,72 @@
+Resumen del Manual de Versat - Módulo Facturación
+Introducción
+El subsistema de Facturación es uno de los componentes clave del Sistema Integrado VERSAT Sarasola, diseñado para gestionar la emisión de facturas en diversos tipos de operaciones comerciales. Este módulo permite la automatización y transparencia en las operaciones asociadas a la facturación de bienes y servicios, activos fijos, productos de insumo, mercancías para venta y producción terminada. Su integración con otros subsistemas como Inventarios, Activos Fijos y Finanzas garantiza un control eficiente y preciso de las operaciones económicas.
+
+Instalación
+Requisitos previos
+Sistema operativo : No especificado en el manual, pero se detalla en el manual de Configuración.
+Hardware recomendado : No especificado en el manual, pero se detalla en el manual de Configuración.
+Software requerido : Subsistemas base (Configuración, Contabilidad General, Inventarios y Activos Fijos).
+Pasos detallados para la instalación
+Instalar los subsistemas base (Configuración, Contabilidad General, Inventarios y Activos Fijos).
+Configurar los parámetros generales en el subsistema de Configuración.
+Definir los formatos de numeración para las facturas en el módulo de Codificadores.
+Iniciar el procesamiento en Facturación desde el menú Procesos/Inicializar Procesamiento.
+Problemas comunes y soluciones
+Problema : Errores en la selección de fechas durante el cambio de fecha de procesamiento.
+Solución : Asegurarse de que la fecha seleccionada sea igual o posterior a la fecha de procesamiento actual.
+Problema : Falta de permisos para acceder al subsistema.
+Solución : Asignar roles adecuados en el subsistema de Configuración.
+Configuración
+Archivos de configuración clave y su ubicación
+La configuración general se realiza en el subsistema de Configuración .
+Parámetros específicos para facturación se definen en la vista Configuración del Subsistema .
+Parámetros importantes y su impacto en el rendimiento
+Modificar precio de venta : Permite ajustar precios durante la facturación.
+Crear obligación para retenciones : Genera automáticamente obligaciones de pago por retenciones.
+Decimales para el precio : Define la precisión de los precios hasta 5 decimales.
+Crear obligación en moneda de cobro : Habilita la facturación en una moneda y el registro de cobro en otra.
+Ejemplos de configuración recomendada
+Conceptos de venta : Configurar cuentas contables para registrar ingresos y costos por moneda.
+Impuestos y recargos : Aplicar impuestos sobre ventas y configurar tasas impositivas.
+Funcionalidades principales
+Descripción de las principales características y su uso
+Facturación por servicios :
+Registro de ingresos por prestación de servicios.
+Generación automática de documentos de obligación en Finanzas.
+Facturación de inventarios :
+Control de existencias y movimientos en almacenes.
+Registro de ventas de insumos, mercancías y producción terminada.
+Facturación de activos fijos :
+Registro de ventas de activos fijos y su depreciación residual.
+Movimientos automáticos en el subsistema de Activos Fijos.
+Facturación de bienes y servicios :
+Combinación de productos y servicios en una misma factura.
+Soporte para diferentes categorías de mercancías y múltiples almacenes.
+Comandos clave y ejemplos de aplicación
+Convertir prefactura a factura :
+Menú contextual: Convertir a Factura.
+Anular factura :
+Acción: Eliminar documentos generados en Inventarios, Activos Fijos y Finanzas.
+Confirmar factura :
+Acción: Generar comprobantes contables en los subsistemas vinculados.
+Casos de uso
+Ejemplos prácticos de implementación en distintos escenarios
+Venta de productos terminados :
+Utilizar conceptos de contrapartida para registrar ingresos y costos.
+Generar documentos de salida en Inventarios.
+Facturación de servicios :
+Registrar ingresos por servicios utilizando conceptos de Finanzas.
+Crear obligaciones de cobro en moneda extranjera.
+Control de contratos :
+Monitorear la ejecución de contratos por montos y productos/servicios.
+Validar restricciones contractuales durante la facturación.
+Solución de problemas
+Preguntas frecuentes y resolución de errores comunes
+Pregunta : ¿Cómo anular una factura confirmada?
+Respuesta : Anular los documentos generados en los subsistemas vinculados y registrar la causa de anulación.
+Pregunta : ¿Qué hacer si un impuesto no se aplica correctamente?
+Solución : Verificar la configuración de impuestos y su asociación con los conceptos de venta.
+Logs y diagnóstico de problemas
+Los registros de errores se encuentran en la vista Histórico de Facturas .
+Utilice la función Ver Documentos Generados para localizar errores específicos en los subsistemas vinculados.

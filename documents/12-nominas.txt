@@ -1,0 +1,50 @@
+Resumen del Manual de Versat Sarasola - Módulo "Nóminas"
+Introducción
+Descripción general : El subsistema "Nóminas" del software Versat Sarasola está diseñado para gestionar el cálculo y pago de nóminas, incluyendo salarios, deducciones, beneficios y otros conceptos relacionados con la remuneración del personal. Este módulo se integra estrechamente con otros subsistemas como Finanzas y Recursos Humanos.
+Propósito y contexto de uso : Facilita la automatización de procesos relacionados con la gestión de nóminas, asegurando el cumplimiento normativo y la precisión en los cálculos. Es especialmente útil para empresas que necesitan manejar grandes volúmenes de datos de empleados y generar informes detallados.
+Instalación
+Requisitos previos :
+Sistema operativo compatible: Windows/Linux (detalles específicos en el manual de Configuración).
+Dependencias: Base de datos configurada, acceso a los subsistemas de Finanzas y Recursos Humanos.
+Hardware recomendado: Procesador multicore, al menos 8 GB de RAM, espacio en disco suficiente para almacenar datos transaccionales.
+Pasos detallados para la instalación :
+Descargar e instalar el paquete del subsistema desde el área comercial de DATAZUCAR.
+Registrar el software utilizando las credenciales proporcionadas por el proveedor.
+Configurar la conexión con la base de datos central y los subsistemas relacionados.
+Realizar pruebas iniciales para verificar la correcta instalación.
+Problemas comunes y soluciones :
+Fallo en la conexión con la base de datos : Verificar credenciales y permisos de acceso.
+Errores de registro : Contactar con el soporte técnico de DATAZUCAR para validar licencias.
+Configuración
+Archivos de configuración clave y su ubicación :
+Archivo principal de configuración: Sistema\Configuración.
+Codificadores y parámetros específicos accesibles desde la interfaz de usuario.
+Parámetros importantes y su impacto en el rendimiento :
+Definición de conceptos de nómina (salarios, bonificaciones, deducciones).
+Configuración de tasas impositivas y contribuciones legales.
+Parámetros de cálculo para horas extras, vacaciones y otros beneficios.
+Ejemplos de configuración recomendada :
+Activar la integración automática con el subsistema de Finanzas para la generación de documentos contables.
+Configurar alertas para fechas límite de pagos y vencimientos de obligaciones laborales.
+Funcionalidades principales
+Descripción de las principales características y su uso :
+Cálculo automático de salarios y deducciones basado en parámetros predefinidos.
+Generación de recibos de pago individualizados para cada empleado.
+Creación de informes detallados sobre costos laborales y cumplimiento normativo.
+Comandos clave y ejemplos de aplicación :
+Generar nómina mensual : Accesible desde la opción Procesar Nómina en el menú principal.
+Exportar informes : Utilizar la función Exportar para generar archivos en formato PDF o Excel.
+Configurar nuevos conceptos : Acceder a Codificadores para añadir o modificar elementos como bonificaciones o descuentos.
+Casos de uso
+Ejemplos prácticos de implementación en distintos escenarios :
+Empresa manufacturera : Automatización del cálculo de horas extras y pagos por producción.
+Sector servicios : Gestión de nóminas para empleados con contratos flexibles y variables.
+Cumplimiento legal : Asegurar el cumplimiento de leyes laborales locales mediante la configuración de parámetros fiscales y de seguridad social.
+Solución de problemas
+Preguntas frecuentes y resolución de errores comunes :
+Errores en el cálculo de salarios : Verificar la configuración de conceptos y tasas aplicadas.
+Fallo en la generación de recibos : Revisar la plantilla de impresión y los permisos de acceso.
+Problemas con la integración de Finanzas : Asegurarse de que los documentos contables estén correctamente configurados.
+Logs y diagnóstico de problemas :
+Consultar el archivo de logs ubicado en Sistema\Logs para identificar errores específicos.
+Utilizar la opción Ver operaciones para revisar el historial de acciones realizadas en el sistema.

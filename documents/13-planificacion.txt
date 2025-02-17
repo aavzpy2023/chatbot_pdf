@@ -1,0 +1,50 @@
+Resumen del Manual de Versat Sarasola - Módulo "Planificación"
+Introducción
+Descripción general : El subsistema "Planificación" del software Versat Sarasola está diseñado para facilitar la gestión y planificación de recursos, actividades y proyectos dentro de una organización. Su propósito es optimizar la asignación de recursos, mejorar la eficiencia operativa y proporcionar herramientas para la toma de decisiones estratégicas.
+Propósito y contexto de uso : Este módulo es especialmente útil para empresas que necesitan coordinar múltiples proyectos, gestionar recursos limitados y asegurar el cumplimiento de plazos y metas. Se integra con otros subsistemas como Finanzas, Inventarios y Recursos Humanos para ofrecer una visión completa de las operaciones.
+Instalación
+Requisitos previos :
+Sistema operativo compatible: Windows/Linux (detalles específicos en el manual de Configuración).
+Dependencias: Base de datos configurada, acceso a los subsistemas relacionados.
+Hardware recomendado: Procesador multicore, al menos 8 GB de RAM, espacio en disco suficiente para almacenar datos transaccionales.
+Pasos detallados para la instalación :
+Descargar e instalar el paquete del subsistema desde el área comercial de DATAZUCAR.
+Registrar el software utilizando las credenciales proporcionadas por el proveedor.
+Configurar la conexión con la base de datos central y los subsistemas relacionados.
+Realizar pruebas iniciales para verificar la correcta instalación.
+Problemas comunes y soluciones :
+Fallo en la conexión con la base de datos : Verificar credenciales y permisos de acceso.
+Errores de registro : Contactar con el soporte técnico de DATAZUCAR para validar licencias.
+Configuración
+Archivos de configuración clave y su ubicación :
+Archivo principal de configuración: Sistema\Configuración.
+Codificadores y parámetros específicos accesibles desde la interfaz de usuario.
+Parámetros importantes y su impacto en el rendimiento :
+Definición de proyectos, fases y tareas.
+Configuración de recursos y asignación de responsables.
+Parámetros para la generación de informes y seguimiento de progreso.
+Ejemplos de configuración recomendada :
+Activar la integración automática con el subsistema de Finanzas para el control presupuestario.
+Configurar alertas para fechas límite de proyectos y vencimientos de tareas.
+Funcionalidades principales
+Descripción de las principales características y su uso :
+Gestión de proyectos: Creación, seguimiento y cierre de proyectos.
+Asignación de recursos: Distribución óptima de recursos humanos y materiales.
+Generación de informes: Informes detallados sobre el estado de los proyectos y el uso de recursos.
+Comandos clave y ejemplos de aplicación :
+Crear un nuevo proyecto : Accesible desde la opción Nuevo Proyecto en el menú principal.
+Asignar recursos : Utilizar la función Asignar Recursos para distribuir personal y materiales.
+Generar informes : Usar la opción Generar Informe para obtener un resumen del estado del proyecto.
+Casos de uso
+Ejemplos prácticos de implementación en distintos escenarios :
+Gestión de proyectos complejos : Coordinación de múltiples equipos y recursos en grandes proyectos de construcción.
+Control presupuestario : Seguimiento de costos y ajustes en tiempo real para evitar desviaciones.
+Optimización de recursos : Mejora en la asignación de personal y materiales para maximizar la eficiencia.
+Solución de problemas
+Preguntas frecuentes y resolución de errores comunes :
+Errores en la asignación de recursos : Verificar la disponibilidad de recursos y las configuraciones de asignación.
+Fallo en la generación de informes : Revisar la plantilla de informes y los permisos de acceso.
+Problemas con la integración de Finanzas : Asegurarse de que los documentos contables estén correctamente configurados.
+Logs y diagnóstico de problemas :
+Consultar el archivo de logs ubicado en Sistema\Logs para identificar errores específicos.
+Utilizar la opción Ver operaciones para revisar el historial de acciones realizadas en el sistema.

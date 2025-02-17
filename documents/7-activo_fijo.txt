@@ -1,0 +1,74 @@
+Resumen del Manual de Versat - Módulo Activos Fijos
+Introducción
+El subsistema de Activos Fijos forma parte del software VERSAT Sarasola , diseñado para controlar y gestionar los activos fijos de una entidad, incluyendo su valor, depreciación, ubicación y modificaciones. Ofrece herramientas para realizar movimientos como altas, bajas, traslados y modificaciones, además de generar reportes detallados y conciliaciones con el subsistema de Contabilidad General. Su objetivo es facilitar el cumplimiento de las normas de control interno y proporcionar información precisa para la toma de decisiones.
+
+Instalación
+Requisitos previos
+Sistema operativo : Windows Server 2019 x64 o superior.
+Hardware recomendado :
+Procesador: 3.0 GHz.
+RAM: 8 GB.
+Espacio en disco: 100 GB.
+Software requerido :
+Microsoft SQL Server 2019 Enterprise Edition.
+Subsistemas adicionales: Configuración, Contabilidad General, Costo y Procesos.
+Pasos detallados para la instalación
+Ejecutar el archivo de instalación VersatInstalacion.exe.
+Seleccionar los subsistemas a instalar, incluyendo Activos Fijos .
+Crear accesos directos en el menú de inicio.
+Problemas comunes y soluciones
+Problema : Falta de permisos para acceder a la base de datos.
+Solución : Verificar que el usuario tenga acceso al gestor de bases de datos.
+Problema : Errores durante la instalación.
+Solución : Asegurarse de que el sistema operativo y las dependencias estén actualizadas.
+Configuración
+Archivos de configuración clave y su ubicación
+Los archivos de configuración se encuentran en el subsistema de Configuración .
+Parámetros específicos del subsistema de Activos Fijos se definen en la actividad Configuración del Subsistema .
+Parámetros importantes y su impacto en el rendimiento
+Métodos de depreciación : Línea recta, línea recta decreciente.
+Ciclos de amortización : Distribución de la depreciación anual por períodos.
+Cuentas contables : Asociadas a grupos de activos y conceptos.
+Ejemplos de configuración recomendada
+Depreciación : Configurar el método de línea recta para activos estándar.
+Ciclos de amortización : Distribuir la depreciación mensualmente o según ciclos específicos.
+Funcionalidades principales
+Descripción de las principales características y su uso
+Control de activos :
+Gestión de altas, bajas, traslados y modificaciones.
+Cálculo automático de depreciación.
+Inventarios físicos :
+Generación de hojas de inventario.
+Marcado y chequeo de activos.
+Contabilización :
+Generación automática de asientos contables.
+Conciliación con el subsistema de Contabilidad General.
+Comandos clave y ejemplos de aplicación
+Adicionar activo :
+Número de inventario: ACT001
+Descripción: Computadora P4
+Valor de adquisición: $850.00
+Depreciación acumulada: $150.00
+Cambiar grupo de activo :
+Grupo anterior: 7-Muebles y accesorios de oficina
+Nuevo grupo: 5-Máquinas y equipos especiales
+Calcular depreciación :
+Método: Línea recta.
+Tasa: 20%.
+Casos de uso
+Ejemplos prácticos de implementación en distintos escenarios
+Gestión de activos en una empresa industrial :
+Registrar máquinas y equipos, calcular depreciación mensual y generar reportes para auditoría.
+Traslado de activos entre áreas :
+Cambiar un activo del área de producción al área de administración.
+Revaluación de activos :
+Ajustar el valor de un activo debido a mejoras o deterioro.
+Solución de problemas
+Preguntas frecuentes y resolución de errores comunes
+Pregunta : ¿Cómo eliminar un activo?
+Respuesta : Solo se puede eliminar si no tiene documentos asociados. De lo contrario, desactívelo.
+Pregunta : ¿Qué hacer si la depreciación no se calcula correctamente?
+Solución : Verifique la configuración del método de depreciación y los ciclos de amortización.
+Logs y diagnóstico de problemas
+Los registros de errores se encuentran en el subsistema de Configuración , en la opción Registro de Salvas y Restauraciones .
+Utilice la función Buscar en cada vista para localizar errores específicos

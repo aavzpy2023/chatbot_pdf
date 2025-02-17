@@ -1,0 +1,46 @@
+Resumen del Manual de Versat - Módulo "Punto de Venta"
+Introducción
+Propósito : El subsistema "Punto de Venta" del software Versat Sarasola está diseñado para gestionar las operaciones comerciales de productos y servicios en entidades minoristas, utilizando cajas registradoras.
+Contexto de uso : Facilita el control de precios, ventas, y la generación de informes detallados. Interactúa directamente con los subsistemas de Inventarios y Finanzas para la creación de documentos relacionados con las transacciones.
+Instalación
+Requisitos previos :
+Hardware y software requeridos se detallan en el manual del subsistema de Configuración.
+Compatible con cajas registradoras específicas como Óptima QMP 2044 y Casio SE-C6000.
+Pasos detallados para la instalación :
+Distribución a través del área comercial tras contrato con el cliente.
+Registro y licencias gestionados por DATAZUCAR.
+Problemas comunes y soluciones :
+Problemas de compatibilidad con cajas registradoras: Verificar soporte o adquirir controladores adicionales.
+Fallos en la autentificación: Revisar credenciales y permisos de usuario.
+Configuración
+Archivos de configuración clave y su ubicación :
+Configuración general accesible desde Sistema\Configuración.
+Gestión de Unidades de Venta, departamentos, cajas registradoras y cajeros.
+Parámetros importantes y su impacto en el rendimiento :
+Selección de almacén asociado a la Unidad de Venta.
+Asignación de departamentos y cajeros a cajas registradoras.
+Ejemplos de configuración recomendada :
+Activar/desactivar elementos según necesidades operativas.
+Configurar tipos de conexión (LAN, WAN, Serie, Modem, FTP) para cajas registradoras.
+Funcionalidades principales
+Descripción de las principales características y su uso :
+Gestión de precios para productos y servicios.
+Generación y envío de PLUs (Price Look-Up) a cajas registradoras.
+Procesamiento de reportes de ventas e ingresos.
+Comandos clave y ejemplos de aplicación :
+Adicionar precio: Ctrl+A en la vista Precios.
+Generar PLU total: Botón correspondiente en la pestaña PLUs.
+Confirmar venta: Ctrl+J en la vista Ventas.
+Casos de uso
+Ejemplos prácticos de implementación en distintos escenarios :
+Control de inventario en tiendas minoristas.
+Gestión de ventas y pagos en múltiples formas (efectivo, tarjeta, cheque).
+Creación automática de documentos de Inventarios y Finanzas tras procesar ventas.
+Solución de problemas
+Preguntas frecuentes y resolución de errores comunes :
+No se visualizan precios : Verificar si están activos o usar la opción "Mostrar Todos".
+Falla al procesar ventas : Revisar codificadores de Medios de Pago y Códigos de Cobro.
+Errores al terminar ventas : Asegurarse de que los datos de configuración en Documentos de Inventarios y Finanzas estén completos.
+Logs y diagnóstico de problemas :
+Utilizar la opción "Ver operaciones" para revisar el historial de acciones sobre una venta.
+Consultar el estado de documentos (editado, confirmado, cancelado) para identificar inconsistencias.

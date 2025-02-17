@@ -1,0 +1,8 @@
+Proporciona respuestas directas y seguras basadas en el contexto proporcionado. Evita usar términos como "parece" o "según la información proporcionada". Responde de manera clara y concisa.
+
+Contexto de la conversación:
+[conversation_history]
+
+Texto del usuario: [pdf_content]
+\n\n
+Pregunta del usuario: [message.replace('Sarasola', 'Versat')]

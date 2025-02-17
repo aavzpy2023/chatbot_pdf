@@ -1,0 +1,50 @@
+Resumen del Manual de Versat Sarasola - Módulo "Diseñador de Reportes"
+Introducción
+Descripción general : El subsistema "Diseñador de Reportes" del software Versat Sarasola permite a los usuarios generar y organizar información contable en forma de talones, proformas y otros reportes. Está diseñado para facilitar la creación de estados financieros y otras informaciones necesarias para la dirección de entidades.
+Propósito y contexto de uso : Este módulo es especialmente útil para entidades que necesitan implementar herramientas para la obtención de estados financieros básicos de contabilidad, así como otras informaciones requeridas para la toma de decisiones. Los principales actores son el Especialista Principal y el Gestor de Talones, quienes tienen permisos específicos para gestionar los reportes.
+Instalación
+Requisitos previos :
+Sistema operativo compatible: Detallado en el Manual de Configuración.
+Dependencias: Base de datos configurada, acceso a otros subsistemas relacionados.
+Hardware recomendado: Procesador multicore, al menos 8 GB de RAM, espacio en disco suficiente para almacenar datos transaccionales.
+Pasos detallados para la instalación :
+Descargar e instalar el paquete del subsistema desde el área comercial de DATAZUCAR.
+Registrar el software utilizando las credenciales proporcionadas por el proveedor.
+Configurar la conexión con la base de datos central y los subsistemas relacionados.
+Realizar pruebas iniciales para verificar la correcta instalación.
+Problemas comunes y soluciones :
+Fallo en la conexión con la base de datos : Verificar credenciales y permisos de acceso.
+Errores de registro : Contactar con el soporte técnico de DATAZUCAR para validar licencias.
+Configuración
+Archivos de configuración clave y su ubicación :
+Archivo principal de configuración: Sistema\Configuración.
+Codificadores y parámetros específicos accesibles desde la interfaz de usuario.
+Parámetros importantes y su impacto en el rendimiento :
+Definición de talones, columnas y filas.
+Configuración de expresiones y validaciones.
+Parámetros para la generación de informes y exportación de datos.
+Ejemplos de configuración recomendada :
+Activar la integración automática con el subsistema de Finanzas para el control presupuestario.
+Configurar alertas para errores en la validación de talones.
+Funcionalidades principales
+Descripción de las principales características y su uso :
+Gestión de Talones : Creación, modificación y eliminación de talones (Figura 2, página 5).
+Proformas : Generación y exportación de proformas para tributar o rendir información (Figura 13, página 15).
+Plan : Selección de planes anuales con sus respectivos períodos y descripciones (Figura 14, página 15).
+Comandos clave y ejemplos de aplicación :
+Crear un nuevo talón : Accesible desde la opción Talones > Nuevo Talón en el menú principal.
+Calcular talón : Utilizar la opción Calcular Talón para procesar datos del período contable actual (Figura 9, página 11).
+Exportar talón : Usar la opción Exportar Talón para generar un archivo CSV con toda la información del talón.
+Casos de uso
+Ejemplos prácticos de implementación en distintos escenarios :
+Generación de estados financieros : Uso de talones oficiales para crear informes contables estándar.
+Validación de datos : Aplicación de reglas de validación para evitar errores en la entrada de datos (Figura 12, página 14).
+Exportación de proformas : Exportación de datos en formato XML o texto para cumplir con requisitos de organismos superiores.
+Solución de problemas
+Preguntas frecuentes y resolución de errores comunes :
+Errores en la creación de talones : Verificar la configuración de columnas y filas.
+Fallo en la exportación de proformas : Asegurarse de que los permisos de acceso estén correctamente configurados.
+Problemas con la integración de Finanzas : Revisar la plantilla de informes y los permisos de acceso.
+Logs y diagnóstico de problemas :
+Consultar el archivo de logs ubicado en Sistema\Logs para identificar errores específicos.
+Utilizar la opción Ver operaciones para revisar el historial de acciones realizadas en el sistema.

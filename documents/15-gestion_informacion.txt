@@ -1,0 +1,53 @@
+Resumen del Manual de Versat Sarasola - Módulo "Gestión de la Información"
+Introducción
+Descripción general : El subsistema "Gestión de la Información" del software Versat Sarasola permite visualizar y manipular la información enviada o recibida por cada uno de los subsistemas, siempre que se posean los permisos adecuados. Este módulo es esencial para la gestión de datos entre niveles superiores e inferiores, así como para el procesamiento y seguimiento de la información generada por otros subsistemas.
+Propósito y contexto de uso : Facilita el envío, recepción, procesamiento y validación de información crítica para la operación de la entidad, asegurando la integridad y trazabilidad de los datos.
+Instalación
+Requisitos previos :
+Sistema operativo compatible: Detallado en el Manual de Configuración.
+Dependencias: Base de datos configurada, acceso a otros subsistemas relacionados.
+Hardware recomendado: Procesador multicore, al menos 8 GB de RAM, espacio en disco suficiente para almacenar datos transaccionales.
+Pasos detallados para la instalación :
+Descargar e instalar el paquete del subsistema desde el área comercial de DATAZUCAR.
+Registrar el software utilizando las credenciales proporcionadas por el proveedor.
+Configurar la conexión con la base de datos central y los subsistemas relacionados.
+Realizar pruebas iniciales para verificar la correcta instalación.
+Problemas comunes y soluciones :
+Fallo en la conexión con la base de datos : Verificar credenciales y permisos de acceso.
+Errores de registro : Contactar con el soporte técnico de DATAZUCAR para validar licencias.
+Configuración
+Archivos de configuración clave y su ubicación :
+Configuración de comunicación: Principal > Datos de la Organización > Página de Comunicación.
+Configuración de correo electrónico: Necesaria para habilitar el envío y recepción automática de información.
+Parámetros importantes y su impacto en el rendimiento :
+Habilitación del uso del correo electrónico (POP3 o IMAP).
+Configuración del servidor, usuario, contraseña y cuenta de correo.
+Definición de grupos de unidades para la agregación de correos electrónicos.
+Ejemplos de configuración recomendada :
+Uso del correo predeterminado configurado como POP3 para almacenar mensajes localmente.
+Configuración de IMAP para mantener los mensajes en el servidor y evitar pérdida de información.
+Funcionalidades principales
+Descripción de las principales características y su uso :
+Envío y recepción de información : Automatización del envío y recepción de datos entre subsistemas y niveles jerárquicos (Figura 1, página 5).
+Estados de la información : Gestión de estados como "En Espera", "Enviada", "Confirmada", "Denegada", etc. (Figura 2, página 6).
+Validaciones y denegaciones : Identificación de errores en la importación o falta de paquetes anteriores (Figura 3, página 13).
+Comandos clave y ejemplos de aplicación :
+Enviar : Envía mensajes pendientes de cada subsistema.
+Recibir : Importa información desde el servidor de correos.
+Reenviar : Reenvía información seleccionada o confirmaciones/denegaciones.
+Procesar : Procesa información recibida en estados como "Denegada" o "Sin Procesar".
+Exportar/Importar : Exporta o importa información cuando el correo no está disponible.
+Casos de uso
+Ejemplos prácticos de implementación en distintos escenarios :
+Envío de información contable : Envío de datos de cierre mensual al nivel superior (MINREX) (Figura 4, página 11).
+Recepción de nóminas : Importación de datos de nómina desde una misión externa.
+Validación de proformas : Aseguramiento de la homogeneidad en los clasificadores de cuentas y centros de costo.
+Automatización con servicio : Uso del servicio "ServiceMailVersat" para recibir y enviar mensajes automáticamente cada cierto tiempo.
+Solución de problemas
+Preguntas frecuentes y resolución de errores comunes :
+Falta de paquete anterior : Reenviar automáticamente el paquete faltante o manualmente si es necesario.
+Errores en la importación : Verificar la homogeneidad de clasificadores y cuentas entre bases de datos.
+Perdida de información : Configurar correctamente el protocolo IMAP o POP3 según las necesidades.
+Logs y diagnóstico de problemas :
+Consultar los archivos generados por el servicio "ServiceMailVersat" para monitorear su funcionamiento.
+Utilizar la opción "Salvar Fichero" para reparar archivos adjuntos corruptos antes de reimportarlos.

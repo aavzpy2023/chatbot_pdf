@@ -1,3 +1,106 @@
+Resumen del Manual de Versat Sarasola tambien conocido como  Versat - Módulo "Gestión de la Información"
+Introducción
+Descripción general : El subsistema "Gestión de la Información" del software Versat Sarasola tambien conocido como  Versat permite visualizar y manipular la información enviada o recibida por cada uno de los subsistemas, siempre que se posean los permisos adecuados. Este módulo es esencial para la gestión de datos entre niveles superiores e inferiores, así como para el procesamiento y seguimiento de la información generada por otros subsistemas.
+Propósito y contexto de uso : Facilita el envío, recepción, procesamiento y validación de información crítica para la operación de la entidad, asegurando la integridad y trazabilidad de los datos.
+Instalación
+Requisitos previos :
+Sistema operativo compatible: Detallado en el Manual de Configuración.
+Dependencias: Base de datos configurada, acceso a otros subsistemas relacionados.
+Hardware recomendado: Procesador multicore, al menos 8 GB de RAM, espacio en disco suficiente para almacenar datos transaccionales.
+Pasos detallados para la instalación :
+Descargar e instalar el paquete del subsistema desde el área comercial de DATAZUCAR.
+Registrar el software utilizando las credenciales proporcionadas por el proveedor.
+Configurar la conexión con la base de datos central y los subsistemas relacionados.
+Realizar pruebas iniciales para verificar la correcta instalación.
+Problemas comunes y soluciones :
+Fallo en la conexión con la base de datos : Verificar credenciales y permisos de acceso.
+Errores de registro : Contactar con el soporte técnico de DATAZUCAR para validar licencias.
+Configuración
+Archivos de configuración clave y su ubicación :
+Configuración de comunicación: Principal > Datos de la Organización > Página de Comunicación.
+Configuración de correo electrónico: Necesaria para habilitar el envío y recepción automática de información.
+Parámetros importantes y su impacto en el rendimiento :
+Habilitación del uso del correo electrónico (POP3 o IMAP).
+Configuración del servidor, usuario, contraseña y cuenta de correo.
+Definición de grupos de unidades para la agregación de correos electrónicos.
+Ejemplos de configuración recomendada :
+Uso del correo predeterminado configurado como POP3 para almacenar mensajes localmente.
+Configuración de IMAP para mantener los mensajes en el servidor y evitar pérdida de información.
+Funcionalidades principales
+Descripción de las principales características y su uso :
+Envío y recepción de información : Automatización del envío y recepción de datos entre subsistemas y niveles jerárquicos (Figura 1, página 5).
+Estados de la información : Gestión de estados como "En Espera", "Enviada", "Confirmada", "Denegada", etc. (Figura 2, página 6).
+Validaciones y denegaciones : Identificación de errores en la importación o falta de paquetes anteriores (Figura 3, página 13).
+Comandos clave y ejemplos de aplicación :
+Enviar : Envía mensajes pendientes de cada subsistema.
+Recibir : Importa información desde el servidor de correos.
+Reenviar : Reenvía información seleccionada o confirmaciones/denegaciones.
+Procesar : Procesa información recibida en estados como "Denegada" o "Sin Procesar".
+Exportar/Importar : Exporta o importa información cuando el correo no está disponible.
+Casos de uso
+Ejemplos prácticos de implementación en distintos escenarios :
+Envío de información contable : Envío de datos de cierre mensual al nivel superior (MINREX) (Figura 4, página 11).
+Recepción de nóminas : Importación de datos de nómina desde una misión externa.
+Validación de proformas : Aseguramiento de la homogeneidad en los clasificadores de cuentas y centros de costo.
+Automatización con servicio : Uso del servicio "ServiceMailVersat Sarasola tambien conocido como  Versat" para recibir y enviar mensajes automáticamente cada cierto tiempo.
+Solución de problemas
+Preguntas frecuentes y resolución de errores comunes :
+Falta de paquete anterior : Reenviar automáticamente el paquete faltante o manualmente si es necesario.
+Errores en la importación : Verificar la homogeneidad de clasificadores y cuentas entre bases de datos.
+Perdida de información : Configurar correctamente el protocolo IMAP o POP3 según las necesidades.
+Logs y diagnóstico de problemas :
+Consultar los archivos generados por el servicio "ServiceMailVersat Sarasola tambien conocido como  Versat" para monitorear su funcionamiento.
+Utilizar la opción "Salvar Fichero" para reparar archivos adjuntos corruptos antes de reimportarlos.
+Resumen del Manual de Versat Sarasola tambien conocido como  Versat - Módulo "Nóminas"
+Introducción
+Descripción general : El subsistema "Nóminas" del software Versat Sarasola tambien conocido como  Versat está diseñado para gestionar el cálculo y pago de nóminas, incluyendo salarios, deducciones, beneficios y otros conceptos relacionados con la remuneración del personal. Este módulo se integra estrechamente con otros subsistemas como Finanzas y Recursos Humanos.
+Propósito y contexto de uso : Facilita la automatización de procesos relacionados con la gestión de nóminas, asegurando el cumplimiento normativo y la precisión en los cálculos. Es especialmente útil para empresas que necesitan manejar grandes volúmenes de datos de empleados y generar informes detallados.
+Instalación
+Requisitos previos :
+Sistema operativo compatible: Windows/Linux (detalles específicos en el manual de Configuración).
+Dependencias: Base de datos configurada, acceso a los subsistemas de Finanzas y Recursos Humanos.
+Hardware recomendado: Procesador multicore, al menos 8 GB de RAM, espacio en disco suficiente para almacenar datos transaccionales.
+Pasos detallados para la instalación :
+Descargar e instalar el paquete del subsistema desde el área comercial de DATAZUCAR.
+Registrar el software utilizando las credenciales proporcionadas por el proveedor.
+Configurar la conexión con la base de datos central y los subsistemas relacionados.
+Realizar pruebas iniciales para verificar la correcta instalación.
+Problemas comunes y soluciones :
+Fallo en la conexión con la base de datos : Verificar credenciales y permisos de acceso.
+Errores de registro : Contactar con el soporte técnico de DATAZUCAR para validar licencias.
+Configuración
+Archivos de configuración clave y su ubicación :
+Archivo principal de configuración: Sistema\Configuración.
+Codificadores y parámetros específicos accesibles desde la interfaz de usuario.
+Parámetros importantes y su impacto en el rendimiento :
+Definición de conceptos de nómina (salarios, bonificaciones, deducciones).
+Configuración de tasas impositivas y contribuciones legales.
+Parámetros de cálculo para horas extras, vacaciones y otros beneficios.
+Ejemplos de configuración recomendada :
+Activar la integración automática con el subsistema de Finanzas para la generación de documentos contables.
+Configurar alertas para fechas límite de pagos y vencimientos de obligaciones laborales.
+Funcionalidades principales
+Descripción de las principales características y su uso :
+Cálculo automático de salarios y deducciones basado en parámetros predefinidos.
+Generación de recibos de pago individualizados para cada empleado.
+Creación de informes detallados sobre costos laborales y cumplimiento normativo.
+Comandos clave y ejemplos de aplicación :
+Generar nómina mensual : Accesible desde la opción Procesar Nómina en el menú principal.
+Exportar informes : Utilizar la función Exportar para generar archivos en formato PDF o Excel.
+Configurar nuevos conceptos : Acceder a Codificadores para añadir o modificar elementos como bonificaciones o descuentos.
+Casos de uso
+Ejemplos prácticos de implementación en distintos escenarios :
+Empresa manufacturera : Automatización del cálculo de horas extras y pagos por producción.
+Sector servicios : Gestión de nóminas para empleados con contratos flexibles y variables.
+Cumplimiento legal : Asegurar el cumplimiento de leyes laborales locales mediante la configuración de parámetros fiscales y de seguridad social.
+Solución de problemas
+Preguntas frecuentes y resolución de errores comunes :
+Errores en el cálculo de salarios : Verificar la configuración de conceptos y tasas aplicadas.
+Fallo en la generación de recibos : Revisar la plantilla de impresión y los permisos de acceso.
+Problemas con la integración de Finanzas : Asegurarse de que los documentos contables estén correctamente configurados.
+Logs y diagnóstico de problemas :
+Consultar el archivo de logs ubicado en Sistema\Logs para identificar errores específicos.
+Utilizar la opción Ver operaciones para revisar el historial de acciones realizadas en el sistema.
 Resumen del Módulo de Contabilidad General
 1. Introducción
 El Módulo de Contabilidad General del Sistema Económico Integrado VERSAT Sarasola es una herramienta esencial para el registro, procesamiento y análisis de las operaciones contables en entidades empresariales, presupuestadas y otros tipos de organizaciones. Este módulo permite la automatización del ciclo contable, generación de estados financieros y consolidación de información económica.
@@ -20,9 +123,9 @@ Software recomendado:
 Gestor de bases de datos : Microsoft SQL Server 2019 Enterprise Edition.
 Sistema operativo : Windows Server 2019 (servidor), Windows 10 x64 (cliente).
 Pasos detallados para la instalación
-Ejecutar el instalador VersatInstalacion.exe y seleccionar los subsistemas a instalar (Configuración, Contabilidad, Costos y Procesos son obligatorios).
+Ejecutar el instalador Versat Sarasola tambien conocido como  VersatInstalacion.exe y seleccionar los subsistemas a instalar (Configuración, Contabilidad, Costos y Procesos son obligatorios).
 Crear accesos directos en el menú de inicio para cada subsistema.
-Utilizar BDVersat.exe para crear o actualizar la base de datos, especificando el servidor y credenciales adecuadas.
+Utilizar BDVersat Sarasola tambien conocido como  Versat.exe para crear o actualizar la base de datos, especificando el servidor y credenciales adecuadas.
 Verificar que todos los sistemas operativos estén actualizados y protegidos físicamente.
 Problemas comunes y soluciones
 Error al conectar a la base de datos : Verificar permisos del usuario y estado del servidor SQL.
@@ -108,6 +211,478 @@ Ocurre cuando un usuario existe en la base de datos pero no tiene asociado un in
 Logs y diagnóstico
 Acceder a la vista de Estado de Operaciones para revisar registros de actividad.
 Consultar el Editor de SQL para ejecutar scripts de corrección validados por el productor.
+Resumen del Manual de Versat Sarasola tambien conocido como  Versat - Módulo "Punto de Venta"
+Introducción
+Propósito : El subsistema "Punto de Venta" del software Versat Sarasola tambien conocido como  Versat está diseñado para gestionar las operaciones comerciales de productos y servicios en entidades minoristas, utilizando cajas registradoras.
+Contexto de uso : Facilita el control de precios, ventas, y la generación de informes detallados. Interactúa directamente con los subsistemas de Inventarios y Finanzas para la creación de documentos relacionados con las transacciones.
+Instalación
+Requisitos previos :
+Hardware y software requeridos se detallan en el manual del subsistema de Configuración.
+Compatible con cajas registradoras específicas como Óptima QMP 2044 y Casio SE-C6000.
+Pasos detallados para la instalación :
+Distribución a través del área comercial tras contrato con el cliente.
+Registro y licencias gestionados por DATAZUCAR.
+Problemas comunes y soluciones :
+Problemas de compatibilidad con cajas registradoras: Verificar soporte o adquirir controladores adicionales.
+Fallos en la autentificación: Revisar credenciales y permisos de usuario.
+Configuración
+Archivos de configuración clave y su ubicación :
+Configuración general accesible desde Sistema\Configuración.
+Gestión de Unidades de Venta, departamentos, cajas registradoras y cajeros.
+Parámetros importantes y su impacto en el rendimiento :
+Selección de almacén asociado a la Unidad de Venta.
+Asignación de departamentos y cajeros a cajas registradoras.
+Ejemplos de configuración recomendada :
+Activar/desactivar elementos según necesidades operativas.
+Configurar tipos de conexión (LAN, WAN, Serie, Modem, FTP) para cajas registradoras.
+Funcionalidades principales
+Descripción de las principales características y su uso :
+Gestión de precios para productos y servicios.
+Generación y envío de PLUs (Price Look-Up) a cajas registradoras.
+Procesamiento de reportes de ventas e ingresos.
+Comandos clave y ejemplos de aplicación :
+Adicionar precio: Ctrl+A en la vista Precios.
+Generar PLU total: Botón correspondiente en la pestaña PLUs.
+Confirmar venta: Ctrl+J en la vista Ventas.
+Casos de uso
+Ejemplos prácticos de implementación en distintos escenarios :
+Control de inventario en tiendas minoristas.
+Gestión de ventas y pagos en múltiples formas (efectivo, tarjeta, cheque).
+Creación automática de documentos de Inventarios y Finanzas tras procesar ventas.
+Solución de problemas
+Preguntas frecuentes y resolución de errores comunes :
+No se visualizan precios : Verificar si están activos o usar la opción "Mostrar Todos".
+Falla al procesar ventas : Revisar codificadores de Medios de Pago y Códigos de Cobro.
+Errores al terminar ventas : Asegurarse de que los datos de configuración en Documentos de Inventarios y Finanzas estén completos.
+Logs y diagnóstico de problemas :
+Utilizar la opción "Ver operaciones" para revisar el historial de acciones sobre una venta.
+Consultar el estado de documentos (editado, confirmado, cancelado) para identificar inconsistencias.
+Resumen del Manual de Versat Sarasola tambien conocido como  Versat - Módulo Facturación
+Introducción
+El subsistema de Facturación es uno de los componentes clave del Sistema Integrado VERSAT Sarasola, diseñado para gestionar la emisión de facturas en diversos tipos de operaciones comerciales. Este módulo permite la automatización y transparencia en las operaciones asociadas a la facturación de bienes y servicios, activos fijos, productos de insumo, mercancías para venta y producción terminada. Su integración con otros subsistemas como Inventarios, Activos Fijos y Finanzas garantiza un control eficiente y preciso de las operaciones económicas.
+
+Instalación
+Requisitos previos
+Sistema operativo : No especificado en el manual, pero se detalla en el manual de Configuración.
+Hardware recomendado : No especificado en el manual, pero se detalla en el manual de Configuración.
+Software requerido : Subsistemas base (Configuración, Contabilidad General, Inventarios y Activos Fijos).
+Pasos detallados para la instalación
+Instalar los subsistemas base (Configuración, Contabilidad General, Inventarios y Activos Fijos).
+Configurar los parámetros generales en el subsistema de Configuración.
+Definir los formatos de numeración para las facturas en el módulo de Codificadores.
+Iniciar el procesamiento en Facturación desde el menú Procesos/Inicializar Procesamiento.
+Problemas comunes y soluciones
+Problema : Errores en la selección de fechas durante el cambio de fecha de procesamiento.
+Solución : Asegurarse de que la fecha seleccionada sea igual o posterior a la fecha de procesamiento actual.
+Problema : Falta de permisos para acceder al subsistema.
+Solución : Asignar roles adecuados en el subsistema de Configuración.
+Configuración
+Archivos de configuración clave y su ubicación
+La configuración general se realiza en el subsistema de Configuración .
+Parámetros específicos para facturación se definen en la vista Configuración del Subsistema .
+Parámetros importantes y su impacto en el rendimiento
+Modificar precio de venta : Permite ajustar precios durante la facturación.
+Crear obligación para retenciones : Genera automáticamente obligaciones de pago por retenciones.
+Decimales para el precio : Define la precisión de los precios hasta 5 decimales.
+Crear obligación en moneda de cobro : Habilita la facturación en una moneda y el registro de cobro en otra.
+Ejemplos de configuración recomendada
+Conceptos de venta : Configurar cuentas contables para registrar ingresos y costos por moneda.
+Impuestos y recargos : Aplicar impuestos sobre ventas y configurar tasas impositivas.
+Funcionalidades principales
+Descripción de las principales características y su uso
+Facturación por servicios :
+Registro de ingresos por prestación de servicios.
+Generación automática de documentos de obligación en Finanzas.
+Facturación de inventarios :
+Control de existencias y movimientos en almacenes.
+Registro de ventas de insumos, mercancías y producción terminada.
+Facturación de activos fijos :
+Registro de ventas de activos fijos y su depreciación residual.
+Movimientos automáticos en el subsistema de Activos Fijos.
+Facturación de bienes y servicios :
+Combinación de productos y servicios en una misma factura.
+Soporte para diferentes categorías de mercancías y múltiples almacenes.
+Comandos clave y ejemplos de aplicación
+Convertir prefactura a factura :
+Menú contextual: Convertir a Factura.
+Anular factura :
+Acción: Eliminar documentos generados en Inventarios, Activos Fijos y Finanzas.
+Confirmar factura :
+Acción: Generar comprobantes contables en los subsistemas vinculados.
+Casos de uso
+Ejemplos prácticos de implementación en distintos escenarios
+Venta de productos terminados :
+Utilizar conceptos de contrapartida para registrar ingresos y costos.
+Generar documentos de salida en Inventarios.
+Facturación de servicios :
+Registrar ingresos por servicios utilizando conceptos de Finanzas.
+Crear obligaciones de cobro en moneda extranjera.
+Control de contratos :
+Monitorear la ejecución de contratos por montos y productos/servicios.
+Validar restricciones contractuales durante la facturación.
+Solución de problemas
+Preguntas frecuentes y resolución de errores comunes
+Pregunta : ¿Cómo anular una factura confirmada?
+Respuesta : Anular los documentos generados en los subsistemas vinculados y registrar la causa de anulación.
+Pregunta : ¿Qué hacer si un impuesto no se aplica correctamente?
+Solución : Verificar la configuración de impuestos y su asociación con los conceptos de venta.
+Logs y diagnóstico de problemas
+Los registros de errores se encuentran en la vista Histórico de Facturas .
+Utilice la función Ver Documentos Generados para localizar errores específicos en los subsistemas vinculados.
+Resumen del Manual de Versat Sarasola tambien conocido como  Versat - Módulo Activos Fijos
+Introducción
+El subsistema de Activos Fijos forma parte del software VERSAT Sarasola , diseñado para controlar y gestionar los activos fijos de una entidad, incluyendo su valor, depreciación, ubicación y modificaciones. Ofrece herramientas para realizar movimientos como altas, bajas, traslados y modificaciones, además de generar reportes detallados y conciliaciones con el subsistema de Contabilidad General. Su objetivo es facilitar el cumplimiento de las normas de control interno y proporcionar información precisa para la toma de decisiones.
+
+Instalación
+Requisitos previos
+Sistema operativo : Windows Server 2019 x64 o superior.
+Hardware recomendado :
+Procesador: 3.0 GHz.
+RAM: 8 GB.
+Espacio en disco: 100 GB.
+Software requerido :
+Microsoft SQL Server 2019 Enterprise Edition.
+Subsistemas adicionales: Configuración, Contabilidad General, Costo y Procesos.
+Pasos detallados para la instalación
+Ejecutar el archivo de instalación Versat Sarasola tambien conocido como  VersatInstalacion.exe.
+Seleccionar los subsistemas a instalar, incluyendo Activos Fijos .
+Crear accesos directos en el menú de inicio.
+Problemas comunes y soluciones
+Problema : Falta de permisos para acceder a la base de datos.
+Solución : Verificar que el usuario tenga acceso al gestor de bases de datos.
+Problema : Errores durante la instalación.
+Solución : Asegurarse de que el sistema operativo y las dependencias estén actualizadas.
+Configuración
+Archivos de configuración clave y su ubicación
+Los archivos de configuración se encuentran en el subsistema de Configuración .
+Parámetros específicos del subsistema de Activos Fijos se definen en la actividad Configuración del Subsistema .
+Parámetros importantes y su impacto en el rendimiento
+Métodos de depreciación : Línea recta, línea recta decreciente.
+Ciclos de amortización : Distribución de la depreciación anual por períodos.
+Cuentas contables : Asociadas a grupos de activos y conceptos.
+Ejemplos de configuración recomendada
+Depreciación : Configurar el método de línea recta para activos estándar.
+Ciclos de amortización : Distribuir la depreciación mensualmente o según ciclos específicos.
+Funcionalidades principales
+Descripción de las principales características y su uso
+Control de activos :
+Gestión de altas, bajas, traslados y modificaciones.
+Cálculo automático de depreciación.
+Inventarios físicos :
+Generación de hojas de inventario.
+Marcado y chequeo de activos.
+Contabilización :
+Generación automática de asientos contables.
+Conciliación con el subsistema de Contabilidad General.
+Comandos clave y ejemplos de aplicación
+Adicionar activo :
+Número de inventario: ACT001
+Descripción: Computadora P4
+Valor de adquisición: $850.00
+Depreciación acumulada: $150.00
+Cambiar grupo de activo :
+Grupo anterior: 7-Muebles y accesorios de oficina
+Nuevo grupo: 5-Máquinas y equipos especiales
+Calcular depreciación :
+Método: Línea recta.
+Tasa: 20%.
+Casos de uso
+Ejemplos prácticos de implementación en distintos escenarios
+Gestión de activos en una empresa industrial :
+Registrar máquinas y equipos, calcular depreciación mensual y generar reportes para auditoría.
+Traslado de activos entre áreas :
+Cambiar un activo del área de producción al área de administración.
+Revaluación de activos :
+Ajustar el valor de un activo debido a mejoras o deterioro.
+Solución de problemas
+Preguntas frecuentes y resolución de errores comunes
+Pregunta : ¿Cómo eliminar un activo?
+Respuesta : Solo se puede eliminar si no tiene documentos asociados. De lo contrario, desactívelo.
+Pregunta : ¿Qué hacer si la depreciación no se calcula correctamente?
+Solución : Verifique la configuración del método de depreciación y los ciclos de amortización.
+Logs y diagnóstico de problemas
+Los registros de errores se encuentran en el subsistema de Configuración , en la opción Registro de Salvas y Restauraciones .
+Utilice la función Buscar en cada vista para localizar errores específicos
+Resumen del Manual de Versat Sarasola tambien conocido como  Versat - Módulo Producción
+Introducción
+El subsistema Producción forma parte del Sistema Económico Integrado VERSAT Sarasola , diseñado para gestionar y controlar los procesos productivos en entidades que producen bienes y servicios. Este módulo permite:
+
+Registrar gastos asociados a materiales, mano de obra y otros costos.
+Gestionar fichas de costo para calcular costos planificados y reales.
+Realizar ajustes al costo de producción y generar reportes detallados.
+Facilitar la toma de decisiones mediante análisis económico-financiero.
+Es especialmente útil para empresas que necesitan llevar un control riguroso de insumos, gastos y producción.
+
+Instalación
+Requisitos previos
+Hardware : No se especifican requisitos específicos en el manual, pero deben consultarse en el Manual de Configuración del sistema.
+Software : El software base debe estar instalado previamente, junto con los subsistemas relacionados (Inventarios, Facturación, Costos y Procesos).
+Pasos detallados para la instalación
+Instalar el sistema base VERSAT Sarasola .
+Configurar los subsistemas interrelacionados (Inventarios, Facturación, etc.).
+Verificar la integración entre los subsistemas para garantizar la transparencia y automatización de operaciones.
+Problemas comunes y soluciones
+Error de integración entre subsistemas : Verificar la configuración inicial y asegurarse de que todos los subsistemas estén correctamente instalados.
+Falta de permisos de usuario : Asegurarse de que los usuarios tengan los roles adecuados asignados en el subsistema de Configuración.
+Configuración
+Archivos de configuración clave y su ubicación
+Codificadores : Accesibles desde la opción Sistema\Codificadores en el menú principal.
+Tipos de órdenes.
+Actividades.
+Datos adicionales.
+Conceptos de gasto.
+Configuración general : Accesible desde Sistema\Configuración, incluye:
+Ajuste al costo (moneda, ejercicio, períodos activos, cuentas de proceso).
+Destinos (grupos de conceptos de inventarios).
+Parámetros importantes y su impacto en el rendimiento
+Moneda de ajuste al costo : Determina si el ajuste se realiza en moneda contable o alternativa.
+Cuentas de proceso : Influyen en la generación de documentos de ajuste y en la contabilización de costos.
+Plantillas de fichas de costo : Definen cómo se calculan los costos planificados.
+Ejemplos de configuración recomendada
+Ajuste al costo :
+Moneda: Moneda Contable.
+Concepto de inventarios: Seleccionar el apropiado para entrada de producción terminada.
+Cuentas de proceso: Configurar subcuentas para saldo inicial y gastos.
+Plantillas de fichas de costo :
+Método de cálculo: Salarios o Materiales.
+Tipos de conceptos: Cabecera, Calculado, Editado, Materiales, Salarios, Vacaciones, Normados.
+Funcionalidades principales
+Descripción de las principales características y su uso
+Órdenes de Trabajo :
+Controlan los gastos incurridos en la producción de bienes y servicios.
+Estados: En Edición, En Ejecución, Cerrada, Cancelada.
+Gestión de materiales, mano de obra y otros gastos.
+Fichas de Costo :
+Permiten planificar costos por producto o servicio.
+Tipos de gastos: Materiales, salarios, vacaciones, indirectos.
+Estados: En Edición, Terminada.
+Ajuste al Costo :
+Realiza ajustes automáticos entre costos planificados y reales.
+Genera documentos de ajuste en Inventarios y comprobantes de operaciones.
+Reportes :
+Reporte de órdenes ajustadas.
+Cierre informativo (previo al ajuste definitivo).
+Comandos clave y ejemplos de aplicación
+Crear una nueva orden de trabajo :
+Ruta: Vista Órdenes de Trabajo > Adicionar Orden.
+Datos requeridos: Producto/Servicio, cantidad, área, clasificación, fecha de emisión.
+Adicionar un nuevo concepto de gasto en fichas de costo :
+Ruta: Vista Fichas de Costo > Plantillas > Adicionar Concepto.
+Datos requeridos: Concepto, tipo (Cabecera, Calculado, Editado, etc.).
+Casos de uso
+Ejemplo 1: Creación de una orden de trabajo
+Acceder a la vista Órdenes de Trabajo .
+Adicionar una nueva orden:
+Producto: "Producto X".
+Cantidad: 100 unidades.
+Área: "Producción".
+Clasificación: "Bienes".
+Asociar centros de costo y datos adicionales.
+Pasar la orden al estado En Ejecución para registrar gastos.
+Ejemplo 2: Ajuste al costo
+Acceder a la vista Ajuste al Costo .
+Seleccionar una orden cerrada.
+Configurar cuentas de proceso y subcuentas.
+Generar documentos de ajuste en Inventarios.
+Solución de problemas
+Preguntas frecuentes y resolución de errores comunes
+¿Por qué no puedo pasar una orden al estado "Cerrada"?
+Verificar que todos los gastos (materiales, mano de obra, otros) estén registrados.
+Asegurarse de que la orden no tenga documentos pendientes de confirmación.
+¿Qué hacer si los costos ajustados no coinciden con los esperados?
+Revisar las fichas de costo y plantillas utilizadas.
+Verificar la configuración de ajuste al costo (moneda, cuentas de proceso).
+Logs y diagnóstico de problemas
+Los logs del sistema pueden consultarse desde la opción Sistema\Ayuda.
+Para diagnósticos avanzados, revisar los reportes generados en la vista Ajustes Realizados .
+Resumen del Manual de Versat Sarasola tambien conocido como  Versat - Módulo Precios
+Introducción
+El subsistema de Precios forma parte del software VERSAT Sarasola , diseñado para facilitar la gestión y configuración de precios para clientes con comportamientos similares. Su objetivo principal es definir listas de precios, catálogos por monedas y configuraciones específicas para cada cliente, permitiendo generar facturas de manera eficiente. Este módulo es esencial para la actividad de precios en todas sus fases, cumpliendo con las normas y mecanismos establecidos para la elaboración y aplicación de precios.
+
+Instalación
+Requisitos previos
+Sistema operativo : No especificado en el manual, pero se detalla en el manual de Configuración.
+Hardware recomendado : No especificado en el manual, pero se detalla en el manual de Configuración.
+Software requerido : Subsistemas adicionales como Configuración y Facturación.
+Pasos detallados para la instalación
+Instalar los subsistemas base (Configuración, Contabilidad General, Costo y Procesos).
+Configurar los parámetros generales en el subsistema de Configuración.
+Importar datos iniciales como listas de precios y catálogos de surtidos.
+Problemas comunes y soluciones
+Problema : Errores durante la importación de datos.
+Solución : Verificar que el archivo cumpla con el formato requerido.
+Problema : Falta de permisos para acceder al subsistema.
+Solución : Asignar roles adecuados en el subsistema de Configuración.
+Configuración
+Archivos de configuración clave y su ubicación
+La configuración general se realiza en el subsistema de Configuración .
+Parámetros específicos para precios se definen en la vista Configuración de Clientes .
+Parámetros importantes y su impacto en el rendimiento
+Listas de precios : Definición de precios de venta, porcentajes y descuentos.
+Categorías de surtidos : Servicios, insumos, mercancía para la venta y producción terminada.
+Monedas : Configuración de precios por moneda y tipo de cambio.
+Ejemplos de configuración recomendada
+Lista de precios : Crear una lista con precios estándar para clientes regulares.
+Catálogo de surtidos : Asociar precios específicos a cada categoría de producto.
+Funcionalidades principales
+Descripción de las principales características y su uso
+Gestión de listas de precios :
+Crear, modificar y eliminar listas de precios.
+Exportar e importar datos de precios.
+Catálogo de surtidos :
+Adicionar, modificar y eliminar precios por moneda y unidad de medida.
+Configuración de clientes :
+Definir parámetros específicos para cada cliente, como formas de pago y monedas de venta.
+Comandos clave y ejemplos de aplicación
+Adicionar lista de precios :
+Código: LP001
+Descripción: Lista de precios para clientes regulares
+Modificar precio de venta :
+Moneda: USD
+Precio: $50.00
+Porcentaje de descuento: 10%
+Casos de uso
+Ejemplos prácticos de implementación en distintos escenarios
+Facturación a clientes regulares :
+Utilizar una lista de precios estándar para clientes con comportamiento similar.
+Exportación de precios :
+Exportar listas de precios para análisis externo o integración con otros sistemas.
+Importación de catálogos :
+Importar un archivo Excel con precios actualizados para múltiples productos.
+Solución de problemas
+Preguntas frecuentes y resolución de errores comunes
+Pregunta : ¿Cómo eliminar una lista de precios?
+Respuesta : Solo se puede eliminar si no hay clientes configurados para usarla.
+Pregunta : ¿Qué hacer si un precio no se importa correctamente?
+Solución : Verificar el formato del archivo y los datos ingresados.
+Logs y diagnóstico de problemas
+Los registros de errores se encuentran en la vista Historia de Precios .
+Utilice la función Buscar para localizar errores específicos en las vistas.
+Resumen del Manual de Versat Sarasola tambien conocido como  Versat - Módulo Logística
+Introducción
+El subsistema de Logística forma parte del software VERSAT Sarasola , diseñado para facilitar el control y gestión de los recursos materiales en almacenes, así como la planificación y ejecución de procesos logísticos. Su objetivo principal es proporcionar herramientas para gestionar solicitudes, órdenes de compra, licitaciones, proyectos y departamentos, asegurando un control eficiente sobre las existencias físicas y estadísticas.
+
+Instalación
+Requisitos previos
+Sistema operativo : El subsistema requiere un entorno cliente-servidor con sistemas operativos actualizados.
+Hardware recomendado :
+Servidor: Procesador de 3.0 GHz, 8 GB de RAM, 100 GB de espacio en disco.
+Cliente: Procesador de 2.0 GHz, 4 GB de RAM, 80 GB de espacio en disco.
+Software requerido :
+Gestor de bases de datos: Microsoft SQL Server 2019 Enterprise Edition (recomendado).
+Sistema operativo servidor: Windows Server 2019 x64.
+Sistema operativo cliente: Windows 10 x64.
+Pasos detallados para la instalación
+Ejecutar el archivo Versat Sarasola tambien conocido como  VersatInstalacion.exe.
+Seleccionar la carpeta de instalación y los subsistemas a instalar, incluyendo Logística .
+Crear accesos directos en el menú de inicio para cada subsistema.
+Problemas comunes y soluciones
+Problema : Falta de permisos para acceder a la base de datos.
+Solución : Verificar que el usuario tenga acceso restringido al gestor de bases de datos.
+Problema : Errores durante la instalación.
+Solución : Asegurarse de que el sistema operativo y las dependencias estén actualizadas.
+Configuración
+Archivos de configuración clave y su ubicación
+Los archivos de configuración se encuentran en el subsistema de Configuración .
+Parámetros específicos del subsistema de Logística se definen en la actividad Configuración del Subsistema .
+Parámetros importantes y su impacto en el rendimiento
+Longitud de consecutivos : Define el formato de numeración para órdenes de compra y solicitudes.
+Formato de numeración : Ejemplo: P[-]D[-]###### (Proyecto-Departamento-Consecutivo).
+Ejemplos de configuración recomendada
+Formato de numeración : P[-]D[-]######.
+Codificadores : Configurar fases del proyecto, departamentos y proveedores principales antes de iniciar operaciones.
+Funcionalidades principales
+Descripción de las principales características y su uso
+Gestión de proyectos :
+Captura, modificación y eliminación de proyectos.
+Cambio de fase del proyecto según su estado.
+Gestión de departamentos :
+Adición y asignación de centros de costo a departamentos.
+Control de usuarios por departamento y sus roles.
+Solicitudes y órdenes de compra :
+Creación de solicitudes de licitación, compras y órdenes de despacho.
+Asignación de proveedores principales y posibles proveedores.
+Control de inventarios :
+Integración con el subsistema de Inventarios para mantener actualizadas las existencias.
+Comandos clave y ejemplos de aplicación
+Adicionar proyecto :
+Código: PROY001
+Nombre: Proyecto de Construcción
+Fecha de inicio: 01/01/2024
+Fase: SL (Solicitud de Licitación)
+Cambiar fase de proyecto :
+Seleccionar proyecto → Menú contextual → Cambiar fase → Elegir nueva fase.
+Adicionar departamento :
+Código: DEP001
+Nombre: Departamento de Compras
+Centro de costo: CC001
+Casos de uso
+Ejemplos prácticos de implementación en distintos escenarios
+Gestión de proyectos industriales :
+Crear un proyecto para la fabricación de equipos, definir fases (licitación, compra, producción) y asignar departamentos responsables.
+Control de solicitudes de compra :
+Generar una solicitud de compra para adquirir materiales necesarios, especificando proveedores y fechas de entrega.
+Asignación de roles a usuarios :
+Definir permisos para un usuario en el departamento de logística, permitiéndole gestionar solicitudes de compra y autorizar entregas en almacén.
+Solución de problemas
+Preguntas frecuentes y resolución de errores comunes
+Pregunta : ¿Cómo eliminar un proyecto?
+Respuesta : Solo se puede eliminar si no está en uso. De lo contrario, desactívelo desde la opción Desactivar .
+Pregunta : ¿Qué hacer si una solicitud no se puede modificar?
+Respuesta : Verifique que el estado de la solicitud no sea "Confirmado" o "Cerrado".
+Logs y diagnóstico de problemas
+Los registros de errores se encuentran en el subsistema de Configuración , en la opción Registro de Salvas y Restauraciones .
+Utilice la función Buscar en cada vista para localizar errores específicos.
+Resumen del Manual de Versat Sarasola tambien conocido como  Versat - Módulo "Diseñador de Reportes"
+Introducción
+Descripción general : El subsistema "Diseñador de Reportes" del software Versat Sarasola tambien conocido como  Versat permite a los usuarios generar y organizar información contable en forma de talones, proformas y otros reportes. Está diseñado para facilitar la creación de estados financieros y otras informaciones necesarias para la dirección de entidades.
+Propósito y contexto de uso : Este módulo es especialmente útil para entidades que necesitan implementar herramientas para la obtención de estados financieros básicos de contabilidad, así como otras informaciones requeridas para la toma de decisiones. Los principales actores son el Especialista Principal y el Gestor de Talones, quienes tienen permisos específicos para gestionar los reportes.
+Instalación
+Requisitos previos :
+Sistema operativo compatible: Detallado en el Manual de Configuración.
+Dependencias: Base de datos configurada, acceso a otros subsistemas relacionados.
+Hardware recomendado: Procesador multicore, al menos 8 GB de RAM, espacio en disco suficiente para almacenar datos transaccionales.
+Pasos detallados para la instalación :
+Descargar e instalar el paquete del subsistema desde el área comercial de DATAZUCAR.
+Registrar el software utilizando las credenciales proporcionadas por el proveedor.
+Configurar la conexión con la base de datos central y los subsistemas relacionados.
+Realizar pruebas iniciales para verificar la correcta instalación.
+Problemas comunes y soluciones :
+Fallo en la conexión con la base de datos : Verificar credenciales y permisos de acceso.
+Errores de registro : Contactar con el soporte técnico de DATAZUCAR para validar licencias.
+Configuración
+Archivos de configuración clave y su ubicación :
+Archivo principal de configuración: Sistema\Configuración.
+Codificadores y parámetros específicos accesibles desde la interfaz de usuario.
+Parámetros importantes y su impacto en el rendimiento :
+Definición de talones, columnas y filas.
+Configuración de expresiones y validaciones.
+Parámetros para la generación de informes y exportación de datos.
+Ejemplos de configuración recomendada :
+Activar la integración automática con el subsistema de Finanzas para el control presupuestario.
+Configurar alertas para errores en la validación de talones.
+Funcionalidades principales
+Descripción de las principales características y su uso :
+Gestión de Talones : Creación, modificación y eliminación de talones (Figura 2, página 5).
+Proformas : Generación y exportación de proformas para tributar o rendir información (Figura 13, página 15).
+Plan : Selección de planes anuales con sus respectivos períodos y descripciones (Figura 14, página 15).
+Comandos clave y ejemplos de aplicación :
+Crear un nuevo talón : Accesible desde la opción Talones > Nuevo Talón en el menú principal.
+Calcular talón : Utilizar la opción Calcular Talón para procesar datos del período contable actual (Figura 9, página 11).
+Exportar talón : Usar la opción Exportar Talón para generar un archivo CSV con toda la información del talón.
+Casos de uso
+Ejemplos prácticos de implementación en distintos escenarios :
+Generación de estados financieros : Uso de talones oficiales para crear informes contables estándar.
+Validación de datos : Aplicación de reglas de validación para evitar errores en la entrada de datos (Figura 12, página 14).
+Exportación de proformas : Exportación de datos en formato XML o texto para cumplir con requisitos de organismos superiores.
+Solución de problemas
+Preguntas frecuentes y resolución de errores comunes :
+Errores en la creación de talones : Verificar la configuración de columnas y filas.
+Fallo en la exportación de proformas : Asegurarse de que los permisos de acceso estén correctamente configurados.
+Problemas con la integración de Finanzas : Revisar la plantilla de informes y los permisos de acceso.
+Logs y diagnóstico de problemas :
+Consultar el archivo de logs ubicado en Sistema\Logs para identificar errores específicos.
+Utilizar la opción Ver operaciones para revisar el historial de acciones realizadas en el sistema.
 Resumen del Módulo de Costos y Procesos
 1. Introducción
 El Módulo de Costos y Procesos del Sistema Económico Integrado VERSAT Sarasola es una herramienta diseñada para facilitar la gestión automatizada de costos en entidades empresariales, presupuestadas u otras organizaciones. Este módulo permite el registro, distribución y análisis de los gastos asociados a la producción, así como el cálculo de costos unitarios y ajustes necesarios para la contabilidad de costos.
@@ -130,9 +705,9 @@ Software recomendado:
 Gestor de bases de datos : Microsoft SQL Server 2019 Enterprise Edition.
 Sistema operativo : Windows Server 2019 (servidor), Windows 10 x64 (cliente).
 Pasos detallados para la instalación
-Ejecutar el instalador VersatInstalacion.exe y seleccionar los subsistemas a instalar, incluyendo Configuración , Contabilidad General y Costos y Procesos .
+Ejecutar el instalador Versat Sarasola tambien conocido como  VersatInstalacion.exe y seleccionar los subsistemas a instalar, incluyendo Configuración , Contabilidad General y Costos y Procesos .
 Crear accesos directos en el menú de inicio para cada subsistema.
-Utilizar BDVersat.exe para crear o actualizar la base de datos, especificando el servidor y credenciales adecuadas.
+Utilizar BDVersat Sarasola tambien conocido como  Versat.exe para crear o actualizar la base de datos, especificando el servidor y credenciales adecuadas.
 Verificar que todos los sistemas operativos estén actualizados y protegidos físicamente.
 Problemas comunes y soluciones
 Error al conectar a la base de datos : Verificar permisos del usuario y estado del servidor SQL.
@@ -216,6 +791,131 @@ Ocurre cuando un usuario existe en la base de datos pero no tiene asociado un in
 Logs y diagnóstico
 Acceder a la vista de Estado de Operaciones para revisar registros de actividad.
 Consultar el Editor de SQL para ejecutar scripts de corrección validados por el productor.
+Resumen del Manual de Versat Sarasola tambien conocido como  Versat - Módulo "Complementos"
+Introducción
+Descripción general : El subsistema de "Complementos" del software Versat Sarasola tambien conocido como  Versat es una herramienta que amplía la funcionalidad del sistema, permitiendo a los usuarios obtener información detallada desde Microsoft Excel. Facilita el procesamiento y obtención de datos para uso interno o externo, interactuando con las principales categorías del sistema como Contabilidad, Planificación, Finanzas, Inventarios y Activos Fijos.
+Propósito y contexto de uso : Está diseñado para brindar una gama de funciones predefinidas que permiten extraer datos específicos en diferentes rangos de tiempo y contextos, optimizando la generación de reportes y análisis.
+Instalación
+Requisitos previos :
+Sistema operativo compatible: Detallado en el Manual de Configuración.
+Dependencias: Base de datos configurada, acceso a otros subsistemas relacionados.
+Hardware recomendado: Procesador multicore, al menos 8 GB de RAM, espacio en disco suficiente para almacenar datos transaccionales.
+Pasos detallados para la instalación :
+Descargar e instalar el paquete del subsistema desde el área comercial de DATAZUCAR.
+Registrar el software utilizando las credenciales proporcionadas por el proveedor.
+Configurar la conexión con la base de datos central y los subsistemas relacionados.
+Realizar pruebas iniciales para verificar la correcta instalación.
+Problemas comunes y soluciones :
+Fallo en la conexión con la base de datos : Verificar credenciales y permisos de acceso.
+Errores de registro : Contactar con el soporte técnico de DATAZUCAR para validar licencias.
+Configuración
+Archivos de configuración clave y su ubicación :
+No requiere configuraciones específicas más allá de la creación de usuarios con permisos adecuados.
+Parámetros importantes y su impacto en el rendimiento :
+Creación de usuarios con permisos específicos para acceder a la base de datos única del software.
+Ejemplos de configuración recomendada :
+Usuarios designados por el propio organismo o por organismos especializados, como la Contraloría General de la República.
+Funcionalidades principales
+Descripción de las principales características y su uso :
+Interfaz de trabajo : Se integra directamente con Microsoft Excel, permitiendo insertar funciones específicas mediante un menú personalizado (Figura 1, página 2).
+Asistente de Complementos : Facilita la inserción de funciones con parámetros predefinidos (Figura 5, página 5).
+Comandos clave y ejemplos de aplicación :
+Conectarse : Permite autenticarse y trabajar con la base de datos desde Excel.
+Funciones de Contabilidad : Ejemplo: vst_cuenta_SaldoEjercicio para obtener saldos de cuentas en un ejercicio específico.
+Funciones de Planificación : Ejemplo: vst_cuenta_PlanEjercicio para consultar planes de cuentas.
+Funciones de Finanzas : Ejemplo: vst_SaldoCuentaBancaria para verificar saldos de cuentas bancarias.
+Funciones de Inventarios : Ejemplo: vst_ExistenciaAlmacen para consultar existencias en almacén (Figura 27, página 19).
+Casos de uso
+Ejemplos prácticos de implementación en distintos escenarios :
+Contabilidad : Generar informes de saldos de cuentas para un período determinado.
+Planificación : Consultar planes de cuentas para comparar estimados con resultados reales.
+Finanzas : Monitorear el estado de cuentas bancarias y obligaciones pendientes.
+Inventarios : Analizar movimientos de productos en almacenes específicos.
+Activos Fijos : Evaluar compras acumuladas en un período determinado.
+Solución de problemas
+Preguntas frecuentes y resolución de errores comunes :
+Falta de permisos : Verificar que el usuario tenga los roles necesarios asignados en el subsistema de Configuración.
+Errores en la conexión : Asegurarse de que el servidor SQL esté correctamente configurado y accesible.
+Logs y diagnóstico de problemas :
+Utilizar la opción "Ayuda" del menú de Complementos para acceder a documentación adicional.
+Revisar los mensajes de error generados durante la ejecución de funciones para identificar problemas específicos.
+Resumen del Manual del Módulo de Inventarios - Versat Sarasola tambien conocido como  Versat 2.10
+Introducción
+El módulo de Inventarios es uno de los subsistemas más importantes del software VERSAT Sarasola , diseñado para gestionar y controlar los recursos materiales (insumos, productos terminados, herramientas en uso) en cualquier tipo de entidad (estatal, privada u otro tipo de propiedad).
+Su propósito principal es procesar la documentación primaria inherente a la gestión de almacenes y custodios, garantizando el control de inventarios y minimizando fugas o pérdidas.
+Incluye funcionalidades específicas como el manejo de útiles y herramientas en uso, tratamiento por lotes y recodificación de productos.
+Instalación
+Requisitos previos
+Sistema operativo : Windows Server 2019 x64 (entorno servidor) o Windows 10 x64 (entorno cliente).
+Hardware recomendado :
+Procesador: 3.0 GHz (servidor), 2.0 GHz (cliente).
+RAM: 8 GB (servidor), 4 GB (cliente).
+Espacio en disco: 100 GB (servidor), 80 GB (cliente).
+Software requerido :
+Gestor de bases de datos: Microsoft SQL Server 2019 Enterprise Edition.
+Actualizaciones del sistema operativo y service packs instalados.
+Pasos detallados para la instalación
+Ejecutar el instalador Versat Sarasola tambien conocido como  VersatInstalacion.exe.
+Seleccionar la carpeta de instalación y los subsistemas a instalar (Inventarios es uno de ellos).
+Crear accesos directos en el menú de inicio para cada subsistema.
+Utilizar el instalador BDVersat Sarasola tambien conocido como  Versat.exe para crear o actualizar la base de datos, especificando el servidor y credenciales con permisos adecuados.
+Problemas comunes y soluciones
+Error de conexión a la base de datos : Verificar que el gestor de bases de datos esté instalado en un servidor protegido físicamente y que el acceso sea restringido.
+Fallo en la creación de documentos : Asegurarse de que el formato de productos y ubicaciones esté correctamente configurado en el subsistema de Configuración.
+Configuración
+Archivos de configuración clave
+Formato de productos : Define la estructura del codificador de productos (niveles de clasificación y surtidos).
+Ubicación de productos : Configuración de secciones para organizar productos en almacenes y custodios.
+Parámetros importantes
+Trabajo con lotes : Habilitar esta opción si se requiere controlar productos con características específicas (fecha de vencimiento, número de lote).
+Partida arancelaria : Opcional, puede activarse para incluir esta información en los productos.
+Ejemplos de configuración recomendada
+Formato de productos :
+Genérico: 3 caracteres.
+Subgenérico: 2 caracteres.
+Surtido: 5 caracteres.
+Formato de ubicación :
+Sección: 2 caracteres.
+Funcionalidades principales
+Descripción de las principales características
+Control de movimientos de inventario :
+Gestión de entradas, salidas y transferencias de productos.
+Generación automática de asientos contables.
+Clasificador de productos :
+Codificador jerárquico para clasificar productos por niveles (genérico, subgenérico, específico, surtido).
+Tratamiento por lotes :
+Control de productos con fechas de vencimiento o números de lote.
+Recodificación de productos :
+Cambio de códigos de productos existentes sin afectar el historial.
+Comandos clave y ejemplos de aplicación
+Exportar documentos :
+Acceso: Menú Archivo > Exportar.
+Uso: Guardar documentos confirmados en archivos de texto.
+Importar documentos :
+Acceso: Menú Archivo > Importar.
+Uso: Introducir documentos desde archivos de texto, validando su estructura.
+Cambiar códigos de productos :
+Acceso: Menú Clasificador de Productos > Recodificar.
+Uso: Asociar códigos antiguos con nuevos manteniendo el historial.
+Casos de uso
+Ejemplo práctico: Carga inicial de inventarios
+Definir el formato de productos y ubicaciones en el subsistema de Configuración.
+Capturar los productos iniciales en el Clasificador de Productos.
+Crear documentos de entrada para registrar las existencias iniciales.
+Confirmar los documentos para actualizar las existencias.
+Ejemplo práctico: Control de inventario físico
+Aplicar filtros en la vista de Almacenes y Custodios (porcentaje, existencia hasta una fecha).
+Generar el reporte de inventario físico del 10%.
+Registrar las diferencias detectadas en el sistema.
+Solución de problemas
+Preguntas frecuentes
+¿Qué hacer si no se pueden modificar documentos?
+Verificar el estado del documento (solo se pueden modificar documentos no confirmados) y los permisos del usuario.
+¿Cómo corregir errores en la confirmación de documentos?
+Revisar los mensajes de error emitidos por el sistema y corregir los datos inconsistentes.
+Logs y diagnóstico de problemas
+Registro de errores : Los logs del sistema se encuentran en la carpeta de instalación, en la subcarpeta Logs.
+Diagnóstico : Utilizar la opción Buscar en la lista de documentos para identificar inconsistencias.
 Resumen del Módulo de Configuración
 1. Introducción
 El Módulo de Configuración del Sistema Económico Integrado VERSAT Sarasola es una herramienta esencial para la gestión y control de los parámetros generales del sistema. Este módulo permite definir usuarios, permisos, codificadores y otros aspectos clave que garantizan el correcto funcionamiento integral del software en todas las entidades.
@@ -234,9 +934,9 @@ Software recomendado:
 Gestor de bases de datos : Microsoft SQL Server 2019 Enterprise Edition.
 Sistema operativo : Windows Server 2019 (servidor), Windows 10 x64 (cliente).
 Pasos detallados para la instalación
-Ejecutar el instalador VersatInstalacion.exe para seleccionar los subsistemas a instalar.
+Ejecutar el instalador Versat Sarasola tambien conocido como  VersatInstalacion.exe para seleccionar los subsistemas a instalar.
 Crear accesos directos en el menú de inicio para cada subsistema.
-Utilizar BDVersat.exe para crear o actualizar la base de datos, especificando el servidor y credenciales adecuadas.
+Utilizar BDVersat Sarasola tambien conocido como  Versat.exe para crear o actualizar la base de datos, especificando el servidor y credenciales adecuadas.
 Verificar que todos los sistemas operativos estén actualizados y protegidos físicamente.
 Problemas comunes y soluciones
 Error al conectar a la base de datos : Verificar permisos del usuario y estado del servidor SQL.
@@ -322,6 +1022,9 @@ Ocurre cuando un usuario existe en la base de datos pero no tiene asociado un in
 Logs y diagnóstico
 Acceder a la vista de Accesos al Sistema para revisar registros de actividad.
 Consultar el Editor de SQL para ejecutar scripts de corrección validados por el productor.
+
+
+
 Resumen del Módulo de Finanzas, Caja y Banco
 Introducción
 El Módulo de Finanzas, Caja y Banco del Sistema Económico Integrado VERSAT Sarasola es una herramienta diseñada para automatizar y gestionar operaciones financieras en entidades empresariales, presupuestadas u otras organizaciones. Este módulo permite el registro, control y análisis de ingresos, egresos, cuentas bancarias, fondos de caja, anticipos, obligaciones y financiamientos, garantizando la contabilización automática y transparente de las operaciones.
@@ -343,9 +1046,9 @@ Software recomendado:
 Gestor de bases de datos : Microsoft SQL Server 2019 Enterprise Edition.
 Sistema operativo : Windows Server 2019 (servidor), Windows 10 x64 (cliente).
 Pasos detallados para la instalación
-Ejecutar el instalador VersatInstalacion.exe y seleccionar los subsistemas a instalar, incluyendo Configuración , Contabilidad General y Finanzas, Caja y Banco .
+Ejecutar el instalador Versat Sarasola tambien conocido como  VersatInstalacion.exe y seleccionar los subsistemas a instalar, incluyendo Configuración , Contabilidad General y Finanzas, Caja y Banco .
 Crear accesos directos en el menú de inicio para cada subsistema.
-Utilizar BDVersat.exe para crear o actualizar la base de datos, especificando el servidor y credenciales adecuadas.
+Utilizar BDVersat Sarasola tambien conocido como  Versat.exe para crear o actualizar la base de datos, especificando el servidor y credenciales adecuadas.
 Verificar que todos los sistemas operativos estén actualizados y protegidos físicamente.
 Problemas comunes y soluciones
 Error al conectar a la base de datos : Verificar permisos del usuario y estado del servidor SQL.
@@ -429,3 +1132,96 @@ Ocurre cuando un usuario existe en la base de datos pero no tiene asociado un in
 Logs y diagnóstico
 Acceder a la vista de Estado de Operaciones para revisar registros de actividad.
 Consultar el Editor de SQL para ejecutar scripts de corrección validados por el productor.
+Resumen del Manual de Versat Sarasola tambien conocido como  Versat - Módulo "Planificación"
+Introducción
+Descripción general : El subsistema "Planificación" del software Versat Sarasola tambien conocido como  Versat está diseñado para facilitar la gestión y planificación de recursos, actividades y proyectos dentro de una organización. Su propósito es optimizar la asignación de recursos, mejorar la eficiencia operativa y proporcionar herramientas para la toma de decisiones estratégicas.
+Propósito y contexto de uso : Este módulo es especialmente útil para empresas que necesitan coordinar múltiples proyectos, gestionar recursos limitados y asegurar el cumplimiento de plazos y metas. Se integra con otros subsistemas como Finanzas, Inventarios y Recursos Humanos para ofrecer una visión completa de las operaciones.
+Instalación
+Requisitos previos :
+Sistema operativo compatible: Windows/Linux (detalles específicos en el manual de Configuración).
+Dependencias: Base de datos configurada, acceso a los subsistemas relacionados.
+Hardware recomendado: Procesador multicore, al menos 8 GB de RAM, espacio en disco suficiente para almacenar datos transaccionales.
+Pasos detallados para la instalación :
+Descargar e instalar el paquete del subsistema desde el área comercial de DATAZUCAR.
+Registrar el software utilizando las credenciales proporcionadas por el proveedor.
+Configurar la conexión con la base de datos central y los subsistemas relacionados.
+Realizar pruebas iniciales para verificar la correcta instalación.
+Problemas comunes y soluciones :
+Fallo en la conexión con la base de datos : Verificar credenciales y permisos de acceso.
+Errores de registro : Contactar con el soporte técnico de DATAZUCAR para validar licencias.
+Configuración
+Archivos de configuración clave y su ubicación :
+Archivo principal de configuración: Sistema\Configuración.
+Codificadores y parámetros específicos accesibles desde la interfaz de usuario.
+Parámetros importantes y su impacto en el rendimiento :
+Definición de proyectos, fases y tareas.
+Configuración de recursos y asignación de responsables.
+Parámetros para la generación de informes y seguimiento de progreso.
+Ejemplos de configuración recomendada :
+Activar la integración automática con el subsistema de Finanzas para el control presupuestario.
+Configurar alertas para fechas límite de proyectos y vencimientos de tareas.
+Funcionalidades principales
+Descripción de las principales características y su uso :
+Gestión de proyectos: Creación, seguimiento y cierre de proyectos.
+Asignación de recursos: Distribución óptima de recursos humanos y materiales.
+Generación de informes: Informes detallados sobre el estado de los proyectos y el uso de recursos.
+Comandos clave y ejemplos de aplicación :
+Crear un nuevo proyecto : Accesible desde la opción Nuevo Proyecto en el menú principal.
+Asignar recursos : Utilizar la función Asignar Recursos para distribuir personal y materiales.
+Generar informes : Usar la opción Generar Informe para obtener un resumen del estado del proyecto.
+Casos de uso
+Ejemplos prácticos de implementación en distintos escenarios :
+Gestión de proyectos complejos : Coordinación de múltiples equipos y recursos en grandes proyectos de construcción.
+Control presupuestario : Seguimiento de costos y ajustes en tiempo real para evitar desviaciones.
+Optimización de recursos : Mejora en la asignación de personal y materiales para maximizar la eficiencia.
+Solución de problemas
+Preguntas frecuentes y resolución de errores comunes :
+Errores en la asignación de recursos : Verificar la disponibilidad de recursos y las configuraciones de asignación.
+Fallo en la generación de informes : Revisar la plantilla de informes y los permisos de acceso.
+Problemas con la integración de Finanzas : Asegurarse de que los documentos contables estén correctamente configurados.
+Logs y diagnóstico de problemas :
+Consultar el archivo de logs ubicado en Sistema\Logs para identificar errores específicos.
+Utilizar la opción Ver operaciones para revisar el historial de acciones realizadas en el sistema.
+Resumen del Manual de Versat Sarasola tambien conocido como  Versat - Módulo "Auditoría"
+Introducción
+Descripción general : El subsistema de Auditoría del software Versat Sarasola tambien conocido como  Versat es una herramienta informática diseñada para analizar y controlar el origen y destino de recursos humanos, materiales y servicios manipulados por una entidad en un período determinado. Este módulo permite a los auditores revisar integralmente una base de datos sin necesidad de acceder a cada subsistema individual (Figura 1, página 5).
+Propósito y contexto de uso : Es útil tanto para entidades que utilizan el software como para organismos externos encargados de auditar sistemas empresariales, entidades presupuestadas y otras modalidades en el país.
+Instalación
+Requisitos previos :
+Sistema operativo compatible: Detallado en el Manual de Configuración.
+Dependencias: Base de datos configurada, acceso a otros subsistemas relacionados.
+Hardware recomendado: Procesador multicore, al menos 8 GB de RAM, espacio en disco suficiente para almacenar datos transaccionales.
+Pasos detallados para la instalación :
+Descargar e instalar el paquete del subsistema desde el área comercial de DATAZUCAR.
+Registrar el software utilizando las credenciales proporcionadas por el proveedor.
+Configurar la conexión con la base de datos central y los subsistemas relacionados.
+Realizar pruebas iniciales para verificar la correcta instalación.
+Problemas comunes y soluciones :
+Fallo en la conexión con la base de datos : Verificar credenciales y permisos de acceso.
+Errores de registro : Contactar con el soporte técnico de DATAZUCAR para validar licencias.
+Configuración
+Archivos de configuración clave y su ubicación :
+No requiere configuraciones específicas más allá de la creación de usuarios con permisos adecuados.
+Parámetros importantes y su impacto en el rendimiento :
+Creación de usuarios con permisos específicos para acceder a la base de datos única del software.
+Ejemplos de configuración recomendada :
+Usuarios designados por el propio organismo o por organismos especializados, como la Contraloría General de la República.
+Funcionalidades principales
+Descripción de las principales características y su uso :
+Acceso a 15 subsistemas o actividades : Permite auditar operaciones económicas y financieras desde una única interfaz (Figura 3, página 7).
+Navegación hasta documentos primarios : Desde cualquier operación registrada, se puede acceder al documento primario que la originó (Figura 2, página 6).
+Comandos clave y ejemplos de aplicación :
+Selección de período : Permite filtrar operaciones por un rango de fechas específico.
+Navegación por clasificadores : Ejemplo: Acceder al historial completo de la cuenta 110-Efectivo en Banco (Figura 1, página 5).
+Casos de uso
+Ejemplos prácticos de implementación en distintos escenarios :
+Auditoría de cuentas bancarias : Revisar operaciones relacionadas con la cuenta 110-Efectivo en Banco, incluyendo liquidaciones de obligaciones.
+Auditoría de nómina : Verificar el origen y destino de pagos realizados a empleados.
+Auditoría de inventarios : Controlar movimientos de recursos materiales en almacenes.
+Solución de problemas
+Preguntas frecuentes y resolución de errores comunes :
+Falta de acceso a ciertos subsistemas : Verificar permisos de usuario asignados en el subsistema de Configuración.
+Inconsistencias en los datos : Asegurarse de que todos los subsistemas estén sincronizados con la base de datos central.
+Logs y diagnóstico de problemas :
+Utilizar las vistas detalladas del subsistema para identificar inconsistencias en operaciones específicas.
+Consultar registros históricos para rastrear el origen de errores.

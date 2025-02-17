@@ -1,0 +1,48 @@
+Resumen del Manual de Versat Sarasola - Módulo "Complementos"
+Introducción
+Descripción general : El subsistema de "Complementos" del software Versat Sarasola es una herramienta que amplía la funcionalidad del sistema, permitiendo a los usuarios obtener información detallada desde Microsoft Excel. Facilita el procesamiento y obtención de datos para uso interno o externo, interactuando con las principales categorías del sistema como Contabilidad, Planificación, Finanzas, Inventarios y Activos Fijos.
+Propósito y contexto de uso : Está diseñado para brindar una gama de funciones predefinidas que permiten extraer datos específicos en diferentes rangos de tiempo y contextos, optimizando la generación de reportes y análisis.
+Instalación
+Requisitos previos :
+Sistema operativo compatible: Detallado en el Manual de Configuración.
+Dependencias: Base de datos configurada, acceso a otros subsistemas relacionados.
+Hardware recomendado: Procesador multicore, al menos 8 GB de RAM, espacio en disco suficiente para almacenar datos transaccionales.
+Pasos detallados para la instalación :
+Descargar e instalar el paquete del subsistema desde el área comercial de DATAZUCAR.
+Registrar el software utilizando las credenciales proporcionadas por el proveedor.
+Configurar la conexión con la base de datos central y los subsistemas relacionados.
+Realizar pruebas iniciales para verificar la correcta instalación.
+Problemas comunes y soluciones :
+Fallo en la conexión con la base de datos : Verificar credenciales y permisos de acceso.
+Errores de registro : Contactar con el soporte técnico de DATAZUCAR para validar licencias.
+Configuración
+Archivos de configuración clave y su ubicación :
+No requiere configuraciones específicas más allá de la creación de usuarios con permisos adecuados.
+Parámetros importantes y su impacto en el rendimiento :
+Creación de usuarios con permisos específicos para acceder a la base de datos única del software.
+Ejemplos de configuración recomendada :
+Usuarios designados por el propio organismo o por organismos especializados, como la Contraloría General de la República.
+Funcionalidades principales
+Descripción de las principales características y su uso :
+Interfaz de trabajo : Se integra directamente con Microsoft Excel, permitiendo insertar funciones específicas mediante un menú personalizado (Figura 1, página 2).
+Asistente de Complementos : Facilita la inserción de funciones con parámetros predefinidos (Figura 5, página 5).
+Comandos clave y ejemplos de aplicación :
+Conectarse : Permite autenticarse y trabajar con la base de datos desde Excel.
+Funciones de Contabilidad : Ejemplo: vst_cuenta_SaldoEjercicio para obtener saldos de cuentas en un ejercicio específico.
+Funciones de Planificación : Ejemplo: vst_cuenta_PlanEjercicio para consultar planes de cuentas.
+Funciones de Finanzas : Ejemplo: vst_SaldoCuentaBancaria para verificar saldos de cuentas bancarias.
+Funciones de Inventarios : Ejemplo: vst_ExistenciaAlmacen para consultar existencias en almacén (Figura 27, página 19).
+Casos de uso
+Ejemplos prácticos de implementación en distintos escenarios :
+Contabilidad : Generar informes de saldos de cuentas para un período determinado.
+Planificación : Consultar planes de cuentas para comparar estimados con resultados reales.
+Finanzas : Monitorear el estado de cuentas bancarias y obligaciones pendientes.
+Inventarios : Analizar movimientos de productos en almacenes específicos.
+Activos Fijos : Evaluar compras acumuladas en un período determinado.
+Solución de problemas
+Preguntas frecuentes y resolución de errores comunes :
+Falta de permisos : Verificar que el usuario tenga los roles necesarios asignados en el subsistema de Configuración.
+Errores en la conexión : Asegurarse de que el servidor SQL esté correctamente configurado y accesible.
+Logs y diagnóstico de problemas :
+Utilizar la opción "Ayuda" del menú de Complementos para acceder a documentación adicional.
+Revisar los mensajes de error generados durante la ejecución de funciones para identificar problemas específicos.

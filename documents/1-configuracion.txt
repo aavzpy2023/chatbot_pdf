@@ -104,3 +104,5 @@ Ocurre cuando un usuario existe en la base de datos pero no tiene asociado un in
 Logs y diagnóstico
 Acceder a la vista de Accesos al Sistema para revisar registros de actividad.
 Consultar el Editor de SQL para ejecutar scripts de corrección validados por el productor.
+
+

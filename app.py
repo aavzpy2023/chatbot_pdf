@@ -8,8 +8,8 @@ from PyPDF2 import PdfReader
 
 # List of available models
 models = {
-    "llama3.1:8b": "42182419e950",
     "mistral:7b": "f974a74358d6",
+    "llama3.1:8b": "42182419e950",
     "qwen2.5-coder:7b": "2b0496514337",
     "llama3.1:latest": "42182419e950",
 }
@@ -24,7 +24,7 @@ def clean_response(text: str) -> str:
     Returns:
         str: Cleaned text
     """
-    return text.message.content
+    return text.message.content.replace("VersatInstalacion.exe", "Versat")
 
 
 def get_api_response(message: str, pdf_content: str = "") -> str:
@@ -42,17 +42,21 @@ def get_api_response(message: str, pdf_content: str = "") -> str:
         conversation_history = "\n".join(
             [f"{msg['role']}: {msg['content']}" for msg in st.session_state.messages]
         )
-
+        # with open("./prompt.txt", "r") as f:
+        #     prompt = f.read()
+        #     prompt = prompt.replace("[conversation_history]", conversation_history)
+        #     prompt = prompt.replace("[pdf_content]", pdf_content)
+        #     prompt = prompt.replace("[message]", message)
         prompt = f"""
-            Proporciona respuestas directas y seguras basadas en el contexto proporcionado. Evita usar términos como "parece" o "según la información proporcionada". Responde de manera clara y concisa.
+            Proporciona respuestas directas y seguras basadas en el contexto proporcionado de forma cortes y profesional. Evita usar términos como "parece" o "según la información proporcionada". Responde de manera clara y concisa.
 
             Contexto de la conversación:
             {conversation_history}
 
             Texto del usuario: {pdf_content}
             \n\n
-            Pregunta del usuario: {message}
-        """
+            Pregunta del usuario: {message.replace('Sarasola', 'Versat')}
+        # """
 
         response = ollama.chat(
             model=st.session_state.selected_model,
@@ -114,6 +118,11 @@ def save_context_to_file(file_path: str, content: str):
         content (str): Content to be saved
     """
     print("guardando contexto", file_path)
+    content = content.replace("Versat Sarasola", "Versat")
+    content = content.replace("Versat", "Versat Sarasola")
+    content = content.replace(
+        "Versat Sarasola", "Versat Sarasola tambien conocido como Sarasola o  Versat"
+    )
     with open(file_path, "w", encoding="utf-8") as file:
         file.write(content)
 
@@ -160,7 +169,7 @@ def main():
     """
     Write the application
     """
-    st.title("Habla con Versat")
+    st.title("Asistente Versat")
 
     # Initialize session state for conversation history and processing state
     if "messages" not in st.session_state:
@@ -232,7 +241,8 @@ def main():
     # User input
     if not st.session_state.processing:
         prompt = st.chat_input(
-            "Escribe tu mensaje aquí...", disabled=st.session_state.processing
+            "Escribe su pregunta o consulta aquí...",
+            disabled=st.session_state.processing,
         )
         if prompt:
             # Set processing state to True

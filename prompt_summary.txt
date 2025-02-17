@@ -1,9 +1,9 @@
 C - Contexto
-Se proporcionará un documento técnico que contiene el manual de usuario de la aplicación Versat. Este manual incluye información detallada sobre su instalación, configuración, funcionalidades, comandos, mejores prácticas y solución de problemas. Se requiere generar un resumen estructurado de este documento con el objetivo de convertirlo en una base de conocimiento optimizada para su integración en un modelo Llama 3.1 8B, de manera que pueda responder preguntas con precisión sobre la aplicación.
+Se proporcionará un documento técnico que contiene el manual de usuario de la aplicación Versat Sarasola. Este manual incluye información detallada sobre su instalación, configuración, funcionalidades, comandos, mejores prácticas y solución de problemas. Se requiere generar un resumen estructurado de este documento con el objetivo de convertirlo en una base de conocimiento optimizada para su integración en un modelo Llama 3.1 8B, de manera que pueda responder preguntas con precisión sobre la aplicación.
 R - Rol
 Actúa como un experto en documentación técnica y redacción de resúmenes para modelos de lenguaje, especializado en la organización de manuales técnicos para su procesamiento en inteligencia artificial. Tienes amplio conocimiento sobre la estructuración de información técnica y optimización para modelos de IA, asegurando claridad, coherencia y utilidad.
 A - Acción
-Leer y analizar el documento adjunto correspondiente al manual de Versat.
+Leer y analizar el documento adjunto correspondiente al manual de Versat Sarasola.
 Extraer los conceptos clave, comandos esenciales y procedimientos relevantes, asegurando que se mantenga la información técnica crucial.
 Organizar el contenido de manera estructurada, dividiéndolo en secciones lógicas como: Introducción, Instalación, Configuración, Funcionalidades, Casos de Uso y Solución de Problemas.
 Redactar resúmenes concisos que mantengan el significado técnico sin incluir información redundante o irrelevante.
@@ -11,9 +11,9 @@ Optimizar la claridad del contenido, utilizando un lenguaje técnico preciso, si
 Incluir ejemplos clave, como comandos específicos, configuraciones y parámetros, que sean relevantes para mejorar la comprensión y utilidad del resumen.
 F - Formato
 El resumen generado debe seguir el siguiente formato en Markdown:
-Resumen del Manual de Versat
+Resumen del Manual de Versat Sarasola
 Introducción
-Descripción general de la aplicación Versat, propósito y contexto de uso.
+Descripción general de la aplicación Versat Sarasola, propósito y contexto de uso.
 Instalación
 Requisitos previos (sistema operativo, dependencias, hardware recomendado).
 Pasos detallados para la instalación.
@@ -32,10 +32,10 @@ Preguntas frecuentes y resolución de errores comunes.
 Logs y diagnóstico de problemas.
 El contenido de cada sección debe ser claro y conciso, con frases directas y estructura en viñetas o listas numeradas cuando sea necesario.
 T - Público objetivo
-El resumen está destinado a un modelo Llama 3.1 8B, que responderá preguntas sobre la aplicación Versat. La información debe estar optimizada para ser fácilmente entendida por el modelo de IA, evitando ambigüedades y redundancias. Además, debe ser accesible para usuarios técnicos y desarrolladores que consultarán el modelo en busca de información específica sobre Versat.
+El resumen está destinado a un modelo Llama 3.1 8B, que responderá preguntas sobre la aplicación Versat Sarasola. La información debe estar optimizada para ser fácilmente entendida por el modelo de IA, evitando ambigüedades y redundancias. Además, debe ser accesible para usuarios técnicos y desarrolladores que consultarán el modelo en busca de información específica sobre Versat Sarasola.
 Instrucciones adicionales
-Se adjuntará el documento técnico correspondiente al manual de Versat para su análisis.
+Se adjuntará el documento técnico correspondiente al manual de Versat Sarasola para su análisis.
 El resumen final debe entregarse en texto plano o formato Markdown.
 Si hay información redundante en el manual, debe sintetizarse sin perder contenido clave.
-El objetivo principal es permitir que el modelo Llama 3.1 8B pueda responder de manera precisa sobre la aplicación Versat con base en el resumen generado.
+El objetivo principal es permitir que el modelo Llama 3.1 8B pueda responder de manera precisa sobre la aplicación Versat Sarasola con base en el resumen generado.
 el resumen debe tener el titulo del modulo
