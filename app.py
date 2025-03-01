@@ -1,274 +1,136 @@
 import os
-import time
-
-import ollama
 import streamlit as st
-from docx import Document
-from PyPDF2 import PdfReader
+# import numpy as np
+from langchain.chains import RetrievalQA
+from langchain.prompts import PromptTemplate
+from langchain_community.llms import Ollama
+from langchain_community.vectorstores import FAISS
+from langchain_core.embeddings import Embeddings
+import ollama
 
-# List of available models
-models = {
-    "mistral:7b": "f974a74358d6",
-    "llama3.1:8b": "42182419e950",
-    "qwen2.5-coder:7b": "2b0496514337",
-    "llama3.1:latest": "42182419e950",
+# Configuración
+MODELOS = {
+    "qwen2.5-coder:7b": "Qwen2.5 Coder 7B (Detallado)",
+    "mistral:7b": "Mistral 7B (Rápido)",
 }
 
+ARCHIVO_CONTEXTO = "context.txt"
 
-def clean_response(text: str) -> str:
-    """Clean a text
+# Clase personalizada para embeddings usando Ollama
+class OllamaEmbeddings(Embeddings):
+    def __init__(self, model: str = "nomic-embed-text:latest"):
+        self.model = model
 
-    Args:
-        text (str): Some text inside a tag
+    def embed_documents(self, texts):
+        # Return a list of flattened embedding vectors
+        return [ollama.embed(self.model, text)["embeddings"][0] for text in texts]
 
-    Returns:
-        str: Cleaned text
-    """
-    return text.message.content.replace("VersatInstalacion.exe", "Versat")
+    def embed_query(self, text):
+        # Return a single flattened embedding vector
+        return ollama.embed(self.model, text)["embeddings"][0]
 
+@st.cache_resource
+def crear_vector_store():
+    if not os.path.exists(ARCHIVO_CONTEXTO):
+        st.error(f"Archivo {ARCHIVO_CONTEXTO} no encontrado")
+        return None
 
-def get_api_response(message: str, pdf_content: str = "") -> str:
-    """Get response from API
+    with open(ARCHIVO_CONTEXTO, "r", encoding="utf-8") as f:
+        texto_completo = f.read()
 
-    Args:
-        message (str): message to API
-        pdf_content (str): content extracted from PDFs
+    # Chunking optimizado
+    chunks = [texto_completo[i:i+300] for i in range(0, len(texto_completo), 300)]
 
-    Returns:
-        str: The response of the API
-    """
-    try:
-        # Include conversation history in the prompt
-        conversation_history = "\n".join(
-            [f"{msg['role']}: {msg['content']}" for msg in st.session_state.messages]
-        )
-        # with open("./prompt.txt", "r") as f:
-        #     prompt = f.read()
-        #     prompt = prompt.replace("[conversation_history]", conversation_history)
-        #     prompt = prompt.replace("[pdf_content]", pdf_content)
-        #     prompt = prompt.replace("[message]", message)
-        prompt = f"""
-            Proporciona respuestas directas y seguras basadas en el contexto proporcionado de forma cortes y profesional. Evita usar términos como "parece" o "según la información proporcionada". Responde de manera clara y concisa.
+    embeddings = OllamaEmbeddings(model="nomic-embed-text:latest")  # Usa el modelo de embeddings local
+    return FAISS.from_texts(chunks, embeddings)
 
-            Contexto de la conversación:
-            {conversation_history}
+# Prompt minimalista
+PROMPT_TEMPLATE = """
+Eres un asistente especializado en Versat Sarasola. Sigue estas instrucciones:
 
-            Texto del usuario: {pdf_content}
-            \n\n
-            Pregunta del usuario: {message.replace('Sarasola', 'Versat')}
-        # """
+1. Si la pregunta es un saludo como "Hola", "Buenas", "Buenos días", etc., responde con un saludo amigable.
+2. Si la pregunta es sobre Versat Sarasola, proporciona información basada en el contexto dado.
+3. Si te preguntan sobre otros temas que no conoces, responde: "No tengo información".
 
-        response = ollama.chat(
-            model=st.session_state.selected_model,
-            messages=[{"role": "user", "content": prompt}],
-        )
-        return response
-    except Exception as e:
-        return f"Error {str(e)}"
+Contexto:
+{context}
 
+Pregunta:
+{question}
 
-def extract_text_from_file(file_path: str) -> str:
-    """Extract text from a file (PDF, DOCX, or TXT)
-
-    Args:
-        file_path (str): Path to the file
-
-    Returns:
-        str: Extracted text from the file
-    """
-    if file_path.endswith(".pdf"):
-        pdf_reader = PdfReader(file_path)
-        text = ""
-        for page in pdf_reader.pages:
-            text += page.extract_text()
-        return text
-    elif file_path.endswith(".docx"):
-        doc = Document(file_path)
-        text = "\n".join([paragraph.text for paragraph in doc.paragraphs])
-        return text
-    elif file_path.endswith(".txt"):
-        with open(file_path, "r", encoding="utf-8") as file:
-            text = file.read()
-        return text
-    return ""
-
-
-def extract_text_from_folder(folder_path: str) -> str:
-    """Extract text from all files in a folder
-
-    Args:
-        folder_path (str): Path to the folder containing files
-
-    Returns:
-        str: Concatenated text from all files
-    """
-    combined_text = ""
-    for filename in os.listdir(folder_path):
-        file_path = os.path.join(folder_path, filename)
-        if filename.endswith((".pdf", ".docx", ".txt")):
-            combined_text += extract_text_from_file(file_path) + "\n"
-    return combined_text
-
-
-def save_context_to_file(file_path: str, content: str):
-    """Save the extracted content to a file
-
-    Args:
-        file_path (str): Path to the file to save the content
-        content (str): Content to be saved
-    """
-    print("guardando contexto", file_path)
-    content = content.replace("Versat Sarasola", "Versat")
-    content = content.replace("Versat", "Versat Sarasola")
-    content = content.replace(
-        "Versat Sarasola", "Versat Sarasola tambien conocido como Sarasola o  Versat"
-    )
-    with open(file_path, "w", encoding="utf-8") as file:
-        file.write(content)
-
-
-def get_folder_modification_time(folder_path: str) -> float:
-    """Get the latest modification time of files in a folder
-
-    Args:
-        folder_path (str): Path to the folder
-
-    Returns:
-        float: The latest modification time
-    """
-    modification_times = [
-        os.path.getmtime(os.path.join(folder_path, f)) for f in os.listdir(folder_path)
-    ]
-    return max(modification_times) if modification_times else 0
-
-
-def check_and_update_context(folder_path: str, context_file_path: str):
-    """Check for changes in the folder and update the context file if modified
-
-    Args:
-        folder_path (str): Path to the folder to monitor
-        context_file_path (str): Path to the context file to update
-    """
-    # Check if the context file exists
-    if not os.path.exists(context_file_path):
-        # Initial extraction and saving
-        combined_text = extract_text_from_folder(folder_path)
-        save_context_to_file(context_file_path, combined_text)
-
-    # Get the latest modification time
-    last_modification_time = get_folder_modification_time(folder_path)
-    context_modification_time = os.path.getmtime(context_file_path)
-
-    if last_modification_time > context_modification_time:
-        # Update the context file if the folder has been modified
-        combined_text = extract_text_from_folder(folder_path)
-        save_context_to_file(context_file_path, combined_text)
-
+Respuesta:
+"""
 
 def main():
-    """
-    Write the application
-    """
-    st.title("Asistente Versat")
+    st.set_page_config(page_title="Asistente Versat Sarasola", layout="wide")
+    st.title("🤖 Asistente Versat Sarasola")
 
-    # Initialize session state for conversation history and processing state
-    if "messages" not in st.session_state:
-        st.session_state.messages = []
-    if "processing" not in st.session_state:
-        st.session_state.processing = False
+    if "qa_chain" not in st.session_state:
+        st.session_state.qa_chain = None
 
-    # Sidebar for model selection and clearing chat
+    # Sidebar con modelos disponibles
     with st.sidebar:
-        # Model selection
-        selected_model = st.selectbox(
-            "Selecciona un modelo:",
-            options=list(models.keys()),
-            disabled=st.session_state.processing,
-        )
-        st.session_state.selected_model = selected_model
-
-        # Center the button and add rounded corners using custom CSS
-        st.markdown(
-            """
-            <style>
-            .center-button {
-                display: flex;
-                justify-content: center;
-                margin-top: 20px;
-            }
-            .stButton>button {
-                border-radius: 15px;
-                padding: 10px 20px;
-                background-color: #4CAF50;
-                color: white;
-                border: none;
-                cursor: pointer;
-                font-size: 16px;
-            }
-            .stButton>button:hover {
-                background-color: #45a049;
-            }
-            </style>
-            <div class="center-button">
-            """,
-            unsafe_allow_html=True,
+        modelo_seleccionado = st.selectbox(
+            "Modelo:",
+            options=list(MODELOS.keys()),
+            format_func=lambda x: MODELOS[x],
+            index=0  # Modelo por defecto: Qwen2.5 Coder 7B
         )
 
-        # Clear chat button
-        if st.sidebar.button("Limpiar chat"):
-            # Clear the chat history in the session state
-            st.session_state.messages = []
+    # Configuración del LLM con Ollama
+    llm = Ollama(
+        model=modelo_seleccionado,
+        temperature=0.1,
+        base_url="http://localhost:11434",
+        timeout=60,
+        num_ctx=4096,
+        num_gpu=1  # Si tienes GPU
+    )
 
-        st.markdown("</div>", unsafe_allow_html=True)
-
-    # Paths
-    folder_path = "documents"
-    context_file_path = "context.txt"
-
-    # Check and update context
-    print("verificando archivos")
-    check_and_update_context(folder_path, context_file_path)
-
-    # Read context from file
-    with open(context_file_path, "r", encoding="utf-8") as file:
-        pdf_content = file.read()
-
-    # Show chat history
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
-
-    # User input
-    if not st.session_state.processing:
-        prompt = st.chat_input(
-            "Escribe su pregunta o consulta aquí...",
-            disabled=st.session_state.processing,
+    # Crear QA chain
+    vector_store = crear_vector_store()
+    if vector_store:
+        PROMPT = PromptTemplate(template=PROMPT_TEMPLATE, input_variables=["context", "question"])
+        st.session_state.qa_chain = RetrievalQA.from_chain_type(
+            llm=llm,
+            chain_type="stuff",
+            retriever=vector_store.as_retriever(search_kwargs={"k": 3}),
+            chain_type_kwargs={"prompt": PROMPT},
         )
-        if prompt:
-            # Set processing state to True
-            st.session_state.processing = True
-            # Add user message to the chat
-            st.session_state.messages.append(
-                {"role": "user", "content": prompt.capitalize()}
-            )
-            with st.chat_message("user"):
-                st.markdown(prompt)
 
-            # Get response from AI
+    # Interfaz de chat
+    if "historial" not in st.session_state:
+        st.session_state.historial = []
+
+    for mensaje in st.session_state.historial:
+        with st.chat_message(mensaje["role"]):
+            st.write(mensaje["content"])
+
+    pregunta = st.chat_input("Escribe tu pregunta sobre Versat Sarasola...")
+
+    if pregunta and st.session_state.qa_chain:
+        with st.chat_message("user"):
+            st.write(pregunta)
+
+        try:
+            with st.spinner("Analizando..."):
+                respuesta = st.session_state.qa_chain.invoke(pregunta)
+                respuesta_limpia = respuesta.get("result", "No disponible")
+
             with st.chat_message("assistant"):
-                response = get_api_response(prompt, pdf_content)
-                print(response)
-                assistant_response = clean_response(response).replace(
-                    "Respuesta del modelo:", ""
-                )
-                st.write(assistant_response)
-                st.session_state.messages.append(
-                    {"role": "assistant", "content": assistant_response}
-                )
-                # Reset processing state
-                st.session_state.processing = False
-                st.rerun()  # Rerun to update UI
+                st.write(respuesta_limpia)
 
+            st.session_state.historial.extend([
+                {"role": "user", "content": pregunta},
+                {"role": "assistant", "content": respuesta_limpia},
+            ])
+
+        except Exception as e:
+            st.error("Error: Reinicia el servidor de Ollama" + str(e))
+            st.session_state.historial.append({
+                "role": "assistant",
+                "content": "Ocurrió un error. Verifica que Ollama esté activo."
+            })
 
 if __name__ == "__main__":
     main()

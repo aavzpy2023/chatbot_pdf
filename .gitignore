@@ -1,2 +1,6 @@
 .vscode/
 .ropeproject
+.venv
+pyrightconfig.json
+*.pdf
+documents/*.txt
