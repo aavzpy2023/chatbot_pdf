@@ -1,69 +1,12 @@
-import os
 import streamlit as st
-# import numpy as np
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
-from langchain_community.llms import Ollama
-from langchain_community.vectorstores import FAISS
-from langchain_core.embeddings import Embeddings
-import ollama
+from model_processing import crear_vector_store, create_model, MODELOS, PROMPT_TEMPLATE
 
-# Configuración
-MODELOS = {
-    "qwen2.5-coder:7b": "Qwen2.5 Coder 7B (Detallado)",
-    "mistral:7b": "Mistral 7B (Rápido)",
-}
-
-ARCHIVO_CONTEXTO = "context.txt"
-
-# Clase personalizada para embeddings usando Ollama
-class OllamaEmbeddings(Embeddings):
-    def __init__(self, model: str = "nomic-embed-text:latest"):
-        self.model = model
-
-    def embed_documents(self, texts):
-        # Return a list of flattened embedding vectors
-        return [ollama.embed(self.model, text)["embeddings"][0] for text in texts]
-
-    def embed_query(self, text):
-        # Return a single flattened embedding vector
-        return ollama.embed(self.model, text)["embeddings"][0]
-
-@st.cache_resource
-def crear_vector_store():
-    if not os.path.exists(ARCHIVO_CONTEXTO):
-        st.error(f"Archivo {ARCHIVO_CONTEXTO} no encontrado")
-        return None
-
-    with open(ARCHIVO_CONTEXTO, "r", encoding="utf-8") as f:
-        texto_completo = f.read()
-
-    # Chunking optimizado
-    chunks = [texto_completo[i:i+300] for i in range(0, len(texto_completo), 300)]
-
-    embeddings = OllamaEmbeddings(model="nomic-embed-text:latest")  # Usa el modelo de embeddings local
-    return FAISS.from_texts(chunks, embeddings)
-
-# Prompt minimalista
-PROMPT_TEMPLATE = """
-Eres un asistente especializado en Versat Sarasola. Sigue estas instrucciones:
-
-1. Si la pregunta es un saludo como "Hola", "Buenas", "Buenos días", etc., responde con un saludo amigable.
-2. Si la pregunta es sobre Versat Sarasola, proporciona información basada en el contexto dado.
-3. Si te preguntan sobre otros temas que no conoces, responde: "No tengo información".
-
-Contexto:
-{context}
-
-Pregunta:
-{question}
-
-Respuesta:
-"""
 
 def main():
     st.set_page_config(page_title="Asistente Versat Sarasola", layout="wide")
-    st.title("🤖 Asistente Versat Sarasola")
+    st.title("📚 Asistente Versat Sarasola")
 
     if "qa_chain" not in st.session_state:
         st.session_state.qa_chain = None
@@ -78,14 +21,7 @@ def main():
         )
 
     # Configuración del LLM con Ollama
-    llm = Ollama(
-        model=modelo_seleccionado,
-        temperature=0.1,
-        base_url="http://localhost:11434",
-        timeout=60,
-        num_ctx=4096,
-        num_gpu=1  # Si tienes GPU
-    )
+    llm = create_model(modelo_seleccionado)
 
     # Crear QA chain
     vector_store = crear_vector_store()

@@ -11,8 +11,6 @@ Respuesta: El subsistema de “Complementos” incorpora un valor agregado a la 
 Respuesta: El objetivo fundamental de los “Complementos” del VERSAT Sarasola es brindar una herramienta que permita al usuario obtener información, expresando su resultado en una gama de funciones tipo y predeterminadas
 . La herramienta está diseñada para permitir al usuario obtener información, expresando su resultado en una gama de funciones tipo y predeterminadas.
 
-Here are the answers to your questions, based on the provided document:
-
 [Generalidades]. Pregunta: ¿Con qué producto del Paquete de Office interactúan los "Complementos" y qué facilidades aprovechan?
 Respuesta: Los "Complementos" del VERSAT Sarasola interactúan con "Microsoft Excel", permitiendo utilizar las facilidades que este ofrece en toda su extensión.
 
