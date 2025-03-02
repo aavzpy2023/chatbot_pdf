@@ -1,0 +1,253 @@
+**[FUNDAMENTOS DEL SISTEMA]**
+
+*   DESCRIPCIÓN: Introducción al Sistema Económico Integrado VERSAT-Sarasola y su enfoque en el procesamiento de documentos primarios para el registro de hechos económicos. El subsistema de "Complementos" añade valor a la funcionalidad y adaptabilidad del software, permitiendo a los usuarios obtener información para uso interno y para suministrar a diferentes niveles.
+*   PREGUNTAS_CLAVE:
+
+    *   ¿Cuál es la filosofía principal del sistema VERSAT-Sarasola?
+    *   ¿Qué valor añadido proporciona el subsistema de "Complementos"?
+    *   ¿Para qué tipos de usuarios está diseñado este software?
+    *   ¿Qué tipos de informes se pueden generar con este sistema?
+*   RESPUESTAS:
+
+    *   El sistema se basa en el procesamiento de documentos primarios para registrar hechos económicos.
+    *   El subsistema de "Complementos" mejora la funcionalidad y adaptabilidad del software. Permite a los usuarios obtener la información necesaria para uso interno y externo.
+    *   El software está diseñado para distintos usuarios con diferentes requerimientos en el procesamiento y obtención de información.
+    *   Se pueden generar informes tanto para uso interno de la entidad como para ser suministrados a diferentes niveles que requieran la información.
+
+**[GENERALIDADES DE LOS COMPLEMENTOS]**
+
+*   DESCRIPCIÓN: Los "Complementos" del VERSAT Sarasola tienen como objetivo brindar una herramienta para obtener información y expresarla en una gama de funciones predeterminadas. Esta herramienta interactúa con "Microsoft Excel", aprovechando todas sus funcionalidades.
+*   PREGUNTAS_CLAVE:
+
+    *   ¿Cuál es el objetivo principal de los "Complementos" en VERSAT Sarasola?
+    *   ¿Con qué software interactúan los "Complementos"?
+    *   ¿Qué tipo de funciones están disponibles en los "Complementos"?
+    *   ¿Cómo se aprovechan las funcionalidades de Excel dentro de los "Complementos"?
+*   RESPUESTAS:
+
+    *   El objetivo principal es proporcionar una herramienta para que el usuario obtenga información y la exprese en funciones tipo predefinidas.
+    *   Los "Complementos" interactúan de forma precisa con "Microsoft Excel".
+    *   La herramienta ofrece una gama de funciones tipo y predeterminadas.
+    *   Se utilizan las facilidades que ofrece Microsoft Excel en toda su extensión.
+
+**[REQUERIMIENTOS TÉCNICOS E INSTALACIÓN]**
+
+*   DESCRIPCIÓN: Los requerimientos técnicos, tanto de hardware como de software, necesarios para la instalación de cada subsistema del Sistema Integrado VERSAT Sarasola, se encuentran detallados en el Manual de Usuario del subsistema de Configuración.
+*   PREGUNTAS_CLAVE:
+
+    *   ¿Dónde se especifican los requerimientos técnicos para la instalación del software?
+    *   ¿Qué tipo de requerimientos se detallan en el manual?
+    *   ¿Los requerimientos varían entre los diferentes subsistemas?
+    *   ¿Qué subsistema contiene la información sobre los requerimientos técnicos?
+*   RESPUESTAS:
+
+    *   Los requerimientos técnicos se especifican en el Manual de Usuario del subsistema de Configuración.
+    *   Se detallan requerimientos tanto de hardware como de software.
+    *   Sí, los requerimientos pueden variar entre los diferentes subsistemas.
+    *   El subsistema de Configuración contiene la información sobre los requerimientos técnicos.
+
+**[AUTENTICACIÓN]**
+
+*   DESCRIPCIÓN: El acceso al subsistema de "Complementos" del software VERSAT Sarasola se permite a usuarios con los permisos necesarios configurados en el subsistema de Configuración. Existe un nivel de acceso específico llamado "Operador de Complementos" que permite realizar todas las operaciones previstas en este subsistema.
+*   PREGUNTAS_CLAVE:
+
+    *   ¿Quiénes pueden acceder al subsistema de "Complementos"?
+    *   ¿Cómo se otorgan los permisos de acceso?
+    *   ¿Existe algún rol de usuario específico para el subsistema de "Complementos"?
+    *   ¿Qué operaciones puede realizar un "Operador de Complementos"?
+*   RESPUESTAS:
+
+    *   Pueden acceder los usuarios a los que se les han otorgado los permisos necesarios en el subsistema de Configuración.
+    *   Los permisos de acceso se configuran en el subsistema de Configuración.
+    *   Sí, existe el rol de "Operador de Complementos".
+    *   Un "Operador de Complementos" puede realizar todas las operaciones previstas en el subsistema de "Complementos".
+
+**[REGISTRO Y PRÓRROGA]**
+
+*   DESCRIPCIÓN: La información sobre el "Registro y Prorroga" establecido por DATAZUCAR para la utilización del Sistema en general, incluyendo todos sus subsistemas, se encuentra en el Manual de Usuario del subsistema de Configuración.
+*   PREGUNTAS_CLAVE:
+
+    *   ¿Dónde se encuentra la información sobre el registro y prórroga del sistema?
+    *   ¿Quién establece los procedimientos de registro y prórroga?
+    *   ¿Esta información es específica para cada subsistema?
+    *   ¿Qué incluye el proceso de registro y prórroga?
+*   RESPUESTAS:
+
+    *   La información se encuentra en el Manual de Usuario del subsistema de Configuración.
+    *   DATAZUCAR establece los procedimientos de registro y prórroga.
+    *   No, la información es general para todos los subsistemas.
+    *   El proceso incluye el registro y la prórroga establecidos por DATAZUCAR para la utilización del sistema.
+
+**[INTERFAZ DE TRABAJO]**
+
+*   DESCRIPCIÓN: Una vez instalado el subsistema de Complementos, la interfaz de trabajo principal es Microsoft Excel, con un menú VERSAT Sarasola incorporado. Este menú proporciona opciones como "Conectarse", "Restablecer Conexión", "Mostrar Barra de Filtros", "Ayuda" y "Acerca de".
+*   PREGUNTAS_CLAVE:
+
+    *   ¿Cuál es la interfaz de trabajo principal después de instalar los Complementos?
+    *   ¿Qué opciones principales ofrece el menú VERSAT Sarasola en Excel?
+    *   ¿Cómo se establece la conexión con la base de datos?
+    *   ¿Qué información se necesita para conectarse a la base de datos?
+*   RESPUESTAS:
+
+    *   La interfaz principal es Microsoft Excel con un menú VERSAT Sarasola incorporado.
+    *   El menú ofrece opciones como "Conectarse", "Restablecer Conexión", "Mostrar Barra de Filtros", "Ayuda" y "Acerca de".
+    *   Al seleccionar "Conectarse", se abre una ventana para autentificar al usuario y otorgar permisos para acceder a la base de datos.
+    *   Se necesita el nombre del servidor SQL, nombre de la base de datos, usuario y clave.
+
+**[CONEXIÓN A LA BASE DE DATOS]**
+
+*   DESCRIPCIÓN: Para conectarse a la base de datos desde Excel o Complementos, se necesita el nombre del servidor SQL, el nombre de la base de datos (VERSAT), el nombre del usuario (registrado en la base de datos y declarado como usuario del SQL Server), y la clave del usuario.
+*   PREGUNTAS_CLAVE:
+
+    *   ¿Qué información es necesaria para establecer la conexión a la base de datos?
+    *   ¿Dónde se registra el usuario para acceder a la base de datos?
+    *   ¿Cuál es el nombre predeterminado de la base de datos?
+    *   ¿Qué permisos se otorgan al conectarse a la base de datos?
+*   RESPUESTAS:
+
+    *   Se necesita el nombre del servidor SQL, el nombre de la base de datos (VERSAT), el nombre del usuario y la clave.
+    *   El usuario debe estar registrado dentro de los posibles usuarios de la base de datos y declarado como usuario del SQL Server.
+    *   El nombre predeterminado de la base de datos es VERSAT.
+    *   Se otorgan los permisos necesarios para trabajar con la base de datos.
+
+**[BARRA DE FILTROS]**
+
+*   DESCRIPCIÓN: Después de la conexión, se incorpora una Barra de Filtros en Excel que contiene cajas de selección para "Ejercicio", "Periodo" y "Unidad(es)". Esta barra permite filtrar la información mostrada en los reportes según estos criterios.
+*   PREGUNTAS_CLAVE:
+
+    *   ¿Qué elementos se incorporan a Excel después de la conexión?
+    *   ¿Qué opciones de filtro están disponibles en la Barra de Filtros?
+    *   ¿Cómo se utiliza la Barra de Filtros para modificar la información mostrada?
+    *   ¿La Barra de Filtros se muestra automáticamente después de la conexión?
+*   RESPUESTAS:
+
+    *   Se incorpora una Barra de Filtros.
+    *   Las opciones de filtro son: "Ejercicio", "Periodo" y "Unidad(es)".
+    *   Se pueden seleccionar diferentes ejercicios, períodos y unidades para mostrar información específica en los reportes.
+    *   Sí, la Barra de filtros se muestra automáticamente una vez que se establece la conexión.
+
+**[ASISTENTE DE COMPLEMENTOS VERSAT SARASOLA]**
+
+*   DESCRIPCIÓN: El Asistente de Complementos VERSAT Sarasola facilita la incorporación de funciones a través de un submenú en el menú "Insertar" de Excel. Este submenú contiene categorías como Contabilidad General, Costo y Procesos, Planificación, Inventarios, Finanzas, Caja y Banco, y Otros.
+*   PREGUNTAS_CLAVE:
+
+    *   ¿Cómo se accede al Asistente de Complementos?
+    *   ¿Qué categorías de funciones están disponibles en el Asistente?
+    *   ¿Qué facilita el Asistente en la creación de reportes?
+    *   ¿Dónde se encuentra el submenú para acceder a las funciones?
+*   RESPUESTAS:
+
+    *   Se accede a través del submenú en el menú "Insertar" de Excel.
+    *   Las categorías son: Contabilidad General, Costo y Procesos, Planificación, Inventarios, Finanzas, Caja y Banco, y Otros.
+    *   El asistente facilita la selección de funciones con sus parámetros.
+    *   El submenú se encuentra en el menú "Insertar" de Excel.
+
+**[FUNCIONES DE CONTABILIDAD Y COSTOS]**
+
+*   DESCRIPCIÓN: Para utilizar las funciones de Contabilidad y Costos, debes estar ubicado en una celda de una hoja de Excel y acceder a la opción "Insertar Función Contabilidad y Costos". Las funciones se organizan en forma de árbol, según categorías y subcategorías, como Cuentas Contables, Centros de Costo, Subelementos de Gasto, Elementos de Gasto y Partidas de Gasto.
+*   PREGUNTAS_CLAVE:
+
+    *   ¿Cómo se accede a las funciones de Contabilidad y Costos?
+    *   ¿Cómo están organizadas las funciones dentro del Asistente?
+    *   ¿Qué tipos de categorías y subcategorías están disponibles?
+    *   ¿Qué tipos de resultados se pueden obtener con estas funciones (saldo, débito, crédito, variación)?
+*   RESPUESTAS:
+
+    *   Debes estar en una celda de Excel y acceder a "Insertar Función Contabilidad y Costos".
+    *   Las funciones aparecen en forma arbórea, según categorías y subcategorías.
+    *   Las categorías incluyen Cuentas Contables, Centros de Costo, Subelementos de Gasto, Elementos de Gasto y Partidas de Gasto.
+    *   Se pueden obtener resultados como saldo, débito, crédito o variación.
+
+**[PARÁMETROS DE LAS FUNCIONES]**
+
+*   DESCRIPCIÓN: Los parámetros de las funciones incluyen: Grupo de Unidad(es) Contable(s), Ejercicio Contable, Período Contable, Fecha, Rango de Fecha, Cuentas Contables, Centros de Costo, Elementos de Gasto, Subelementos de Gasto, Partidas de Gasto, Incluir Naturaleza de la Cuenta, Comprobantes OK, Moneda, Entidades, Trabajadores, Cuenta Bancaria, Almacenes, Custodios, Categoría, Productos y Conceptos.
+*   PREGUNTAS_CLAVE:
+
+    *   ¿Cuáles son los posibles parámetros que se pueden configurar en las funciones?
+    *   ¿Cómo se selecciona un Grupo de Unidades Contables?
+    *   ¿Cómo se elige el Ejercicio Contable para el resultado de la función?
+    *   ¿Cómo se selecciona un rango de fechas para el resultado de la función?
+*   RESPUESTAS:
+
+    *   Los parámetros incluyen: Grupo de Unidad(es) Contable(s), Ejercicio Contable, Período Contable, Fecha, Rango de Fecha, Cuentas Contables, Centros de Costo, etc..
+    *   Se pueden seleccionar "Todos los Grupos Unidades", tomar el valor de la Barra de Filtros o seleccionar Grupos de Unidades de la Caja de Selección.
+    *   Se puede tomar el valor de la Barra de Filtros o seleccionar el ejercicio de la Caja de Selección. También se puede obtener el resultado del ejercicio anterior.
+    *   Se divide en dos rangos: fecha de inicio y fecha fin.
+
+**[FUNCIONES DE PLANIFICACIÓN]**
+
+*   DESCRIPCIÓN: Estas funciones brindan información del subsistema de Planificación y se acceden a través del "Asistente" o directamente en Excel. Comienzan con "vst", seguido de Cuenta, Centro, Subelemento, Elemento o Partidas, luego "Plan" y finalmente el marco de tiempo (ejercicio o período).
+*   PREGUNTAS_CLAVE:
+
+    *   ¿Qué tipo de información proporcionan las funciones de Planificación?
+    *   ¿Cómo se accede a estas funciones?
+    *   ¿Cuál es la estructura de nomenclatura de estas funciones?
+    *   ¿Cómo se utilizan los parámetros de la Barra de Filtros en estas funciones?
+*   RESPUESTAS:
+
+    *   Brindan información del subsistema de Planificación.
+    *   Se acceden a través del "Asistente" o directamente en Excel.
+    *   Comienzan con "vst", seguido de Cuenta, Centro, Subelemento, Elemento o Partidas, luego "Plan" y finalmente el marco de tiempo (ejercicio o período).
+    *   Para usar los valores de la Barra de Filtros, se debe incluir un asterisco encerrado en doble comillas ("\*").
+
+**[FUNCIONES DE FINANZAS, CAJA Y BANCO]**
+
+*   DESCRIPCIÓN: Estas funciones brindan información del subsistema de Finanzas y se acceden a través del "Asistente" o directamente en Excel. Comienzan con "vst_", seguido de Cobros, Pagos o Banco, luego si es de Entidad o Trabajador u Operación Anticipada, y finalmente el marco de tiempo (Edad hasta X días, Edad mayor a X días, Edad no vencidos, Edad Rango días, Edad Vencidos).
+*   PREGUNTAS_CLAVE:
+
+    *   ¿Qué tipo de información proporcionan las funciones de Finanzas, Caja y Banco?
+    *   ¿Cómo se accede a estas funciones?
+    *   ¿Cuál es la estructura de nomenclatura de estas funciones?
+    *   ¿Cómo se utilizan los parámetros de la Barra de Filtros en estas funciones?
+*   RESPUESTAS:
+
+    *   Brindan información del subsistema de Finanzas.
+    *   Se acceden a través del "Asistente" o directamente en Excel.
+    *   Comienzan con "vst_", seguido de Cobros, Pagos o Banco, luego si es de Entidad o Trabajador u Operación Anticipada, y finalmente el marco de tiempo.
+    *   Para usar los valores de la Barra de Filtros, se debe incluir un asterisco encerrado en doble comillas ("\*").
+
+**[FUNCIONES DE INVENTARIOS]**
+
+*   DESCRIPCIÓN: Estas funciones brindan información del subsistema de Inventarios y se acceden a través del "Asistente" o directamente en Excel. Comienzan con "vst", seguido de Almacén o Custodio, luego si es de Conceptos, Débitos, Créditos, Saldos o importe, y finalmente el marco de tiempo (fecha actual, hasta fecha y rango de fechas).
+*   PREGUNTAS_CLAVE:
+
+    *   ¿Qué tipo de información proporcionan las funciones de Inventarios?
+    *   ¿Cómo se accede a estas funciones?
+    *   ¿Cuál es la estructura de nomenclatura de estas funciones?
+    *   ¿Cómo se utilizan los parámetros de la Barra de Filtros en estas funciones?
+*   RESPUESTAS:
+
+    *   Brindan información del subsistema de Inventarios.
+    *   Se acceden a través del "Asistente" o directamente en Excel.
+    *   Comienzan con "vst", seguido de Almacén o Custodio, luego si es de Conceptos, Débitos, Créditos, Saldos o importe, y finalmente el marco de tiempo.
+    *   Para usar los valores de la Barra de Filtros, se debe incluir un asterisco encerrado en doble comillas ("\*").
+
+**[FUNCIONES DE ACTIVOS FIJOS]**
+
+*   DESCRIPCIÓN: Estas funciones brindan información del subsistema de Activos Fijos y se acceden a través del "Asistente" o directamente en Excel. Comienzan con "vst", seguido de Almacén o Custodio, luego si es de Conceptos, Débitos, Créditos, Saldos o importe, y finalmente el marco de tiempo (fecha actual, hasta fecha y rango de fechas).
+*   PREGUNTAS_CLAVE:
+
+    *   ¿Qué tipo de información proporcionan las funciones de Activos Fijos?
+    *   ¿Cómo se accede a estas funciones?
+    *   ¿Cuál es la estructura de nomenclatura de estas funciones?
+    *   ¿Cómo se utilizan los parámetros de la Barra de Filtros en estas funciones?
+*   RESPUESTAS:
+
+    *   Brindan información del subsistema de Activos Fijos.
+    *   Se acceden a través del "Asistente" o directamente en Excel.
+    *   Comienzan con "vst", seguido de Almacén o Custodio, luego si es de Conceptos, Débitos, Créditos, Saldos o importe, y finalmente el marco de tiempo.
+    *   Para usar los valores de la Barra de Filtros, se debe incluir un asterisco encerrado en doble comillas ("\*").
+
+**[FUNCIONES CODIFICADORES VERSAT]**
+
+*   DESCRIPCIÓN: Estas funciones brindan información de los distintos Codificadores de los módulos del VERSAT Sarasola y se acceden a través del "Asistente" o directamente en Excel.
+*   PREGUNTAS_CLAVE:
+
+    *   ¿Qué tipo de información proporcionan las funciones de Codificadores VERSAT?
+    *   ¿Cómo se accede a estas funciones?
+    *   ¿Qué tipo de codificadores están disponibles?
+*   RESPUESTAS:
+
+    *   Brindan información de los distintos Codificadores de los módulos del VERSAT Sarasola.
+    *   Se acceden a través del "Asistente" o directamente en Excel.
+    *   Están disponibles los codificadores de Indicadores, Entidades, Productos, Servicios, Trabajadores, Almacenes, Custodios, Conceptos de Movimientos, Categorías, Grupos de Unidades, Tipo de Fondo, Unidades, Ejercicio, Periodo, Cuentas, Centros, Elementos, Subelementos y Partidas.

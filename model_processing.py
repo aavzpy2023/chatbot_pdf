@@ -1,9 +1,10 @@
 import os
 import streamlit as st
-from langchain_community.llms import Ollama
+# from langchain_community.llms import Ollama
 from langchain_community.vectorstores import FAISS
 from langchain_core.embeddings import Embeddings
 import ollama
+from langchain_ollama import OllamaLLM
 
 # Configuración
 MODELOS = {
@@ -11,7 +12,7 @@ MODELOS = {
     "mistral:7b": "Mistral 7B (Rápido)",
 }
 
-ARCHIVO_CONTEXTO = "context.txt"
+ARCHIVO_CONTEXTO = "context2.txt"
 
 
 # Prompt minimalista
@@ -21,6 +22,8 @@ Eres un asistente especializado en Versat Sarasola. Sigue estas instrucciones:
 1. Si la pregunta es un saludo como "Hola", "Buenas", "Buenos días", etc., responde con un saludo amigable.
 2. Si la pregunta es sobre Versat Sarasola, proporciona información basada en el contexto dado.
 3. Si te preguntan sobre otros temas que no conoces, responde: "No tengo información".
+4. Si la respuesta es corta, responde con una frase corta.
+5. Si la respuesta no puede ser proporcionada basada en el contexto, responde: "No tengo información".
 
 Contexto:
 {context}
@@ -45,6 +48,7 @@ class OllamaEmbeddings(Embeddings):
         # Return a single flattened embedding vector
         return ollama.embed(self.model, text)["embeddings"][0]
 
+
 @st.cache_resource
 def crear_vector_store():
     if not os.path.exists(ARCHIVO_CONTEXTO):
@@ -55,23 +59,26 @@ def crear_vector_store():
         texto_completo = f.read()
 
     # Chunking optimizado
-    chunks = [texto_completo[i:i+300] for i in range(0, len(texto_completo), 300)]
+    chunks = [texto_completo[i:i+300]
+              for i in range(0, len(texto_completo), 300)]
 
-    embeddings = OllamaEmbeddings(model="nomic-embed-text:latest")  # Usa el modelo de embeddings local
+    # Usa el modelo de embeddings local
+    embeddings = OllamaEmbeddings(model="nomic-embed-text:latest")
     return FAISS.from_texts(chunks, embeddings)
 
-def create_model(selected_model: str, temperature=0.1, base_url="http://localhost:11434",
-                timeout=120, num_ctx=4096,num_gpu=1):
+
+def create_model(selected_model: str, temperature=0, base_url="http://localhost:11434",
+                 timeout=120, num_ctx=2048, num_gpu=1):
     """
     Configure the model
 
     arg selected_model (str): name of ollama model selected
     """
-    llm = Ollama(
+    llm = OllamaLLM(
         model=selected_model,
         temperature=temperature,
         base_url=base_url,
-        timeout=timeout,
+        # timeout=timeout,
         num_ctx=num_ctx,
         num_gpu=num_gpu
     )

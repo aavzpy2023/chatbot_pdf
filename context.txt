@@ -58,51 +58,43 @@ Respuesta: La información requerida en la interfaz de Conexión incluye:
 
 
    [Barra de Filtros]. Pregunta: ¿Qué elementos contiene la Barra de Filtros que se incorpora a Excel después de la conexión?
+   Respuesta: La Barra de Filtros que se incorpora a Excel contiene cajas de selección para: Ejercicio, Periodo y Unidad(es).
 
-    Respuesta: La Barra de Filtros que se incorpora a Excel contiene cajas de selección para: Ejercicio, Periodo y Unidad(es).
    [Barra de Filtros]. Pregunta: ¿Cómo facilita la Barra de Filtros el diseño de reportes?
-
     Respuesta: La Barra de Filtros facilita el diseño de reportes permitiendo que un mismo diseño de reporte sirva en diferentes momentos para mostrar información de distintos ejercicios, períodos y Unidades.
+
    [Submenú de Funciones]. Pregunta: ¿Qué permite el submenú incorporado al menú "insert" o "insertar" de Excel?
-
     Respuesta: El submenú incorporado al menú "insert" o "insertar" de Excel permite incorporar las funciones a través de un "Asistente", facilitando la selección de las distintas funciones con sus parámetros.
+
    [Submenú de Funciones]. Pregunta: ¿Qué categorías incluye el submenú de funciones?
-
     Respuesta: El submenú de funciones incluye las siguientes categorías: Contabilidad General; Costo y Procesos; Planificación; Inventarios; Finanzas, Caja y Banco; Otros.
+
    [Restablecer Conexión]. Pregunta: ¿Cuándo y cómo se utiliza la opción "Restablecer Conexión"?
-
     Respuesta: La opción "Restablecer Conexión" se utiliza cuando se interrumpe la conexión y se desea restablecerla sin salir de Excel, utilizando los mismos parámetros que se usaron para la conexión original.
+
    [Mostrar Barra de Filtros]. Pregunta: ¿En qué situaciones se utiliza la opción "Mostrar Barra de Filtros"?
-
     Respuesta: La opción "Mostrar Barra de Filtros" se utiliza cuando la Barra de filtros se ha ocultado y se desea volver a mostrar. La barra de filtros se muestra automáticamente una vez que se establece la conexión.
+
    [Ayuda]. Pregunta: ¿Qué información proporciona la opción "Ayuda"?
-
     Respuesta: La opción "Ayuda" permite mostrar la Ayuda de: Complementos VERSAT Sarasola.
-   [Acerca de]. Pregunta: ¿Qué información muestra la opción "Acerca de"?
 
+   [Acerca de]. Pregunta: ¿Qué información muestra la opción "Acerca de"?
     Respuesta: La opción "Acerca de" muestra información Acerca de: Complementos VERSAT Sarasola.
 
-
-
-
    [Asistente de Complementos VERSAT Sarasola]. Pregunta: ¿Cómo se accede a las funciones de Contabilidad y Costos a través del asistente?
-
     Respuesta: Para acceder a las funciones de Contabilidad y Costos a través del asistente, primero debe ubicarse en una celda de una hoja de Excel, luego acceder a la opción "Insertar Función Contabilidad y Costos".
+
    [Asistente de Complementos VERSAT Sarasola]. Pregunta: ¿Cómo aparecen las funciones en la ventana de "Insertar Función Contabilidad y Costos"?
-
     Respuesta: Las funciones aparecen en forma arbórea, según las distintas categorías y subcategorías que se han designado.
+
    [Asistente de Complementos VERSAT Sarasola]. Pregunta: ¿Qué grupos incluye la primera categoría dentro de las funciones de Contabilidad y Costos?
-
     Respuesta: La primera categoría incluye los siguientes grupos: Cuentas Contables, Centros de Costo, Subelementos de Gasto, Elementos de Gasto y Partidas de Gasto.
+
    [Asistente de Complementos VERSAT Sarasola]. Pregunta: ¿Cómo se accede a la ventana de "Insertar Función Planificación"?
-
     Respuesta: Para acceder a la ventana de "Insertar Función Planificación", hay que estar ubicado en una celda de una hoja Excel y una vez que se accede a la opción “Insertar Función Planificación”, se obtiene la ventana correspondiente.
+
    [Asistente de Complementos VERSAT Sarasola]. Pregunta: ¿Qué categorías se utilizan para organizar las funciones de planificación?
-
     Respuesta: Las funciones de planificación se organizan según las siguientes categorías: Cuentas Contables, Centros de Costo, Subelementos de Gasto, Elementos de Gasto y Partidas de Gasto.
-
-
-
 
    [Asistente de Complementos VERSAT Sarasola]. Pregunta: ¿En qué rangos de tiempo se pueden ofrecer los resultados en la función de planificación?
 
@@ -117,36 +109,28 @@ Respuesta: La información requerida en la interfaz de Conexión incluye:
 
     Respuesta: Para utilizar esta herramienta, debe ubicarse en una celda de una hoja de Excel, donde una vez que acceda a la opción "Insertar Función Activo", obtendrá la ventana correspondiente.
 
-
-
-
-
-
-
    [Asistente de Complementos VERSAT Sarasola]. Pregunta: ¿Cómo se accede a la ventana de "Insertar Codificadores VERSAT"?
-
     Respuesta: Para acceder a la ventana de "Insertar Codificadores VERSAT", se debe estar ubicado en una celda de la hoja de Excel, y luego acceder a la opción “Insertar Codificadores VERSAT”.
-   [Parámetros]. Pregunta: ¿Qué opciones ofrece el parámetro "Grupo de Unidades Contables" y cómo afectan el resultado final?
 
+   [Parámetros]. Pregunta: ¿Qué opciones ofrece el parámetro "Grupo de Unidades Contables" y cómo afectan el resultado final?
     Respuesta: El parámetro "Grupo de Unidades Contables" ofrece tres opciones:
        Seleccionar “Todos los Grupos Unidades”: Este es el valor que aparece por defecto.
        Tomar valor de la Barra de Filtros: Toma el valor de la Unidad que tenga la caja de selección "Grupo de Unidades" en dicha Barra de Filtros.
        Seleccionar Grupo de Unidades de la Caja de Selección e incorporarlas a la lista: Permite incluir varios Grupos de Unidades en el resultado, e incluso seleccionar un Rango de Grupos de Unidades.
+
    [Parámetros]. Pregunta: ¿Cómo se utiliza la Barra de Filtros en relación con el parámetro "Grupo de Unidades Contables"?
-
     Respuesta: Para utilizar la Barra de Filtros con el parámetro "Grupo de Unidades Contables", se debe seleccionar la opción de "Tomar valor de la Barra de Filtros". Cuando se ejecuta la función, siempre tomará el valor de la Unidad que tenga la caja de selección "Grupo de Unidades" en la Barra de Filtros.
-   [Parámetros]. Pregunta: ¿Cómo se selecciona el ejercicio contable para el resultado final?
 
+   [Parámetros]. Pregunta: ¿Cómo se selecciona el ejercicio contable para el resultado final?
     Respuesta: Para seleccionar el ejercicio contable, se pueden realizar dos operaciones diferentes:
        Tomar el valor de la Barra de Filtros.
        Seleccionar el ejercicio de la Caja de Selección.
-
     Además, existe la posibilidad de que el resultado a obtener sea del ejercicio anterior al seleccionado, esto se logra marcando la casilla de verificación "Ejercicio Anterior".
+
    [Parámetros]. Pregunta: ¿Cómo se utiliza la Barra de Filtros para seleccionar el ejercicio contable?
-
     Respuesta: Para utilizar la Barra de Filtros, se debe seleccionar la opción de "Tomar el valor de la Barra de Filtros". Al hacer la selección, la función que se ejecutará siempre tomará el valor del año que la Caja de Selección "Ejercicio" tenga en la Barra de Filtros.
-   [Parámetros]. Pregunta: ¿Cómo se selecciona el período contable para el resultado final?
 
+   [Parámetros]. Pregunta: ¿Cómo se selecciona el período contable para el resultado final?
     Respuesta: Para seleccionar el período contable para el resultado final, se pueden realizar dos operaciones diferentes:
        Tomar valor de la Barra de Filtros: al seleccionar la función y ejecutarla, siempre toma el valor del período que tenga la Caja de Selección "Período" en la Barra de Filtros (si el ejercicio fue tomado de la Barra, el período se toma obligatoriamente de ella).
        Seleccionar el período de la Caja de selección.
