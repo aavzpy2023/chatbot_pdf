@@ -37,20 +37,82 @@ Respuesta:
 
 # Clase personalizada para embeddings usando Ollama
 class OllamaEmbeddings(Embeddings):
-    def __init__(self, model: str = "nomic-embed-text:latest"):
+    def __init__(self, model: str = "nomic-embed-text:latest", embedding_dim: int = 768,
+                max_retries: int = 3, fallback_type: str = "zero"):
         self.model = model
+        self.embedding_dim = embedding_dim
+        self.max_retries = max_retries
+        self.fallback_type = fallback_type  # Opciones: "zero", "random", "ones"
 
     def embed_documents(self, texts):
         # Return a list of flattened embedding vectors
-        return [ollama.embed(self.model, text)["embeddings"][0] for text in texts]
+        # print("Embedding documents:", texts)
+        if not texts:
+            return []
+
+        embeddings = []
+
+        for text in texts:
+            result = ollama.embed(self.model, text)
+            # Safely access the first embedding, if available
+            if result["embeddings"] and len(result["embeddings"]) > 0:
+                embeddings.append(result["embeddings"][0])
+            else:
+                # Log or handle the case when no embeddings are returned
+                print(f"Warning: No embeddings returned for text: {text[:30]}...")
+                # Add a zero vector as placeholder for failed embeddings
+                # Ensure same dimensions as other embeddings
+                embeddings.append([0.0] * self.embedding_dim)  # Dimensión configurable
+
+        return embeddings
 
     def embed_query(self, text):
         # Return a single flattened embedding vector
-        return ollama.embed(self.model, text)["embeddings"][0]
+        import random
+        import logging
+        import time
+
+        # Intentar generar embedding con reintentos
+        for attempt in range(self.max_retries):
+            try:
+                result = ollama.embed(self.model, text)
+                if result.get("embeddings") and len(result["embeddings"]) > 0:
+                    return result["embeddings"][0]
+
+                # Si no hay embeddings pero la llamada no falló, intentamos de nuevo
+                logging.warning(f"Intento {attempt+1}/{self.max_retries}: No se obtuvieron embeddings para: '{text[:50]}...'")
+                if attempt < self.max_retries - 1:
+                    time.sleep(0.5)  # Pequeña pausa antes de reintentar
+                    continue
+            except Exception as e:
+                logging.error(f"Error al generar embedding (intento {attempt+1}/{self.max_retries}): {str(e)}")
+                if attempt < self.max_retries - 1:
+                    time.sleep(1)  # Pausa más larga si hay una excepción
+                    continue
+
+        # Si llegamos aquí, todos los intentos fallaron
+        logging.warning(f"Todos los intentos de embedding fallaron para: '{text[:50]}...' - Usando vector de respaldo tipo '{self.fallback_type}'")
+
+        # Generar vector de respaldo según el tipo configurado
+        if self.fallback_type == "random":
+            return [random.uniform(-1.0, 1.0) for _ in range(self.embedding_dim)]
+        elif self.fallback_type == "ones":
+            return [1.0] * self.embedding_dim
+        else:  # "zero" es el valor predeterminado
+            return [0.0] * self.embedding_dim
 
 
 @st.cache_resource
-def crear_vector_store():
+def crear_vector_store(chat_history: str=""):
+    """
+        Create a vector store using chat history and embeddings.
+
+        Args:
+            chat_history (str): Historial de chat.
+
+        Returns:
+            FAISS: Vector store.
+    """
     if not os.path.exists(ARCHIVO_CONTEXTO):
         st.error(f"Archivo {ARCHIVO_CONTEXTO} no encontrado")
         return None
@@ -59,12 +121,28 @@ def crear_vector_store():
         texto_completo = f.read()
 
     # Chunking optimizado
-    chunks = [texto_completo[i:i+300]
-              for i in range(0, len(texto_completo), 300)]
+    if chat_history:
+        chunks = [texto_completo[i:i+300]
+                  for i in range(0, len('\n'.join([chat_history, texto_completo])), 300)]
+    else:
+        chunks = [texto_completo[i:i+300]
+                  for i in range(0, len(texto_completo), 300)]
 
     # Usa el modelo de embeddings local
-    embeddings = OllamaEmbeddings(model="nomic-embed-text:latest")
-    return FAISS.from_texts(chunks, embeddings)
+    embeddings_model = OllamaEmbeddings(model="nomic-embed-text:latest")
+    print("embeddings:", embeddings_model)
+
+    # Get embeddings
+    embeddings = embeddings_model.embed_documents(chunks)
+
+    if not embeddings:
+        st.error("No se pudieron generar embeddings válidos para ningún texto")
+        return None
+
+    # Create FAISS using from_texts to properly handle the texts and embeddings
+    vector_store = FAISS.from_texts(chunks, embeddings_model)
+    print("FAISS: ", vector_store)
+    return vector_store
 
 
 def create_model(selected_model: str, temperature=0, base_url="http://localhost:11434",
