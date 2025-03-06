@@ -8,11 +8,12 @@ from langchain_ollama import OllamaLLM
 
 # Configuración
 MODELOS = {
+    "qwen2.5:14b": "Qwen2.5 14B (Detallado)",
     "qwen2.5-coder:7b": "Qwen2.5 Coder 7B (Detallado)",
     "mistral:7b": "Mistral 7B (Rápido)",
 }
 
-ARCHIVO_CONTEXTO = "context2.txt"
+ARCHIVO_CONTEXTO = "./documents/data_configuracion.json"
 
 
 # Prompt minimalista
@@ -121,12 +122,13 @@ def crear_vector_store(chat_history: str=""):
         texto_completo = f.read()
 
     # Chunking optimizado
+    overlap = 300
     if chat_history:
-        chunks = [texto_completo[i:i+300]
-                  for i in range(0, len('\n'.join([chat_history, texto_completo])), 300)]
+        chunks = [texto_completo[i:i+overlap]
+                  for i in range(0, len('\n'.join([chat_history, texto_completo])), overlap)]
     else:
-        chunks = [texto_completo[i:i+300]
-                  for i in range(0, len(texto_completo), 300)]
+        chunks = [texto_completo[i:i+overlap]
+                  for i in range(0, len(texto_completo), overlap)]
 
     # Usa el modelo de embeddings local
     embeddings_model = OllamaEmbeddings(model="nomic-embed-text:latest")
@@ -145,7 +147,7 @@ def crear_vector_store(chat_history: str=""):
     return vector_store
 
 
-def create_model(selected_model: str, temperature=0, base_url="http://localhost:11434",
+def create_model(selected_model: str, temperature=0.2, base_url="http://localhost:11434",
                  timeout=120, num_ctx=2048, num_gpu=1):
     """
     Configure the model

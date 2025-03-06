@@ -5,3 +5,4 @@ __pycache__/*.pyc
 pyrightconfig.json
 *.pdf
 documents/*.txt
+*.json
