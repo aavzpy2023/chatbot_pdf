@@ -6,3 +6,4 @@ pyrightconfig.json
 *.pdf
 documents/*.txt
 *.json
+.env

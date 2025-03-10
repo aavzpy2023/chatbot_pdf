@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
@@ -59,7 +60,9 @@ def main():
         st.session_state.qa_chain = RetrievalQA.from_chain_type(
             llm=llm,
             chain_type="stuff",
-            retriever=vector_store.as_retriever(search_kwargs={"k": 3}),
+            retriever=vector_store.as_retriever(
+                search_kwargs={"k": int(os.getenv("OLLAMA_RETRIEVER_K", 3))}  # Default: 3
+            ),
             chain_type_kwargs={"prompt": PROMPT},
         )
 
@@ -77,30 +80,30 @@ def main():
         with st.chat_message("user"):
             st.write(pregunta)
 
-        # try:
-        with st.spinner("Analizando..."):
-            respuesta = st.session_state.qa_chain.invoke(pregunta)
-            respuesta_limpia = respuesta.get("result", "No disponible")
+        try:
+            with st.spinner("Analizando..."):
+                respuesta = st.session_state.qa_chain.invoke(pregunta)
+                respuesta_limpia = respuesta.get("result", "No disponible")
 
-        with st.chat_message("assistant"):
-            st.write(respuesta_limpia)
+            with st.chat_message("assistant"):
+                st.write(respuesta_limpia)
 
-        st.session_state.historial.extend([
-            {"role": "user", "content": pregunta},
-            {"role": "assistant", "content": respuesta_limpia},
-        ])
+            st.session_state.historial.extend([
+                {"role": "user", "content": pregunta},
+                {"role": "assistant", "content": respuesta_limpia},
+            ])
 
-        # except Exception as e:
-        #     st.error("Error: Reinicia el servidor de Ollama" + str(e))
-        #     st.session_state.historial.append({
-        #         "role": "assistant",
-        #         "content": "Ocurrió un error. Verifica que Ollama esté activo."
-        #     })
+        except Exception as e:
+            st.error("Error: Reinicia el servidor de Ollama" + str(e))
+            st.session_state.historial.append({
+                "role": "assistant",
+                "content": "Ocurrió un error. Verifica que Ollama esté activo."
+            })
 
-        print(get_session_history())
-        chat_history = get_session_history()
-        print("Adding session history:", chat_history)
-        vector_store = crear_vector_store(chat_history)
+        # print(get_session_history())
+        # chat_history = get_session_history()
+        # print("Adding session history:", chat_history)
+        # vector_store = crear_vector_store(chat_history)
 
 
 

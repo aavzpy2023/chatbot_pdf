@@ -1,5 +1,6 @@
 import os
 import streamlit as st
+
 # from langchain_community.llms import Ollama
 from langchain_community.vectorstores import FAISS
 from langchain_core.embeddings import Embeddings
@@ -8,12 +9,13 @@ from langchain_ollama import OllamaLLM
 
 # Configuración
 MODELOS = {
-    "qwen2.5:14b": "Qwen2.5 14B (Detallado)",
     "qwen2.5-coder:7b": "Qwen2.5 Coder 7B (Detallado)",
+    "qwen2.5:1.5b": "Qwen2.5 1.5B (Detallado)",
+    "qwen2.5:14b": "Qwen2.5 14B (Detallado)",
     "mistral:7b": "Mistral 7B (Rápido)",
 }
 
-ARCHIVO_CONTEXTO = "./documents/data_configuracion.json"
+ARCHIVO_CONTEXTO = "./documents/data_for_model.json"
 
 
 # Prompt minimalista
@@ -23,8 +25,11 @@ Eres un asistente especializado en Versat Sarasola. Sigue estas instrucciones:
 1. Si la pregunta es un saludo como "Hola", "Buenas", "Buenos días", etc., responde con un saludo amigable.
 2. Si la pregunta es sobre Versat Sarasola, proporciona información basada en el contexto dado.
 3. Si te preguntan sobre otros temas que no conoces, responde: "No tengo información".
-4. Si la respuesta es corta, responde con una frase corta.
-5. Si la respuesta no puede ser proporcionada basada en el contexto, responde: "No tengo información".
+4. Si te preguntan por los pasos de alguna accion, brinda absolutamente todos los pasos al usuario. Prohibido omitir ningun paso.
+5. Si la respuesta es corta, responde con una frase corta.
+6. Si la respuesta no puede ser proporcionada basada en el contexto, responde: "No tengo información".
+7. Si la pregunta menciona "usuario regular", "usuario normal" o "empleado", **ignora la sección ADMINISTRADOR**.
+8. Si la pregunta menciona "administrador", "configuración inicial" o "usuario 'sa'", **ignora la sección USUARIO_REGULAR**.
 
 Contexto:
 {context}
@@ -38,8 +43,13 @@ Respuesta:
 
 # Clase personalizada para embeddings usando Ollama
 class OllamaEmbeddings(Embeddings):
-    def __init__(self, model: str = "nomic-embed-text:latest", embedding_dim: int = 768,
-                max_retries: int = 3, fallback_type: str = "zero"):
+    def __init__(
+        self,
+        model: str = "nomic-embed-text:latest",
+        embedding_dim: int = 768,
+        max_retries: int = 3,
+        fallback_type: str = "zero",
+    ):
         self.model = model
         self.embedding_dim = embedding_dim
         self.max_retries = max_retries
@@ -81,18 +91,24 @@ class OllamaEmbeddings(Embeddings):
                     return result["embeddings"][0]
 
                 # Si no hay embeddings pero la llamada no falló, intentamos de nuevo
-                logging.warning(f"Intento {attempt+1}/{self.max_retries}: No se obtuvieron embeddings para: '{text[:50]}...'")
+                logging.warning(
+                    f"Intento {attempt+1}/{self.max_retries}: No se obtuvieron embeddings para: '{text[:50]}...'"
+                )
                 if attempt < self.max_retries - 1:
                     time.sleep(0.5)  # Pequeña pausa antes de reintentar
                     continue
             except Exception as e:
-                logging.error(f"Error al generar embedding (intento {attempt+1}/{self.max_retries}): {str(e)}")
+                logging.error(
+                    f"Error al generar embedding (intento {attempt+1}/{self.max_retries}): {str(e)}"
+                )
                 if attempt < self.max_retries - 1:
                     time.sleep(1)  # Pausa más larga si hay una excepción
                     continue
 
         # Si llegamos aquí, todos los intentos fallaron
-        logging.warning(f"Todos los intentos de embedding fallaron para: '{text[:50]}...' - Usando vector de respaldo tipo '{self.fallback_type}'")
+        logging.warning(
+            f"Todos los intentos de embedding fallaron para: '{text[:50]}...' - Usando vector de respaldo tipo '{self.fallback_type}'"
+        )
 
         # Generar vector de respaldo según el tipo configurado
         if self.fallback_type == "random":
@@ -104,15 +120,15 @@ class OllamaEmbeddings(Embeddings):
 
 
 @st.cache_resource
-def crear_vector_store(chat_history: str=""):
+def crear_vector_store(chat_history: str = ""):
     """
-        Create a vector store using chat history and embeddings.
+    Create a vector store using chat history and embeddings.
 
-        Args:
-            chat_history (str): Historial de chat.
+    Args:
+        chat_history (str): Historial de chat.
 
-        Returns:
-            FAISS: Vector store.
+    Returns:
+        FAISS: Vector store.
     """
     if not os.path.exists(ARCHIVO_CONTEXTO):
         st.error(f"Archivo {ARCHIVO_CONTEXTO} no encontrado")
@@ -122,14 +138,31 @@ def crear_vector_store(chat_history: str=""):
         texto_completo = f.read()
 
     # Chunking optimizado
-    overlap = 300
+    overlap = 500
+    chunks = []
     if chat_history:
-        chunks = [texto_completo[i:i+overlap]
-                  for i in range(0, len('\n'.join([chat_history, texto_completo])), overlap)]
-    else:
-        chunks = [texto_completo[i:i+overlap]
-                  for i in range(0, len(texto_completo), overlap)]
+        chunks = [
+            texto_completo[i : i + overlap]
+            for i in range(0, len("\n".join([chat_history, texto_completo])), overlap)
+        ]
 
+    # Split by specific sections
+        chunks = []
+        for seccion in ["ADMINISTRADOR", "USUARIO_REGULAR"]:
+            if seccion in texto_completo:
+                contenido = texto_completo.split(seccion)[1].split("}")[0]
+                chunks.append(f"**{seccion}**{contenido}")
+
+
+    current_chunk = ""
+    for linea in texto_completo.split("\n"):
+        if linea.strip().startswith("1. ") or linea.strip().startswith("2. "):
+            if current_chunk:
+                chunks.append(current_chunk)
+                current_chunk = ""
+        current_chunk += linea + "\n"
+    if current_chunk:
+        chunks.append(current_chunk)
     # Usa el modelo de embeddings local
     embeddings_model = OllamaEmbeddings(model="nomic-embed-text:latest")
     print("embeddings:", embeddings_model)
@@ -147,19 +180,38 @@ def crear_vector_store(chat_history: str=""):
     return vector_store
 
 
-def create_model(selected_model: str, temperature=0.2, base_url="http://localhost:11434",
-                 timeout=120, num_ctx=2048, num_gpu=1):
-    """
-    Configure the model
+# def create_model(
+#     selected_model: str,
+#     temperature=0,
+#     base_url="http://localhost:11434",
+#     timeout=120,
+#     num_ctx=4096,
+#     num_gpu=1,
+# ):
+#     """
+#     Configure the model
 
-    arg selected_model (str): name of ollama model selected
-    """
+#     arg selected_model (str): name of ollama model selected
+#     """
+#     llm = OllamaLLM(
+#         model=selected_model,
+#         temperature=temperature,
+#         base_url=base_url,
+#         # timeout=timeout,
+#         num_ctx=num_ctx,
+#         num_gpu=num_gpu,
+#     )
+#     return llm
+
+
+
+def create_model(selected_model: str):
     llm = OllamaLLM(
         model=selected_model,
-        temperature=temperature,
-        base_url=base_url,
-        # timeout=timeout,
-        num_ctx=num_ctx,
-        num_gpu=num_gpu
+        temperature=float(os.getenv("OLLAMA_TEMPERATURE", 0.0)),  # Default: 0.0
+        base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
+        # timeout=int(os.getenv("OLLAMA_TIMEOUT", 120)),           # Default: 120
+        num_ctx=int(os.getenv("OLLAMA_NUM_CTX", 4096)),          # Default: 4096
+        num_gpu=int(os.getenv("OLLAMA_NUM_GPU", 1))              # Default: 1
     )
     return llm
