@@ -4,6 +4,7 @@ from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 from model_processing import crear_vector_store, create_model, get_downloaded_models, PROMPT_TEMPLATE
 
+
 def get_session_history():
     """
     Get history from session
@@ -36,7 +37,6 @@ def main():
     st.set_page_config(page_title="Asistente Versat Sarasola", layout="wide")
     st.title("📚 Asistente Versat Sarasola")
 
-
     if "qa_chain" not in st.session_state:
         st.session_state.qa_chain = None
 
@@ -54,19 +54,25 @@ def main():
     # Configuración del LLM con Ollama
     llm = create_model(modelo_seleccionado)
 
-
-
     # Crear QA chain
     vector_store = crear_vector_store()
     if vector_store:
-        PROMPT = PromptTemplate(template=PROMPT_TEMPLATE, input_variables=["context", "question"])
+        PROMPT = PromptTemplate(template=PROMPT_TEMPLATE, input_variables=[
+                                "context", "question"])
         st.session_state.qa_chain = RetrievalQA.from_chain_type(
             llm=llm,
-            chain_type="stuff",
+            chain_type="map_reduce",
             retriever=vector_store.as_retriever(
-                search_kwargs={"k": int(os.getenv("OLLAMA_RETRIEVER_K", 3))}  # Default: 3
+                # Default: 3
+                search_kwargs={"k": int(os.getenv("OLLAMA_RETRIEVER_K", 3))}
             ),
-            chain_type_kwargs={"prompt": PROMPT},
+            chain_type_kwargs={
+                "question_prompt": PROMPT,
+                "combine_prompt": PromptTemplate(
+                    template=PROMPT_TEMPLATE.replace("{context}", "{summaries}"),
+                    input_variables=["summaries", "question"]
+                )
+            },
         )
 
     # Interfaz de chat
