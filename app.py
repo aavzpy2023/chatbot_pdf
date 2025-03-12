@@ -2,7 +2,7 @@ import os
 import streamlit as st
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
-from model_processing import crear_vector_store, create_model, MODELOS, PROMPT_TEMPLATE
+from model_processing import crear_vector_store, create_model, get_downloaded_models, PROMPT_TEMPLATE
 
 def get_session_history():
     """
@@ -36,15 +36,18 @@ def main():
     st.set_page_config(page_title="Asistente Versat Sarasola", layout="wide")
     st.title("📚 Asistente Versat Sarasola")
 
+
     if "qa_chain" not in st.session_state:
         st.session_state.qa_chain = None
+
+    local_models = get_downloaded_models()
 
     # Sidebar con modelos disponibles
     with st.sidebar:
         modelo_seleccionado = st.selectbox(
             "Modelo:",
-            options=list(MODELOS.keys()),
-            format_func=lambda x: MODELOS[x],
+            options=list(local_models),
+            # format_func=lambda x: local_models[x],
             index=0  # Modelo por defecto: Qwen2.5 Coder 7B
         )
 
@@ -99,12 +102,6 @@ def main():
                 "role": "assistant",
                 "content": "Ocurrió un error. Verifica que Ollama esté activo."
             })
-
-        # print(get_session_history())
-        # chat_history = get_session_history()
-        # print("Adding session history:", chat_history)
-        # vector_store = crear_vector_store(chat_history)
-
 
 
 if __name__ == "__main__":

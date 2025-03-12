@@ -7,3 +7,4 @@ pyrightconfig.json
 documents/*.txt
 *.json
 .env
+api_keys
