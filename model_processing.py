@@ -8,6 +8,8 @@ import re
 PROMPT_TEMPLATE = """
 Eres un asistente experto en el sistema. Responde únicamente usando la información proporcionada en el contexto.
 Si no hay información relevante, responde: "⚠️ No tengo información sobre este tema."
+Debes responder siempre en espanol y solo mostrar la respuesta final en la interface
+
 
 Contexto:
 {context}
@@ -133,21 +135,37 @@ def parse_document(text):
 
     return chunks
 
+def setup_vector_store(chunks, model_name):
+    embeddings = OllamaEmbeddings(model=model_name)
+    vector_store = FAISS.from_texts(chunks, embeddings)
+    return vector_store
+
+
+
 # =============================================================================
 # Función para configurar la cadena QA con el modelo seleccionado
 # =============================================================================
-def setup_qa_chain(model_name):
-    embeddings = OllamaEmbeddings(model=model_name)
+def setup_qa_chain(vector_store, model_name):
     llm = OllamaLLM(model=model_name)
-    vector_store = FAISS.from_texts(["placeholder"], embeddings)  # Placeholder inicial
-    return RetrievalQA.from_chain_type(
+    prompt_template = """
+    Eres un asistente experto en el sistema Versat Sarasola.
+    Contexto:
+    {context}
+
+    Pregunta:
+    {question}
+
+    Respuesta:
+    """
+    qa_chain = RetrievalQA.from_chain_type(
         llm=llm,
         chain_type="stuff",
-        retriever=vector_store.as_retriever(search_kwargs={"k": 1}),
+        retriever=vector_store.as_retriever(search_kwargs={"k": 3}),
         chain_type_kwargs={
             "prompt": PromptTemplate(
-                template=PROMPT_TEMPLATE,
+                template=prompt_template,
                 input_variables=["context", "question"]
             )
         }
     )
+    return qa_chain
