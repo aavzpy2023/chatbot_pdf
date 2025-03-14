@@ -1,114 +1,61 @@
-import os
 import streamlit as st
-from langchain.chains import RetrievalQA
-from langchain.prompts import PromptTemplate
-from model_processing import crear_vector_store, create_model, get_downloaded_models, PROMPT_TEMPLATE
+from model_processing import (
+    load_document,
+    parse_document,
+    setup_qa_chain,
+)
 
+# Configuración inicial de Streamlit
+st.set_page_config(
+    page_title="Chatbot de Soporte Técnico",
+    page_icon="🤖",
+    layout="wide",
+)
 
-def get_session_history():
-    """
-    Get history from session
+# Título de la aplicación
+st.title("🤖 Chatbot de Soporte Técnico")
+st.markdown("Bienvenido al chatbot de soporte técnico. Haz preguntas relacionadas con el sistema Versat Sarasola.")
 
-    Returns:
-        str: History string
-    """
-    history = str()
-    if "historial" not in st.session_state:
-        st.session_state.historial = history
+# Ruta del archivo
+file_path = "./documents/mf.txt"
 
+# Leer el documento
+raw_text = load_document(file_path)
+if not raw_text:
+    st.error("❌ No se pudo cargar el archivo de documentación.")
+else:
+    # Procesar el documento
+    chunks = parse_document(raw_text)
+    if not chunks:
+        st.error("❌ No se encontraron preguntas válidas en el documento.")
     else:
-        tmp_history = st.session_state.historial
-        for item in tmp_history:
-            if item.get('role') == 'user':
-                if item.get('content'):
-                    history += 'Pregunta: ' + item['content'] + '\n'
-            elif item.get('role') == 'assistant':
-                if item.get('content') and "No tengo información." not in item['content']:
-                    history += 'Respuesta: ' + item['content'] + '\n\n'
-            elif item.get('role') == 'system':
-                if item.get('content') and "No tengo información." not in item['content']:
-                    history += 'Mensaje: ' + item['content'] + '\n\n'
-            else:
-                history += 'Mensaje: ' + item['content'] + '\n\n'
-    return history
+        # Mostrar información sobre el procesamiento
+        st.success("✅ Documento procesado exitosamente.")
+        st.info(f"Se extrajeron {len(chunks)} bloques de información del documento.")
 
-
-def main():
-    st.set_page_config(page_title="Asistente Versat Sarasola", layout="wide")
-    st.title("📚 Asistente Versat Sarasola")
-
-    if "qa_chain" not in st.session_state:
-        st.session_state.qa_chain = None
-
-    local_models = get_downloaded_models()
-
-    # Sidebar con modelos disponibles
-    with st.sidebar:
-        modelo_seleccionado = st.selectbox(
-            "Modelo:",
-            options=list(local_models),
-            # format_func=lambda x: local_models[x],
-            index=0  # Modelo por defecto: Qwen2.5 Coder 7B
-        )
-
-    # Configuración del LLM con Ollama
-    llm = create_model(modelo_seleccionado)
-
-    # Crear QA chain
-    vector_store = crear_vector_store()
-    if vector_store:
-        PROMPT = PromptTemplate(template=PROMPT_TEMPLATE, input_variables=[
-                                "context", "question"])
-        st.session_state.qa_chain = RetrievalQA.from_chain_type(
-            llm=llm,
-            chain_type="map_reduce",
-            retriever=vector_store.as_retriever(
-                # Default: 3
-                search_kwargs={"k": int(os.getenv("OLLAMA_RETRIEVER_K", 3))}
-            ),
-            chain_type_kwargs={
-                "question_prompt": PROMPT,
-                "combine_prompt": PromptTemplate(
-                    template=PROMPT_TEMPLATE.replace("{context}", "{summaries}"),
-                    input_variables=["summaries", "question"]
-                )
-            },
-        )
-
-    # Interfaz de chat
-    if "historial" not in st.session_state:
-        st.session_state.historial = []
-
-    for mensaje in st.session_state.historial:
-        with st.chat_message(mensaje["role"]):
-            st.write(mensaje["content"])
-
-    pregunta = st.chat_input("Escribe tu pregunta sobre Versat Sarasola...")
-
-    if pregunta and st.session_state.qa_chain:
-        with st.chat_message("user"):
-            st.write(pregunta)
-
+        # Obtener la lista de modelos disponibles en Ollama
         try:
-            with st.spinner("Analizando..."):
-                respuesta = st.session_state.qa_chain.invoke(pregunta)
-                respuesta_limpia = respuesta.get("result", "No disponible")
+            from langchain_ollama import OllamaLLM
 
-            with st.chat_message("assistant"):
-                st.write(respuesta_limpia)
+            # Lista de modelos disponibles (puedes personalizarla según tus necesidades)
+            available_models = ["qwen2.5:3B", "llama3", "mistral", "phi"]
+            selected_model = st.selectbox("Selecciona un modelo:", available_models)
 
-            st.session_state.historial.extend([
-                {"role": "user", "content": pregunta},
-                {"role": "assistant", "content": respuesta_limpia},
-            ])
+            # Configurar la cadena QA con el modelo seleccionado
+            qa_chain = setup_qa_chain(selected_model)
 
+            # Iniciar ciclo interactivo de consultas
+            st.subheader("Haz tu pregunta:")
+            user_query = st.text_input("Escribe tu pregunta aquí:")
+
+            if user_query:
+                if user_query.lower() in ["salir", "exit"]:
+                    st.info("👋 ¡Hasta luego!")
+                else:
+                    # Obtener respuesta del modelo
+                    with st.spinner(f"⏳ Procesando tu pregunta con el modelo '{selected_model}'..."):
+                        response = qa_chain.invoke(user_query)
+                    st.subheader("✅ Respuesta:")
+                    st.write(response.strip())
         except Exception as e:
-            st.error("Error: Reinicia el servidor de Ollama" + str(e))
-            st.session_state.historial.append({
-                "role": "assistant",
-                "content": "Ocurrió un error. Verifica que Ollama esté activo."
-            })
-
-
-if __name__ == "__main__":
-    main()
+            st.error(f"❌ Error al configurar el modelo: {e}")

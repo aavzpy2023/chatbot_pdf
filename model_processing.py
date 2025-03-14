@@ -1,236 +1,153 @@
-import os
-import streamlit as st
 from langchain_community.vectorstores import FAISS
-from langchain_core.embeddings import Embeddings
-import ollama
-from langchain_ollama import OllamaLLM
+from langchain_ollama import OllamaEmbeddings, OllamaLLM
+from langchain.chains import RetrievalQA
+from langchain.prompts import PromptTemplate
+import re
 
-@st.cache_data
-def get_downloaded_models():
-    """
-    Get the downloaded models with ollama.
-
-    This function will return a list of models available locally.
-
-    Returns:
-        list: A list of model names or an empty list if no models are available.
-    """
-    try:
-        # Get model's list from ollama
-        response = ollama.list()
-        models_list = response.get("models", [])
-
-        if not models_list:
-            print("No models available.")
-            return []
-
-        # get name of the models
-        models_name = [model['model'] for model in models_list]
-
-    except Exception as e:
-        print(f"Error retrieving models: {e}")
-        models_name = []  # Return an empty list in case of error
-
-    return models_name
-
-
-ARCHIVO_CONTEXTO = "./documents/data_for_model.json"
-
-
-# Minimalist prompt
+# Plantilla de prompt personalizada
 PROMPT_TEMPLATE = """
-Eres un asistente especializado en Versat Sarasola. Sigue estas instrucciones:
-
-1. Si la pregunta es un saludo como "Hola", "Buenas", "Buenos días", etc., responde con un saludo amigable.
-2. Si la pregunta es sobre Versat Sarasola, proporciona información basada en el contexto dado.
-3. Si te preguntan sobre otros temas que no conoces, responde: "No tengo información".
-4. Si te preguntan por los pasos de alguna acción, brinda absolutamente todos los pasos al usuario. Prohibido omitir ningún paso.
-5. Si la respuesta es corta, responde con una frase corta.
-6. Si la respuesta no puede ser proporcionada basada en el contexto, responde: "No tengo información".
-7. Si la pregunta menciona "usuario regular", "usuario normal" o "empleado", **ignora la sección ADMINISTRADOR**.
-8. Si la pregunta menciona "administrador", "configuración inicial" o "usuario 'sa'", **ignora la sección USUARIO_REGULAR**.
+Eres un asistente experto en el sistema. Responde únicamente usando la información proporcionada en el contexto.
+Si no hay información relevante, responde: "⚠️ No tengo información sobre este tema."
 
 Contexto:
 {context}
 
 Pregunta:
 {question}
-
-Respuesta:
 """
 
-# Custom class for embeddings using Ollama
-class OllamaEmbeddings(Embeddings):
-    def __init__(
-        self,
-        model: str = "nomic-embed-text:latest",
-        embedding_dim: int = 768,
-        max_retries: int = 3,
-        fallback_type: str = "zero",
-    ):
-        """
-        Initialize the OllamaEmbeddings instance.
-
-        Args:
-            model (str): Name of the Ollama model to use for embeddings.
-            embedding_dim (int): Dimension of the embedding vectors.
-            max_retries (int): Maximum number of retries on failed embedding attempts.
-            fallback_type (str): Type of fallback vector to generate if an error occurs. Options: "zero", "random", "ones".
-        """
-        self.model = model
-        self.embedding_dim = embedding_dim
-        self.max_retries = max_retries
-        self.fallback_type = fallback_type  # Options: "zero", "random", "ones"
-
-    def embed_documents(self, texts):
-        """
-        Embed a list of documents using Ollama.
-
-        Args:
-            texts (list): List of text strings to be embedded.
-
-        Returns:
-            list: A list of embedding vectors.
-        """
-        if not texts:
-            return []
-        embeddings = []
-        for text in texts:
-            result = ollama.embed(self.model, text)
-            # Safely access the first embedding, if available
-            if result["embeddings"] and len(result["embeddings"]) > 0:
-                embeddings.append(result["embeddings"][0])
-            else:
-                print(f"Warning: No embeddings returned for text: {text[:30]}...")
-                # Add a zero vector as placeholder for failed embeddings
-                embeddings.append([0.0] * self.embedding_dim)  # Dimension configurable
-        return embeddings
-
-    def embed_query(self, text):
-        """
-        Embed a single query using Ollama.
-
-        Args:
-            text (str): Query string to be embedded.
-
-        Returns:
-            list: A single embedding vector.
-        """
-        import random
-        import logging
-        import time
-
-        # Attempt to generate embedding with retries
-        for attempt in range(self.max_retries):
-            try:
-                result = ollama.embed(self.model, text)
-                if result.get("embeddings") and len(result["embeddings"]) > 0:
-                    return result["embeddings"][0]
-
-                logging.warning(
-                    f"Intento {attempt+1}/{self.max_retries}: No se obtuvieron embeddings para: '{text[:50]}...'"
-                )
-                if attempt < self.max_retries - 1:
-                    time.sleep(0.5)  # Small pause before retry
-                    continue
-            except Exception as e:
-                logging.error(
-                    f"Error al generar embedding (intento {attempt+1}/{self.max_retries}): {str(e)}"
-                )
-                if attempt < self.max_retries - 1:
-                    time.sleep(1)  # Longer pause if an exception occurs
-                    continue
-
-        logging.warning(
-            f"Todos los intentos de embedding fallaron para: '{text[:50]}...' - Usando vector de respaldo tipo '{self.fallback_type}'"
-        )
-
-        # Generate a fallback vector based on the configured type
-        if self.fallback_type == "random":
-            return [random.uniform(-1.0, 1.0) for _ in range(self.embedding_dim)]
-        elif self.fallback_type == "ones":
-            return [1.0] * self.embedding_dim
-        else:
-            return [0.0] * self.embedding_dim
-
-
-@st.cache_resource
-def crear_vector_store(chat_history: str = ""):
-    """
-    Create a vector store using chat history and embeddings.
-
-    Args:
-        chat_history (str): Historial de chat.
-
-    Returns:
-        FAISS: Vector store or None if the archivo_conteo does not exist.
-    """
-    if not os.path.exists(ARCHIVO_CONTEXTO):
-        st.error(f"Archivo {ARCHIVO_CONTEXTO} no encontrado")
+# =============================================================================
+# Función para leer el documento
+# =============================================================================
+def load_document(file_path):
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            return f.read()
+    except FileNotFoundError:
+        print(f"❌ Error: El archivo '{file_path}' no se encontró.")
+        return None
+    except Exception as e:
+        print(f"❌ Error al leer el archivo: {e}")
         return None
 
-    with open(ARCHIVO_CONTEXTO, "r", encoding="utf-8") as f:
-        texto_completo = f.read()
+# =============================================================================
+# Función para extraer detalles de un bloque de texto
+# =============================================================================
+def extract_details(content):
+    id_match = re.search(r'ID:\s*(.+)', content)
+    titulo_match = re.search(r'Título:\s*(.+)', content)
+    categoria_match = re.search(r'Categoría:\s*(.+)', content)
+    prioridad_match = re.search(r'Prioridad:\s*(.+)', content)
+    version_match = re.search(r'Versión:\s*(.+)', content)
+    fecha_match = re.search(r'Fecha de Actualización:\s*(.+)', content)
+    funcionalidad_match = re.search(r'Funcionalidad:\s*([\s\S]+?)(?=Respuesta:|Roles de Acceso:|$)', content)
+    respuesta_match = re.search(r'Respuesta:\s*([\s\S]+?)(?=Roles de Acceso:|Variantes de Preguntas:|Pasos a Seguir:|Notas Adicionales:|Errores Comunes y Soluciones:|Prerrequisitos:|Resultados Esperados:|Referencias Relacionadas:|Escenarios Posibles:|Casos Especiales:|$)', content)
+    roles_match = re.search(r'Roles de Acceso:\s*([\s\S]+?)(?=Variantes de Preguntas:|Pasos a Seguir:|Notas Adicionales:|Errores Comunes y Soluciones:|Prerrequisitos:|Resultados Esperados:|Referencias Relacionadas:|Escenarios Posibles:|Casos Especiales:|$)', content)
+    variantes_match = re.findall(r'¿(.*?)\?(.*?)(?=¿|\Z)', content, re.DOTALL)
+    pasos_match = re.search(r'Pasos a Seguir:\s*([\s\S]+?)(?=Notas Adicionales:|Errores Comunes y Soluciones:|Prerrequisitos:|Resultados Esperados:|Referencias Relacionadas:|Escenarios Posibles:|Casos Especiales:|$)', content)
+    errores_match = re.findall(r'"(.*?)":\s*(.*?)\n', content, re.DOTALL)
+    resultados_match = re.search(r'Resultados Esperados:\s*([\s\S]+?)(?=Referencias Relacionadas:|Escenarios Posibles:|Casos Especiales:|$)', content)
+    escenarios_match = re.findall(r'Escenarios Posibles:\s*([\s\S]+?)(?=Casos Especiales:|Feedback del Usuario:|$)', content, re.DOTALL)
+    casos_especiales_match = re.search(r'Casos Especiales:\s*([\s\S]+?)(?=Feedback del Usuario:|$)', content)
+    feedback_match = re.search(r'Feedback del Usuario:\s*([\s\S]+)', content)
 
-    # Optimized Chunking
-    overlap = 500
+    return {
+        "id": id_match.group(1).strip() if id_match else "No especificado.",
+        "titulo": titulo_match.group(1).strip() if titulo_match else "No especificado.",
+        "categoria": categoria_match.group(1).strip() if categoria_match else "No especificada.",
+        "prioridad": prioridad_match.group(1).strip() if prioridad_match else "No especificada.",
+        "version": version_match.group(1).strip() if version_match else "No especificada.",
+        "fecha": fecha_match.group(1).strip() if fecha_match else "No especificada.",
+        "funcionalidad": funcionalidad_match.group(1).strip() if funcionalidad_match else "No especificada.",
+        "respuesta": respuesta_match.group(1).strip() if respuesta_match else "No especificada.",
+        "roles": roles_match.group(1).strip() if roles_match else "No especificados.",
+        "variantes": [{"pregunta": v[0].strip(), "respuesta": v[1].strip()} for v in variantes_match] if variantes_match else [],
+        "pasos": [p.strip() for p in pasos_match.group(1).splitlines()] if pasos_match else [],
+        "errores": [(e[0].strip(), e[1].strip()) for e in errores_match] if errores_match else [],
+        "resultados": resultados_match.group(1).strip() if resultados_match else "No especificados.",
+        "escenarios": [e.strip() for e in escenarios_match] if escenarios_match else [],
+        "casos_especiales": casos_especiales_match.group(1).strip() if casos_especiales_match else "No especificados.",
+        "feedback": feedback_match.group(1).strip() if feedback_match else "No especificado."
+    }
+
+# =============================================================================
+# Función para dividir el documento en chunks basados en preguntas
+# =============================================================================
+def parse_document(text):
     chunks = []
-    if chat_history:
-        chunks = [
-            texto_completo[i : i + overlap]
-            for i in range(0, len("\n".join([chat_history, texto_completo])), overlap)
-        ]
+    try:
+        # Dividir el texto en bloques basados en "ID:"
+        preguntas = re.split(r'(ID:\s*\S+)', text, flags=re.IGNORECASE)
 
-    # Split by specific sections
-        chunks = []
-        for seccion in ["ADMINISTRADOR", "USUARIO_REGULAR"]:
-            if seccion in texto_completo:
-                contenido = texto_completo.split(seccion)[1].split("}")[0]
-                chunks.append(f"**{seccion}**{contenido}")
+        for i in range(1, len(preguntas), 2):
+            id_titulo = preguntas[i].strip()  # "ID: ..."
+            contenido = preguntas[i + 1].strip()  # Contenido asociado
 
+            # Extraer detalles del contenido
+            detalles = extract_details(id_titulo + "\n" + contenido)
 
-    current_chunk = ""
-    for linea in texto_completo.split("\n"):
-        if linea.strip().startswith("1. ") or linea.strip().startswith("2. "):
-            if current_chunk:
-                chunks.append(current_chunk)
-                current_chunk = ""
-        current_chunk += linea + "\n"
-    if current_chunk:
-        chunks.append(current_chunk)
+            # Construir el chunk final
+            chunk = f"""
+            ID: {detalles["id"]}
+            Título: {detalles["titulo"]}
+            Categoría: {detalles["categoria"]}
+            Prioridad: {detalles["prioridad"]}
+            Versión: {detalles["version"]}
+            Fecha de Actualización: {detalles["fecha"]}
 
-    # Usa el modelo de embeddings local
-    embeddings_model = OllamaEmbeddings(model="nomic-embed-text:latest")
-    # print("embeddings:", embeddings_model)
+            Funcionalidad:
+            {detalles["funcionalidad"]}
 
-    # Get embeddings
-    embeddings = embeddings_model.embed_documents(chunks)
+            Respuesta:
+            {detalles["respuesta"]}
 
-    if not embeddings:
-        st.error("No se pudieron generar embeddings válidos para ningún texto")
-        return None
+            Roles de Acceso:
+            {detalles["roles"]}
 
-    # Create FAISS using from_texts to properly handle the texts and embeddings
-    vector_store = FAISS.from_texts(chunks, embeddings_model)
-    # print("FAISS: ", vector_store)
-    return vector_store
+            Variantes de Preguntas:
+            {"; ".join([f"{v['pregunta']} -> {v['respuesta']}" for v in detalles["variantes"]])}
 
+            Pasos a Seguir:
+            {"; ".join(detalles["pasos"])}
 
-def create_model(selected_model: str):
-    """
-    Configure and create an OllamaLLM instance with default or environment-configured settings.
+            Errores Comunes y Soluciones:
+            {"; ".join([f"{e[0]}: {e[1]}" for e in detalles["errores"]])}
 
-    Args:
-        selected_model (str): Name of the ollama model to use.
+            Resultados Esperados:
+            {detalles["resultados"]}
 
-    Returns:
-        OllamaLLM: An initialized OllamaLLM instance.
-    """
-    llm = OllamaLLM(
-        model=selected_model,
-        temperature=float(os.getenv("OLLAMA_TEMPERATURE", 0.0)),  # Default: 0.0
-        base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
-        num_ctx=int(os.getenv("OLLAMA_NUM_CTX", 4096)),          # Default: 4096
-        num_gpu=int(os.getenv("OLLAMA_NUM_GPU", 1))              # Default: 1
+            Escenarios Posibles:
+            {", ".join(detalles["escenarios"])}
+
+            Casos Especiales:
+            {detalles["casos_especiales"]}
+
+            Feedback del Usuario:
+            {detalles["feedback"]}
+            """.strip()
+
+            chunks.append(chunk)
+
+    except Exception as e:
+        print(f"❌ Error procesando el documento: {e}")
+
+    return chunks
+
+# =============================================================================
+# Función para configurar la cadena QA con el modelo seleccionado
+# =============================================================================
+def setup_qa_chain(model_name):
+    embeddings = OllamaEmbeddings(model=model_name)
+    llm = OllamaLLM(model=model_name)
+    vector_store = FAISS.from_texts(["placeholder"], embeddings)  # Placeholder inicial
+    return RetrievalQA.from_chain_type(
+        llm=llm,
+        chain_type="stuff",
+        retriever=vector_store.as_retriever(search_kwargs={"k": 1}),
+        chain_type_kwargs={
+            "prompt": PromptTemplate(
+                template=PROMPT_TEMPLATE,
+                input_variables=["context", "question"]
+            )
+        }
     )
-    return llm
