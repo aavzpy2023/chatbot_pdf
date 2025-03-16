@@ -5,6 +5,7 @@ __pycache__/*.pyc
 pyrightconfig.json
 *.pdf
 documents/*.txt
+documents/*.py
 *.json
 .env
 api_keys
