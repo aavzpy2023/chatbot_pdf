@@ -2,12 +2,13 @@ from langchain_community.vectorstores import FAISS
 from langchain_ollama import OllamaEmbeddings, OllamaLLM
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
-
+import pickle
 import re
 from dotenv import load_dotenv
 import os
 import datetime
 import streamlit as st
+
 
 load_dotenv()
 
@@ -61,42 +62,8 @@ def extract_details(content: str):
             data[splits[0].lower()] = splits[1]
         else:
             data["id"] = section
-    # id_match = re.search(r'ID:\s*(.+)', content)
-    # titulo_match = re.search(r'Título:\s*(.+)', content)
-    # categoria_match = re.search(r'Categoría:\s*(.+)', content)
-    # prioridad_match = re.search(r'Prioridad:\s*(.+)', content)
-    # version_match = re.search(r'Versión:\s*(.+)', content)
-    # fecha_match = re.search(r'Fecha de Actualización:\s*(.+)', content)
-    # funcionalidad_match = re.search(r'Funcionalidad:\s*([\s\S]+?)(?=Respuesta:|Roles de Acceso:|$)', content)
-    # respuesta_match = re.search(r'Respuesta:\s*([\s\S]+?)(?=Roles de Acceso:|Variantes de Preguntas:|Pasos a Seguir:|Notas Adicionales:|Errores Comunes y Soluciones:|Prerrequisitos:|Resultados Esperados:|Referencias Relacionadas:|Escenarios Posibles:|Casos Especiales:|$)', content)
-    # roles_match = re.search(r'Roles de Acceso:\s*([\s\S]+?)(?=Variantes de Preguntas:|Pasos a Seguir:|Notas Adicionales:|Errores Comunes y Soluciones:|Prerrequisitos:|Resultados Esperados:|Referencias Relacionadas:|Escenarios Posibles:|Casos Especiales:|$)', content)
-    # variantes_match = re.findall(r'¿(.*?)\?(.*?)(?=¿|\Z)', content, re.DOTALL)
-    # pasos_match = re.search(r'Pasos a Seguir:\s*([\s\S]+?)(?=Notas Adicionales:|Errores Comunes y Soluciones:|Prerrequisitos:|Resultados Esperados:|Referencias Relacionadas:|Escenarios Posibles:|Casos Especiales:|$)', content)
-    # errores_match = re.findall(r'"(.*?)":\s*(.*?)\n', content, re.DOTALL)
-    # resultados_match = re.search(r'Resultados Esperados:\s*([\s\S]+?)(?=Referencias Relacionadas:|Escenarios Posibles:|Casos Especiales:|$)', content)
-    # escenarios_match = re.findall(r'Escenarios Posibles:\s*([\s\S]+?)(?=Casos Especiales:|Feedback del Usuario:|$)', content, re.DOTALL)
-    # casos_especiales_match = re.search(r'Casos Especiales:\s*([\s\S]+?)(?=Feedback del Usuario:|$)', content)
-    # feedback_match = re.search(r'Feedback del Usuario:\s*([\s\S]+)', content)
-
     return data
-    # {
-        # "id": id_match.group(1).strip() if id_match else "No especificado.",
-        # "titulo": titulo_match.group(1).strip() if titulo_match else "No especificado.",
-        # "categoria": categoria_match.group(1).strip() if categoria_match else "No especificada.",
-        # "prioridad": prioridad_match.group(1).strip() if prioridad_match else "No especificada.",
-        # "version": version_match.group(1).strip() if version_match else "No especificada.",
-        # "fecha": fecha_match.group(1).strip() if fecha_match else "No especificada.",
-        # "funcionalidad": funcionalidad_match.group(1).strip() if funcionalidad_match else "No especificada.",
-        # "respuesta": respuesta_match.group(1).strip() if respuesta_match else "No especificada.",
-        # "roles": roles_match.group(1).strip() if roles_match else "No especificados.",
-        # "variantes": [{"pregunta": v[0].strip(), "respuesta": v[1].strip()} for v in variantes_match] if variantes_match else [],
-        # "pasos": [p.strip() for p in pasos_match.group(1).splitlines()] if pasos_match else [],
-        # "errores": [(e[0].strip(), e[1].strip()) for e in errores_match] if errores_match else [],
-        # "resultados": resultados_match.group(1).strip() if resultados_match else "No especificados.",
-        # "escenarios": [e.strip() for e in escenarios_match] if escenarios_match else [],
-        # "casos_especiales": casos_especiales_match.group(1).strip() if casos_especiales_match else "No especificados.",
-        # "feedback": feedback_match.group(1).strip() if feedback_match else "No especificado."
-    # }
+
 
 # =============================================================================
 # Función para dividir el documento en chunks basados en preguntas
@@ -118,44 +85,6 @@ def parse_document(text):
                 # Extraer detalles del contenido
                 detalles = extract_details(id_titulo + "\n" + contenido)
 
-                # Construir el chunk final
-                # chunk = f"""
-                # ID: {detalles.get("id","")}
-                # Pregunta: {detalles.get("pregunta","")}
-                # Título: {detalles.get("titulo", "")}
-                # Categoría: {detalles.get("categoria", "")}
-                # Prioridad: {detalles.get("prioridad","")}
-                # Versión: {detalles.get("version", "")}
-
-                # Funcionalidad: {detalles.get("funcionalidad", "")}
-
-                # Respuesta:
-                # {detalles.get("respuesta", "")}
-
-                # Roles de Acceso:
-                # {detalles["roles"]}
-
-                # Variantes de Preguntas:
-                # {"; ".join([f"{v['pregunta']} -> {v['respuesta']}" for v in detalles["variantes"]])}
-
-                # Pasos a Seguir:
-                # {"; ".join(detalles["pasos"])}
-
-                # Errores Comunes y Soluciones:
-                # {"; ".join([f"{e[0]}: {e[1]}" for e in detalles["errores"]])}
-
-                # Resultados Esperados:
-                # {detalles["resultados"]}
-
-                # Escenarios Posibles:
-                # {", ".join(detalles["escenarios"])}
-
-                # Casos Especiales:
-                # {detalles["casos_especiales"]}
-
-                # Feedback del Usuario:
-                # {detalles["feedback"]}
-                # """.strip()
                 chunk = ''
                 for k, v in detalles.items():
                     chunk += ":".join([k, v]) + "\n"
@@ -244,8 +173,19 @@ def setup_vector_store(chunks, selected_model):
         FAISS: Vector store object if successful, None otherwise.
     """
     try:
+        load_local_embbedings = os.getenv("LOAD_LOCAL_EMBBEDINGS", "No")
+        print_with_date(f"Load local embbedings: {load_local_embbedings}" )
+        vs_file = os.getenv("VECTOR_STORE_FILE", "No file was found")
         embeddings = OllamaEmbeddings(model=selected_model)
-        vector_store = FAISS.from_texts(chunks, embeddings)
+        if load_local_embbedings == "No":
+            print_with_date(f"Creando embeddings con el modelo {selected_model}")
+            vector_store = FAISS.from_texts(chunks, embeddings)
+            vector_store.save_local(vs_file)
+            print_with_date(f"Vector store was saved in the file {vs_file}")
+        else:
+            # FAISS.allow_dangerous_deserialization = True
+            vector_store = FAISS.load_local(vs_file, embeddings)
+            print_with_date(f"Vector store was loaded from the file {vs_file}")
         print_with_date("✅ Vector Store configurado exitosamente.")
         return vector_store
     except Exception as e:

@@ -8,3 +8,5 @@ documents/*.txt
 *.json
 .env
 api_keys
+vector_store.pkl
+faiss_index

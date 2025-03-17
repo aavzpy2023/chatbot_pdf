@@ -107,7 +107,7 @@ def main():
             st.stop()
 
         print_with_date('creating vector store')
-        vector_store = setup_vector_store(chunks, selected_model)
+        vector_store = setup_vector_store(chunks, "qwen2.5:1.5b")
         if not vector_store:
             st.stop()
 
