@@ -1,4 +1,5 @@
 streamlit
-PyPDF2
 ollama
-python-docx
+langchain-community
+langchain-ollama
+faiss-cpu
