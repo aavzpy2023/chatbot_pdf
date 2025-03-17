@@ -107,7 +107,8 @@ def main():
             st.stop()
 
         print_with_date('creating vector store')
-        vector_store = setup_vector_store(chunks, "qwen2.5:1.5b")
+        embed_model = "nomic-embed-text:latest" # "qwen2.5:1.5b"
+        vector_store = setup_vector_store(chunks, embed_model)
         if not vector_store:
             st.stop()
 
