@@ -1,5 +1,12 @@
 import streamlit as st
-from model_processing import load_and_process_document, PROMPT_TEMPLATE, print_with_date, create_model, initialize_qa_chain, setup_vector_store
+from model_processing import (
+    load_and_process_document,
+    PROMPT_TEMPLATE,
+    print_with_date,
+    create_model,
+    initialize_qa_chain,
+    setup_vector_store,
+)
 from langchain_community.vectorstores import FAISS
 from langchain_ollama import OllamaEmbeddings, OllamaLLM
 from langchain.chains import RetrievalQA
@@ -15,7 +22,6 @@ if "last_processed_question" not in st.session_state:
     st.session_state.last_processed_question = None
 
 
-
 def configure_sidebar():
     """
     Configures the sidebar with a dropdown to select the model.
@@ -29,16 +35,18 @@ def configure_sidebar():
             import ollama
 
             # Dynamically fetch available models from Ollama
-            available_models = [model['model'] for model in ollama.list()['models']]
+            available_models = [model["model"] for model in ollama.list()["models"]]
+            # available_models.insert(0, 'qwen2.5-coder:7')
+            # print("the list models is:", available_models)
             selected_model = st.selectbox(
-                "Selecciona un modelo:",
-                available_models,
-                key="model_selection"
+                "Selecciona un modelo:", available_models, key="model_selection"
             )
+
             return selected_model
         except Exception as e:
             print_with_date(f"❌ Error al cargar los modelos: {e}")
             return None
+
 
 def process_user_query(qa_chain, user_query):
     """
@@ -57,12 +65,16 @@ def process_user_query(qa_chain, user_query):
         # Handle JSON or plain text responses
         if isinstance(response, dict):
             print_with_date("Response as dict")
-            formatted_response = response.get("result", "No se encontró una respuesta clara.")
+            formatted_response = response.get(
+                "result", "No se encontró una respuesta clara."
+            )
         elif isinstance(response, str):
             print_with_date("Response as str")
             try:
                 parsed_response = json.loads(response)
-                formatted_response = parsed_response.get("result", "No se encontró una respuesta clara.")
+                formatted_response = parsed_response.get(
+                    "result", "No se encontró una respuesta clara."
+                )
             except (json.JSONDecodeError, AttributeError):
                 formatted_response = response
         else:
@@ -72,6 +84,7 @@ def process_user_query(qa_chain, user_query):
     except Exception as e:
         print_with_date(f"❌ Error al procesar la pregunta: {e}")
         return "⚠️ Ocurrió un error al procesar tu pregunta."
+
 
 def main():
     """
@@ -97,27 +110,30 @@ def main():
         st.stop()
 
     # Set up vector store and QA chain
-    if "qa_chain" not in st.session_state or st.session_state.selected_model != selected_model:
+    if (
+        "qa_chain" not in st.session_state.keys()
+        or st.session_state.selected_model != selected_model
+    ):
         # Load and process document
         file_path = os.getenv("CONTEXT_FILE", "./documents/.txt")
 
-        print_with_date(f'processing informations of {file_path}')
+        print_with_date(f"processing informations of {file_path}")
         chunks = load_and_process_document(file_path)
         if not chunks:
             st.stop()
 
-        print_with_date('creating vector store')
-        vector_store = setup_vector_store(chunks, "qwen2.5:1.5b")
+        print_with_date("creating vector store")
+        embed_model = "nomic-embed-text:latest"  # "qwen2.5:1.5b"
+        vector_store = setup_vector_store(chunks, embed_model)
         if not vector_store:
             st.stop()
 
     if "qa_chain" not in st.session_state:
-        print_with_date('initilizing qa chain')
+        print_with_date("initilizing qa chain")
         st.session_state.qa_chain = initialize_qa_chain(vector_store, selected_model)
 
     if not st.session_state.qa_chain:
         st.stop()
-
 
     # Interactive query handling
     user_query = st.chat_input("Escribe tu pregunta aquí")
@@ -130,11 +146,15 @@ def main():
             if user_query != st.session_state.last_processed_question:
                 qa_chain = st.session_state.qa_chain
                 with st.spinner("Procesando su pregunta"):
-                    print_with_date(f"Procesando pregunta con el modelo {selected_model}")
+                    print_with_date(
+                        f"Procesando pregunta con el modelo {selected_model}"
+                    )
                     output = process_user_query(qa_chain, user_query)
 
                 # Save question and answer to history
-                st.session_state.history.append({"question": user_query, "answer": output})
+                st.session_state.history.append(
+                    {"question": user_query, "answer": output}
+                )
 
                 # Update the last processed question
                 st.session_state.last_processed_question = user_query
@@ -152,6 +172,7 @@ def main():
                 # Clear the textbox after processing the query
                 # st.query_params
                 # st.rerun()
+
 
 if __name__ == "__main__":
     main()

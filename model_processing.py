@@ -27,6 +27,9 @@ Eres un asistente especializado en Versat Sarasola. Sigue estas instrucciones:
 9. Brinda toda la informacion posible al usuario de acuerdo con los datos brindados para cada una de las preguntas.
 10. A la hora de responder al usuario No considere las secciones de las preguntas que no contenian informacion relevante
 11. Si no se tiene informacion de algun aspecto de la pregunta no mencionarlo al usuario. Esta prohibido
+12. Si no tienes informacion suficiente sobre un tema, evita mencionar al usuario que no hay mas informacion en los documentos.
+13. Cuando respondas, hazlo a partir del contenido y si no hay suficiente informacion solo responde y no menciones que no hay mas informacion.
+
 
 Contexto:
 {context}
@@ -54,7 +57,9 @@ def load_document(file_path):
 # Función para extraer detalles de un bloque de texto
 # =============================================================================
 def extract_details(content: str):
-
+    """
+    Extract information from a content and structure it
+    """
     data = {}
     for section in content.split("Sct."):
         if ":" in section:
@@ -69,29 +74,33 @@ def extract_details(content: str):
 # Función para dividir el documento en chunks basados en preguntas
 # =============================================================================
 def parse_document(text):
+    """
+    Parse documents of data
+    """
     chunks = []
     try:
         # Dividir el texto en bloques basados en "ID:"
-        preguntas = re.split('ID: ', text, flags=re.IGNORECASE)
+        question_split_char = os.getenv("SPLIT_CHAR", "PR")
+        preguntas = re.split(f'{question_split_char}: ', text, flags=re.IGNORECASE)
 
         print_with_date(f"Un total de {len(preguntas) - 1} preguntas fueron detectadas.")
 
         for pregunta in preguntas:
 
-            if ".CU" in pregunta:
-                id_titulo = pregunta.strip()  # "ID: ..."
-                contenido = pregunta.strip()  # Contenido asociado
+            # if split_char in pregunta:
+            id_titulo = pregunta.strip()  # "ID: ..."
+            contenido = pregunta.strip()  # Contenido asociado
 
-                # Extraer detalles del contenido
-                detalles = extract_details(id_titulo + "\n" + contenido)
+            # Extraer detalles del contenido
+            detalles = extract_details(id_titulo + "\n" + contenido)
 
-                chunk = ''
-                for k, v in detalles.items():
-                    chunk += ":".join([k, v]) + "\n"
+            chunk = ''
+            for k, v in detalles.items():
+                chunk += ":".join([k, v]) + "\n"
 
 
 
-                chunks.append(chunk)
+            chunks.append(chunk)
 
     except Exception as e:
         print_with_date(f"❌ Error procesando el documento: {e}")
@@ -179,7 +188,20 @@ def setup_vector_store(chunks, selected_model):
         embeddings = OllamaEmbeddings(model=selected_model)
         if load_local_embbedings == "No":
             print_with_date(f"Creando embeddings con el modelo {selected_model}")
-            vector_store = FAISS.from_texts(chunks, embeddings)
+            mini_chunks = []
+            chunk_size = int(os.getenv("MAX_CHUNK_SIZE", 300))
+            for m_ch in chunks:
+                tot_chunks = int(len(m_ch)/300)
+                for i in range(tot_chunks):
+                    if i == 0:
+                        ch = m_ch[:chunk_size]
+                    elif i == tot_chunks - 1:
+                        ch = m_ch[i * 300 - 100:]
+                    else:
+                        ch = m_ch[i * 300 - 100: (i+1) * 300]
+                    mini_chunks.append(ch)
+            print_with_date(f"A total of {len(mini_chunks)} was identified.")
+            vector_store = FAISS.from_texts(mini_chunks, embeddings, distance_strategy='cosine')
             vector_store.save_local(vs_file)
             print_with_date(f"Vector store was saved in the file {vs_file}")
         else:
