@@ -1,14 +1,14 @@
-from langchain_community.vectorstores import FAISS
-from langchain_ollama import OllamaEmbeddings, OllamaLLM
-from langchain.chains import RetrievalQA
-from langchain.prompts import PromptTemplate
+import datetime
+import os
 import pickle
 import re
-from dotenv import load_dotenv
-import os
-import datetime
-import streamlit as st
 
+import streamlit as st
+from dotenv import load_dotenv
+from langchain.chains import RetrievalQA
+from langchain.prompts import PromptTemplate
+from langchain_community.vectorstores import FAISS
+from langchain_ollama import OllamaEmbeddings, OllamaLLM
 
 load_dotenv()
 
@@ -39,12 +39,13 @@ Pregunta:
 
 """
 
+
 # =============================================================================
 # Función para leer el documento
 # =============================================================================
 def load_document(file_path):
     try:
-        with open(file_path, 'r', encoding='utf-8') as f:
+        with open(file_path, "r", encoding="utf-8") as f:
             return f.read()
     except FileNotFoundError:
         print_with_date(f"❌ Error: El archivo '{file_path}' no se encontró.")
@@ -52,6 +53,7 @@ def load_document(file_path):
     except Exception as e:
         print_with_date(f"❌ Error al leer el archivo: {e}")
         return None
+
 
 # =============================================================================
 # Función para extraer detalles de un bloque de texto
@@ -80,9 +82,11 @@ def parse_document(text):
     chunks = []
     try:
         # Dividir el texto en bloques basados en "ID:"
-        preguntas = re.split('ID: ', text, flags=re.IGNORECASE)
+        preguntas = re.split("ID: ", text, flags=re.IGNORECASE)
 
-        print_with_date(f"Un total de {len(preguntas) - 1} preguntas fueron detectadas.")
+        print_with_date(
+            f"Un total de {len(preguntas) - 1} preguntas fueron detectadas."
+        )
 
         for pregunta in preguntas:
 
@@ -93,11 +97,9 @@ def parse_document(text):
                 # Extraer detalles del contenido
                 detalles = extract_details(id_titulo + "\n" + contenido)
 
-                chunk = ''
+                chunk = ""
                 for k, v in detalles.items():
                     chunk += ":".join([k, v]) + "\n"
-
-
 
                 chunks.append(chunk)
 
@@ -105,7 +107,6 @@ def parse_document(text):
         print_with_date(f"❌ Error procesando el documento: {e}")
 
     return chunks
-
 
 
 def create_model(selected_model: str):
@@ -119,11 +120,9 @@ def create_model(selected_model: str):
         OllamaLLM: An initialized OllamaLLM instance.
     """
     temperature = float(os.getenv("OLLAMA_TEMPERATURE", 0.0))
-    base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
-    num_ctx=int(os.getenv("OLLAMA_NUM_CTX", 4096))
-    num_gpu=int(os.getenv("OLLAMA_NUM_GPU", 1))
-
-
+    base_url = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
+    num_ctx = int(os.getenv("OLLAMA_NUM_CTX", 4096))
+    num_gpu = int(os.getenv("OLLAMA_NUM_GPU", 1))
 
     llm = OllamaLLM(
         model=selected_model,
@@ -155,16 +154,16 @@ def load_and_process_document(file_path):
         print_with_date("❌ No se pudo cargar el archivo de documentación.")
         return None
 
-
     chunks = parse_document(raw_text)
-
 
     if not chunks:
         print_with_date("❌ No se encontraron preguntas válidas en el documento.")
         return None
 
     print_with_date("✅ Documento procesado exitosamente.")
-    print_with_date(f"Se extrajeron {len(chunks)} bloques de información del documento.")
+    print_with_date(
+        f"Se extrajeron {len(chunks)} bloques de información del documento."
+    )
     return chunks
 
 
@@ -182,25 +181,33 @@ def setup_vector_store(chunks, selected_model):
     """
     try:
         load_local_embbedings = os.getenv("LOAD_LOCAL_EMBBEDINGS", "No")
-        print_with_date(f"Load local embbedings: {load_local_embbedings}" )
+        print_with_date(f"Load local embbedings: {load_local_embbedings}")
         vs_file = os.getenv("VECTOR_STORE_FILE", "No file was found")
         embeddings = OllamaEmbeddings(model=selected_model)
         if load_local_embbedings == "No":
             print_with_date(f"Creando embeddings con el modelo {selected_model}")
             mini_chunks = []
             chunk_size = int(os.getenv("MAX_CHUNK_SIZE", 300))
+            ov_sz = int(os.getenv("OVERLAP_SIZE", 100))  # overlap size
             for m_ch in chunks:
-                tot_chunks = int(len(m_ch)/300)
+                tot_chunks = int(len(m_ch) / chunk_size)
                 for i in range(tot_chunks):
                     if i == 0:
                         ch = m_ch[:chunk_size]
                     elif i == tot_chunks - 1:
-                        ch = m_ch[i * 300 - 100:]
+                        ch = m_ch[i * chunk_size - ov_sz :]
                     else:
-                        ch = m_ch[i * 300 - 100: (i+1) * 300]
+                        try:
+                            ch = m_ch[
+                                i * chunk_size - ov_sz : (i + 1) * chunk_size + ov_sz
+                            ]
+                        except IndexError:
+                            ch = m_ch[i * chunk_size - ov_sz : (i + 1) * chunk_size]
                     mini_chunks.append(ch)
             print_with_date(f"A total of {len(mini_chunks)} was identified.")
-            vector_store = FAISS.from_texts(mini_chunks, embeddings, distance_strategy='cosine')
+            vector_store = FAISS.from_texts(
+                mini_chunks, embeddings, distance_strategy="cosine"
+            )
             vector_store.save_local(vs_file)
             print_with_date(f"Vector store was saved in the file {vs_file}")
         else:
@@ -235,10 +242,9 @@ def initialize_qa_chain(_vector_store, selected_model):
             retriever=_vector_store.as_retriever(search_kwargs={"k": k}),
             chain_type_kwargs={
                 "prompt": PromptTemplate(
-                    template=PROMPT_TEMPLATE,
-                    input_variables=["context", "question"]
+                    template=PROMPT_TEMPLATE, input_variables=["context", "question"]
                 )
-            }
+            },
         )
         print_with_date("✅ QA Chain inicializada exitosamente.")
         return qa_chain
