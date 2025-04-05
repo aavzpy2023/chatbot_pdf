@@ -1,19 +1,21 @@
-import streamlit as st
-from model_processing import (
-    load_and_process_document,
-    PROMPT_TEMPLATE,
-    print_with_date,
-    create_model,
-    initialize_qa_chain,
-    setup_vector_store,
-)
-from langchain_community.vectorstores import FAISS
-from langchain_ollama import OllamaEmbeddings, OllamaLLM
-from langchain.chains import RetrievalQA
-from langchain.prompts import PromptTemplate
+import datetime
 import json
 import os
-import datetime
+
+import streamlit as st
+from langchain.chains import RetrievalQA
+from langchain.prompts import PromptTemplate
+from langchain_community.vectorstores import FAISS
+from langchain_ollama import OllamaEmbeddings, OllamaLLM
+
+from model_processing import (
+    PROMPT_TEMPLATE,
+    create_model,
+    initialize_qa_chain,
+    load_and_process_document,
+    print_with_date,
+    setup_vector_store,
+)
 
 # Initialize session state for history and last processed question
 if "history" not in st.session_state:
