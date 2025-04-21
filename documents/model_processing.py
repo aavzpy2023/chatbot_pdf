@@ -5,6 +5,7 @@ from langchain_core.embeddings import Embeddings
 import ollama
 from langchain_ollama import OllamaLLM
 
+
 @st.cache_data
 def get_downloaded_models():
     """
@@ -60,7 +61,7 @@ Respuesta:
 """
 
 # Custom class for embeddings using Ollama
-class OllamaEmbeddings(Embeddings):
+class emOllamaEmbeddings(Embeddings):
     def __init__(
         self,
         model: str = "nomic-embed-text:latest",
