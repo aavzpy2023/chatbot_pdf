@@ -1,9 +1,121 @@
+import random
+
+from pymilvus import (
+    Collection,
+    CollectionSchema,
+    DataType,
+    FieldSchema,
+    connections,
+    utility,
+)
+
+# Importamos la librería para convertir la pregunta del usuario en embeddings
+from sentence_transformers import SentenceTransformer
+
+# 1. Conectar al servidor Milvus
+connections.connect(alias="default", host="localhost", port="19530")
+print("Conexión a Milvus establecida.")
+
+# 2. Definir el esquema de la colección
+fields = [
+    FieldSchema(name="my_id", dtype=DataType.INT64, is_primary=True, auto_id=False),
+    FieldSchema(name="my_vector", dtype=DataType.FLOAT_VECTOR, dim=768),
+    FieldSchema(name="text", dtype=DataType.VARCHAR, max_length=512),
+]
+schema = CollectionSchema(
+    fields=fields, description="Colección de preguntas y respuestas"
+)
+
+# 3. Crear o cargar la colección
+collection_name = "Sarasola"
+if not utility.has_collection(collection_name):
+    collection = Collection(name=collection_name, schema=schema)
+    print(f"Colección '{collection_name}' creada exitosamente.")
+else:
+    collection = Collection(name=collection_name)
+    print(f"Colección '{collection_name}' ya existe.")
+
+
+# limpiar coleccion
+# Eliminar todos los datos en la colección
+# collection.delete(expr="")  # Esto elimina todos los registros de la colección.
+
+# 4. Insertar datos en la colección
+# Por ejemplo, definimos algunos datos de ejemplo.
+# Cada registro es una lista: [my_id, my_vector, text]
+dummy_vector = [random.uniform(-1, 1) for _ in range(768)]  # Vector de ejemplo (dummy)
+
+data_rows = [
+    [1, dummy_vector, "Texto de ejemplo para la pregunta 1"],
+    [2, dummy_vector, "Texto de ejemplo para la pregunta 2"],
+    # Puedes agregar más registros según lo necesites (hasta 18,402 u otra cantidad)
+]
+
+# Convertir de formato fila (row-based) a formato columnar (column-based)
+data_columnar = list(zip(*data_rows))  # Esto genera una tupla de 3 elementos
+data_columnar = [list(col) for col in data_columnar]
+
+# Insertar los datos
+insert_result = collection.insert(data_columnar)
+print("Datos insertados exitosamente.")
+print("IDs asignados:", insert_result.primary_keys)
+
+# Hacer un flush para confirmar que los datos se han escrito
+collection.flush()
+
+# 5. Crear un índice sobre el campo vectorial "my_vector"
+index_params = {
+    "index_type": "IVF_FLAT",
+    "metric_type": "COSINE",
+    "params": {"nlist": 128},
+}
+collection.create_index(field_name="my_vector", index_params=index_params)
+print("Índice creado en el campo 'my_vector'.")
+
+# 6. Cargar la colección en memoria (necesario para consultas y búsquedas)
+collection.load()
+print("Colección cargada en memoria.")
+
+# 7. Realizar una consulta para verificar los datos insertados
+query_result = collection.query(
+    expr="my_id > 0", output_fields=["my_id", "my_vector", "text"], limit=5
+)
+print("\nResultados de la consulta:")
+for record in query_result:
+    print(record)
+
+# 8. Convertir la pregunta del usuario en embeddings para usarlos en la búsqueda
+# Usamos SentenceTransformers con un modelo que devuelve 768 dimensiones, por ejemplo "all-mpnet-base-v2"
+embedding_model = SentenceTransformer("all-mpnet-base-v2")
+user_question = input("\nIngresa tu pregunta: ")
+# Convertir la pregunta a un vector de embeddings (asegúrate que la dimensión sea 768)
+vt_search = embedding_model.encode(user_question).tolist()
+print("Dimensiones del vector de búsqueda:", len(vt_search))
+
+# 9. Realizar una búsqueda de similitud que también retorne el campo "text" y "my_id"
+res_query = collection.search(
+    data=[vt_search],  # Vector de consulta (debe ser una lista de 768 floats)
+    anns_field="my_vector",  # Campo de vectores, debe coincidir con el esquema
+    param={"metric_type": "COSINE", "params": {"nprobe": 10}},
+    limit=3,  # Número de resultados a devolver
+    output_fields=["text", "my_id"],  # Campos adicionales a retornar
+)
+
+print("\nResultados de la búsqueda:")
+for hits in res_query:
+    for hit in hits:
+        # En PyMilvus, los campos adicionales se devuelven como atributos del hit
+        texto = hit.text if hasattr(hit, "text") else "Ningún texto"
+        my_id = hit.my_id if hasattr(hit, "my_id") else "Ningún id"
+        print(
+            f"ID Interno: {hit.id}, Distancia: {hit.distance}, my_id: {my_id}, Texto: {texto}"
+        )
+
+
+####  CONVERTIR TXT A JSON
+
 import json
 import re
-
-import numpy as np
-import requests
-from pymilvus import DataType, MilvusClient
 
 
 def process_section(section):
@@ -39,9 +151,7 @@ def convert_text_to_json(file_path):
     with open(file_path, "r", encoding="utf-8") as file:
         content = file.read()
 
-    sections = re.split(r"ID: ", content)[1:-1]
-
-    # print("SECTION:", list(sections)[-1])
+    sections = re.split(r"ID: ", content)[1:]
     result = {}
 
     for section in sections:
@@ -54,108 +164,20 @@ def convert_text_to_json(file_path):
     return result
 
 
-def get_answers(json_data: dict):
+# Ruta al archivo de texto
+file_path = "./documents/mf3.txt"
+
+# Convertir el archivo de texto a JSON
+json_data = convert_text_to_json(file_path)
+
+# Guardar el resultado en un archivo JSON
+output_file_path = "./documents/mf3_output.json"
+with open(output_file_path, "w", encoding="utf-8") as output_file:
+    json.dump(json_data, output_file, ensure_ascii=False, indent=4)
+
+print(f"Archivo JSON generado en: {output_file_path}")
+
+
+def get_ids_and_question(json_data):
     pregs = [[id, json_data.get(id).get("Pregunta")] for id in json_data.keys()]
     return pregs
-
-
-# URL de la API local
-API_URL = "http://localhost:5000/generate-embeddings/"
-
-
-def get_embeddings(texts):
-    headers = {"Content-Type": "application/json"}
-    data = {"texts": texts}
-    response = requests.post(API_URL, headers=headers, data=json.dumps(data))
-
-    if response.status_code == 200:
-        return response.json()["embeddings"]
-    else:
-        raise Exception(f"Error: {response.status_code}, {response.text}")
-
-
-def create_collection(collection_name: str):
-    print(f"Creating collection {collection_name}")
-    client = MilvusClient(uri="http://localhost:19530", token="root:Milvus")
-    if client.has_collection(collection_name="Versat"):
-        client.drop_collection(collection_name="Versat")
-        client.create_collection(
-            collection_name="Versat",
-            dimension=768,  # The vectors we will use in this demo has 768 dimensions
-        )
-    return client
-
-
-def create_database(client, db_name: str):
-
-    print(f"Creating database {db_name}")
-    if "Versat" not in client.list_databases():
-        client.create_database(
-            db_name="Versat", properties={"database.replica.number": 3}
-        )
-    else:
-        print("Database already exists")
-    return client
-
-
-def create_schema(client):
-    print("Creating schema")
-    schema = MilvusClient.create_schema(
-        auto_id=False,  # No usamos ID automático
-        enable_dynamic_field=False,  # Deshabilitar campos dinámicos
-    )
-
-    # Agregar campos al esquema
-    schema.add_field(
-        field_name="q_id", datatype=DataType.VARCHAR, is_primary=True, max_length=64
-    )
-    schema.add_field(
-        field_name="q_vector", datatype=DataType.FLOAT_VECTOR, dim=768
-    )  # Dimensión del vector
-    schema.add_field(field_name="q_question", datatype=DataType.VARCHAR, max_length=512)
-
-    # Crear la colección
-    client.create_collection(collection_name="Sarasola", schema=schema)
-    return client
-
-
-def create_index(
-    client,
-    index_name: str,
-):
-    print("Creating index")
-    index_params = [
-        {
-            "field_name": f"{index_name}",  # Campo al que se aplicará el índice
-            "index_type": "IVF_FLAT",
-            "metric_type": "L2",
-            "params": {"nlist": 128},
-        }
-    ]
-    # Crear el índice
-    try:
-        client.create_index(
-            collection_name="Sarasola", index_params=index_params  # Ahora es una lista
-        )
-        print("Índice creado exitosamente.")
-    except Exception as ex:
-        print("Error al crear el índice:", ex)
-    return client
-
-
-if __name__ == "__main__":
-    file_path = "./documents/mf3.txt"
-    json_data = convert_text_to_json(file_path)
-    answers = get_answers(json_data)
-    ps = [f"{p[1]}" for p in answers]
-    emb = get_embeddings(ps)
-    client = create_collection("Versat")
-    client = create_database(client=client, db_name="Sarasola")
-    client = create_schema(client)
-    client = create_index(client, index_name="q_vector")
-    dt_ok = [
-        {"q_id": p[0], "q_vector": e[0], "q_question": p[1]}
-        for p, e in zip(answers, emb)
-    ]
-    print("inserting data")
-    res = client.insert(collection_name="Sarasola", data=dt_ok)
