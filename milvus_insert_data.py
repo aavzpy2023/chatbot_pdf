@@ -51,13 +51,16 @@ def convert_text_to_json(file_path):
     return result
 
 
-def get_answers(json_data: dict):
-    pregs = []
+def get_questions(json_data: dict):
+    all_questions = []
     for id in json_data.keys():
-        pregunta = json_data.get(id).get("Pregunta")
-        if pregunta:  # Solo incluir si hay texto en "Pregunta"
-            pregs.append([id, pregunta])
-    return pregs
+        full_question_content: dict = json_data.get(id, "")
+        question_question = full_question_content.get("Pregunta")
+        if question_question:
+            all_questions.append([id, question_question])
+        q_variants: list = full_question_content.get("Variantes de Preguntas", "")
+        all_questions.extend([[id, q_var[q_var.find("¿") :]] for q_var in q_variants])
+    return all_questions
 
 
 # URL de la API local
@@ -111,9 +114,9 @@ def create_index(client, index_name: str, collection_name: str):
     index_params = [
         {
             "field_name": index_name,
-            "index_type": "IVF_FLAT",
-            "metric_type": "L2",
-            "params": {"nlist": 128},
+            "index_type": "IVF_SQ8",
+            "metric_type": "COSINE",
+            "params": {"nlist": 256},
         }
     ]
     try:
@@ -127,7 +130,7 @@ def create_index(client, index_name: str, collection_name: str):
 if __name__ == "__main__":
     file_path = "./documents/mf3.txt"
     json_data = convert_text_to_json(file_path)
-    answers = get_answers(json_data)
+    answers = get_questions(json_data)
     ps = [p[1] for p in answers]
     emb = get_embeddings(ps)
 

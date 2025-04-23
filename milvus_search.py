@@ -15,7 +15,10 @@ def search_vector(client, collection_name: str, vector: list):
         anns_field="q_vector",
         data=[vector],
         limit=2,
-        search_params={"metric_type": "L2"},
+        search_params={
+            "metric_type": "COSINE",
+            "params": {"nprobe": 32},
+        },
     )
     return res
 
