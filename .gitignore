@@ -7,6 +7,6 @@ pyrightconfig.json
 documents/*.txt
 *.json
 .env
-api_keys
+api_keys.json
 vector_store.pkl
 faiss_index

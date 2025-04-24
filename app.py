@@ -1,26 +1,19 @@
+import ollama
+import requests
 import streamlit as st
-from model_processing import (
-    load_and_process_document,
-    PROMPT_TEMPLATE,
+
+from processing import (
+    get_answer_from_model,
+    get_milvus_client,
+    get_question_contents,
     print_with_date,
-    create_model,
-    initialize_qa_chain,
-    setup_vector_store,
 )
-from langchain_community.vectorstores import FAISS
-from langchain_ollama import OllamaEmbeddings, OllamaLLM
-from langchain.chains import RetrievalQA
-from langchain.prompts import PromptTemplate
-import json
-import os
-import datetime
 
 # Initialize session state for history and last processed question
 if "history" not in st.session_state:
     st.session_state.history = []
 if "last_processed_question" not in st.session_state:
     st.session_state.last_processed_question = None
-    # os.path.exis
 
 
 def configure_sidebar():
@@ -33,58 +26,58 @@ def configure_sidebar():
     with st.sidebar:
         st.header("Configuración")
         try:
-            import ollama
-
             # Dynamically fetch available models from Ollama
             available_models = [model["model"] for model in ollama.list()["models"]]
-            # available_models.insert(0, 'qwen2.5-coder:7')
-            # print("the list models is:", available_models)
             selected_model = st.selectbox(
                 "Selecciona un modelo:", available_models, key="model_selection"
             )
 
             return selected_model
         except Exception as e:
-            print_with_date(f"❌ Error al cargar los modelos: {e}")
+            print_with_date(f"❌ Error to load models: {e}")
             return None
 
 
-def process_user_query(qa_chain, user_query):
+def get_embedding_ollama(text: str):
     """
-    Processes the user's query using the QA chain and returns the response.
+    Sends a POST request to the Ollama API to convert text into an embedding.
+
+    text: list of texts: ["your text"]
+    Returns:
+        list: The embedding vector as a list of floats.
+    """
+    url = "http://localhost:5000/generate-embeddings/"
+    payload = {"texts": [text]}
+    try:
+        response = requests.post(url, json=payload)
+        response.raise_for_status()
+        data = response.json()
+        # Se asume que la respuesta tiene el formato:
+        # {"embeddings": [[0.123,...,0.456]]}
+        return data["embeddings"][0][0]
+    except Exception as e:
+        st.error(f"Error al obtener el embedding desde la API: {e}")
+        return None
+
+
+def is_valid_json(json_data):
+    """
+    Check if the provided string is a valid JSON.
 
     Args:
-        qa_chain (RetrievalQA): QA chain object.
-        user_query (str): User's question.
+        json_data (str): The string to be checked.
 
     Returns:
-        str: Formatted response to the user's query.
+        bool: True if the string is a valid JSON, False otherwise.
     """
     try:
-        response = qa_chain.invoke(user_query)
-
-        # Handle JSON or plain text responses
-        if isinstance(response, dict):
-            print_with_date("Response as dict")
-            formatted_response = response.get(
-                "result", "No se encontró una respuesta clara."
-            )
-        elif isinstance(response, str):
-            print_with_date("Response as str")
-            try:
-                parsed_response = json.loads(response)
-                formatted_response = parsed_response.get(
-                    "result", "No se encontró una respuesta clara."
-                )
-            except (json.JSONDecodeError, AttributeError):
-                formatted_response = response
-        else:
-            formatted_response = str(response)
-
-        return formatted_response
-    except Exception as e:
-        print_with_date(f"❌ Error al procesar la pregunta: {e}")
-        return "⚠️ Ocurrió un error al procesar tu pregunta."
+        # Try to load the JSON data
+        json.loads(json_data)
+        return True
+    except ValueError as e:
+        # Catch errors of JSON format
+        print_with_date(f"The JSON is invalid: {e}")
+        return False
 
 
 def main():
@@ -110,32 +103,6 @@ def main():
     if not selected_model:
         st.stop()
 
-    # Set up vector store and QA chain
-    if (
-        "qa_chain" not in st.session_state.keys()
-        or st.session_state.selected_model != selected_model
-    ):
-        # Load and process document
-        file_path = os.getenv("CONTEXT_FILE", "./documents/.txt")
-
-        print_with_date(f"processing informations of {file_path}")
-        chunks = load_and_process_document(file_path)
-        if not chunks:
-            st.stop()
-
-        print_with_date("creating vector store")
-        embed_model = "nomic-embed-text:latest"  # "qwen2.5:1.5b"
-        vector_store = setup_vector_store(chunks, embed_model)
-        if not vector_store:
-            st.stop()
-
-    if "qa_chain" not in st.session_state:
-        print_with_date("initilizing qa chain")
-        st.session_state.qa_chain = initialize_qa_chain(vector_store, selected_model)
-
-    if not st.session_state.qa_chain:
-        st.stop()
-
     # Interactive query handling
     user_query = st.chat_input("Escribe tu pregunta aquí")
 
@@ -143,36 +110,85 @@ def main():
         if user_query.lower() in ["salir", "exit"]:
             st.info("👋 ¡Hasta luego!")
         else:
-            # Check if the question has already been processed
-            if user_query != st.session_state.last_processed_question:
-                qa_chain = st.session_state.qa_chain
-                with st.spinner("Procesando su pregunta"):
-                    print_with_date(
-                        f"Procesando pregunta con el modelo {selected_model}"
+            with st.spinner(
+                "Procesando su pregunta..."
+            ):  # Get the embedding of the question
+                vt_search = get_embedding_ollama(user_query)
+                if not vt_search or not isinstance(vt_search, list):
+                    st.error(
+                        "El proceso de embeddings ha fallado o devolvió datos inválidos."
                     )
-                    output = process_user_query(qa_chain, user_query)
+                    st.stop()
 
-                # Save question and answer to history
-                st.session_state.history.append(
-                    {"question": user_query, "answer": output}
-                )
+                # Search in Milvus
+                try:
+                    print_with_date("Searching in Milvus...")
+                    # Connect to Milvus
+                    client = get_milvus_client(
+                        db_name="versat", collection_name="sarasola"
+                    )
+                    res_query = client.search(
+                        collection_name="sarasola",
+                        anns_field="q_vector",
+                        data=[vt_search],
+                        limit=10,
+                        search_params={"metric_type": "COSINE"},
+                    )[0]
+                    id_interest = [item.get("id") for item in res_query]
+                    print_with_date(f"Selected IDS: {id_interest}")
+                    if not id_interest:
+                        print_with_date("The IDs were not found in the file.")
+                        st.stop()
+                    id_interest = list(set(id_interest))
+                    resultados = "\n\n".join(get_question_contents(id_interest))
+                except Exception as e:
+                    print_with_date(f"Error during the search: {e}")
+                    st.stop()
 
-                # Update the last processed question
-                st.session_state.last_processed_question = user_query
+                # Build the prompt
+                prompt = f"""
+                **Rol:** Eres un asistente experto que responde preguntas sobre el software basándose *únicamente* en fragmentos de documentación proporcionados.
 
-                # Display chat history
-                if st.session_state.history:
-                    st.subheader("Historial de Preguntas y Respuestas:")
-                    for entry in st.session_state.history:
-                        st.markdown(f"**Pregunta:** {entry['question']}")
-                        st.markdown(f"**Respuesta:** {entry['answer']}")
-                        st.markdown("---")
-                else:
-                    st.session_state.historial = []
+                **Tarea:** Analiza el siguiente "Contexto", que puede contener uno o más fragmentos relevantes. Responde la "Pregunta del Usuario" de forma precisa y útil.
 
-                # Clear the textbox after processing the query
-                # st.query_params
-                # st.rerun()
+                **Instrucciones:**
+                1.  Para cada fragmento en el contexto, localiza la información más relevante para la pregunta, priorizando `Sct. Respuesta` y `Sct. Pasos a Seguir`.
+                2.  **Sintetiza** la información de los fragmentos relevantes en una **única respuesta coherente**. No te limites a listar las respuestas de cada fragmento por separado.
+                3.  La respuesta debe ser clara, directa y enfocada en resolver la duda del usuario.
+                4.  Basa tu respuesta *exclusivamente* en el contexto. No inventes información ni uses conocimiento externo.
+                5.  Si el contexto no contiene la información necesaria, indícalo claramente.
+
+                **Contexto:**
+
+                Contexto:
+                {resultados}
+
+                Pregunta: {user_query}
+
+                Respuesta:
+                """
+
+            print_with_date(f"Building the final answer by {selected_model}...")
+
+            # Get the answer from the model
+            output = get_answer_from_model(model=selected_model, prompt=prompt)
+            print_with_date(f"The answer has been generated")
+
+            # Save question and answer to history
+            st.session_state.history.append({"question": user_query, "answer": output})
+
+            # Update the last processed question
+            st.session_state.last_processed_question = user_query
+
+            # Display chat history
+            if st.session_state.history:
+                st.subheader("Historial de Preguntas y Respuestas:")
+                for entry in st.session_state.history:
+                    st.markdown(f"**Pregunta:** {entry['question']}")
+                    st.markdown(f"**Respuesta:** {entry['answer']}")
+                    st.markdown("---")
+            else:
+                st.session_state.historial = []
 
 
 if __name__ == "__main__":
